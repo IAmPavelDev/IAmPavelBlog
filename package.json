@@ -10,6 +10,7 @@
     "@types/node": "^16.11.56",
     "@types/react": "^18.0.17",
     "@types/react-dom": "^18.0.6",
+    "hack-font": "^3.3.0",
     "node": "^16.17.0",
     "node-sass": "^7.0.1",
     "npm": "^8.18.0",
@@ -43,5 +44,9 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "@types/styled-components": "^5.1.26",
+    "styled-components": "^5.3.5"
   }
 }
