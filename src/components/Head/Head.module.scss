@@ -1,8 +1,20 @@
 .wrapper {
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     justify-content: center;
-    Button {
-        margin-top: 10px;
+    .wrapper__standImg {
+        margin: 0 auto;
+        width: 100%;
+    }
+    .wrapper__links {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        .wrapper__link {
+            text-decoration: none;
+            Button {
+                margin-top: 10px;
+            }
+        }
     }
 }
