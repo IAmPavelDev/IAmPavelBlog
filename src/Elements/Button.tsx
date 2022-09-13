@@ -11,7 +11,6 @@ const Container = styled.div`
 
 const BTN = styled.button`
     background-color: white;
-    color: #1bd23d;
     transition: all 0.6s;
     outline: none;
     border: 0px solid transparent;

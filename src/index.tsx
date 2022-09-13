@@ -3,6 +3,7 @@ import ReactDOM from "react-dom/client";
 import "./index.css";
 import App from "./App";
 import Blog from "./components/Blog/Blog";
+import AdminPanel from "./components/AdminPanel/AdminPanel";
 import reportWebVitals from "./reportWebVitals";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 
@@ -15,6 +16,7 @@ root.render(
             <Routes>
                 <Route path="/" element={<App />} />
                 <Route path="/blog" element={<Blog />} />
+                <Route path="/admin" element={<AdminPanel />} />
             </Routes>
         </BrowserRouter>
     </React.StrictMode>

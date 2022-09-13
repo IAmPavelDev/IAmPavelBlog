@@ -1,0 +1,35 @@
+@import "./../../style/variables.module.scss";
+
+.wrapper {
+    display: flex;
+    flex-direction: column;
+    justify-items: center;
+    max-width: 1200px;
+    width: 100%;
+    margin: 0 auto;
+    .post {
+        display: flex;
+        flex-direction: column;
+        .post__inputs {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            input {
+                width: 200px;
+            }
+            .post__inputs__tags {
+                display: flex;
+                gap: 10px;
+                flex-direction: row;
+                justify-content: flex-start;
+                align-items: center;
+                Button {
+                    height: 40px;
+                }
+                input {
+                    width: fit-content;
+                }
+            }
+        }
+    }
+}
