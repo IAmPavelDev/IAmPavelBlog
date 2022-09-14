@@ -1,3 +1,7 @@
+import { ReactNode } from "react";
+
 export interface mobxObj {
-    [key: string]: any;
+    title: string;
+    content: string;
+    tags?: Array<{ tagWord: string; id: string }>;
 }

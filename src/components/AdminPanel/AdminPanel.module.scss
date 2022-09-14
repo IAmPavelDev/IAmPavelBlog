@@ -20,14 +20,58 @@
             .post__inputs__tags {
                 display: flex;
                 gap: 10px;
-                flex-direction: row;
+                flex-direction: column;
                 justify-content: flex-start;
                 align-items: center;
                 Button {
                     height: 40px;
                 }
-                input {
-                    width: fit-content;
+                .inputs__tags__container {
+                    display: flex;
+                    justify-content: center;
+                    flex-wrap: wrap;
+                    gap: 10px;
+                    div {
+                        width: fit-content;
+                        overflow: visible;
+                        padding: 5px 8px;
+                        cursor: pointer;
+                        user-select: none;
+                    }
+                    .tags__cards__badge {
+                        position: relative;
+                        .tags__badges__mask {
+                            display: flex;
+                            justify-content: center;
+                            align-content: center;
+                            background-color: transparent;
+                            color: transparent;
+                            margin: -5px -8px;
+                            width: calc(100% - 16px);
+                            border-radius: 4px;
+                            transition: all .2s .3s ease-in;
+                            position: absolute;
+                            user-select: none;
+                            &:hover {
+                                background-color: rgba(0, 0, 0, 0.811);
+                                color: white;
+                            }
+                        }
+                    }
+                }
+                .inputs__tags__ctrl {
+                    display: flex;
+                    gap: 10px;
+                    align-items: center;
+                    justify-content: flex-start;
+                    input {
+                        width: 80vw;
+                        min-width: 100px;
+                        max-width: 200px;
+                    }
+                    @media screen and (max-width: 400px) {
+                        flex-direction: column;
+                    }
                 }
             }
         }
