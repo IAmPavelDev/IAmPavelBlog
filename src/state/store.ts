@@ -1,12 +1,14 @@
 import { makeAutoObservable } from "mobx";
-import { mobxObj } from "./types";
+import { createPost } from "../server/create-posts";
+import { postObj } from "./types";
 
 class PostsStore {
-    posts: mobxObj[] = [];
+    posts: postObj[] = [];
     constructor() {
         makeAutoObservable(this);
     }
-    addPosts(post: mobxObj) {
+    async addPosts(post: postObj) {
+        await createPost(post);
         this.posts.push(post);
     }
 }

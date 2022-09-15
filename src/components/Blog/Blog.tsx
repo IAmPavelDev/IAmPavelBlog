@@ -7,7 +7,7 @@ import { login } from "./../../server/login";
 const About = () => {
     useEffect(() => {
         (async function () {
-            await login();
+            // await login();
             const posts = await getPosts();
             console.log("posts:  ", posts);
         })();

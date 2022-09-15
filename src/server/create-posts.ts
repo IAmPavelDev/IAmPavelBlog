@@ -1,18 +1,17 @@
 import env from "react-dotenv";
+import { postObj } from "./../state/types";
 
-type loginData = {
-    login: string;
-    password: string;
-}
-
-export async function login(loginData: loginData) {
+export async function createPost(postData: postObj) {
     var myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");
 
     var raw = JSON.stringify({
-        username: loginData.login,
-        password: loginData.password,
+        title: postData.title,
+        content: postData.content,
+        tags: postData.tags?.map(tag => {return tag.tagWord}),
     });
+
+console.log(JSON.parse(raw));
 
     var requestOptions: RequestInit = {
         method: "POST",
@@ -21,7 +20,7 @@ export async function login(loginData: loginData) {
         redirect: "follow",
     };
 
-    return fetch(env.SERVER_CONNECTION + "/login", requestOptions)
+    return fetch(env.SERVER_CONNECTION + "/posts", requestOptions)
         .then((response) => response.json())
         .catch((error) => console.log("error", error));
 }
