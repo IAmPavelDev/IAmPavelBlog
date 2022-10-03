@@ -140,7 +140,6 @@ const AdminPostForm: FC<{}> = observer(() => {
                             Submit
                         </Button>
                     </Box>
-                    <div className={style.post__btns}></div>
                 </div>
             </div>
         </>

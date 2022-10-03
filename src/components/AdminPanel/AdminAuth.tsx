@@ -52,14 +52,16 @@ const PasswordBlock = styled.div`
 const AdminAuth: FC<{ loggedIn: () => void }> = ({ loggedIn }) => {
     const { register, handleSubmit, reset } = useForm<AdminLogin>();
     const [pwdShow, setPwdShow] = useState<Boolean>(false);
+
     async function onSubmit(data: AdminLogin) {
         const result = await login(data);
-        console.log(result.msg);
-        if (result.msg === "Logged in") {
+        console.log(result);
+        if (result?.status === 200) {
             loggedIn();
         }
         reset();
     }
+
     return (
         <LoginFormBlock>
             <Box
@@ -88,11 +90,7 @@ const AdminAuth: FC<{ loggedIn: () => void }> = ({ loggedIn }) => {
                         className="field"
                     />
                 </PasswordBlock>
-                <Button
-                    variant="contained"
-                    onClick={() => console.log("first")}
-                    type="submit"
-                >
+                <Button variant="contained" type="submit">
                     Login
                 </Button>
             </Box>

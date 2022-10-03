@@ -2,7 +2,6 @@ import React, { useEffect } from "react";
 import Head from "../Head/Head";
 import style from "./Blog.module.scss";
 import { getPosts } from "./../../server/get-posts";
-import { login } from "./../../server/login";
 
 const About = () => {
     useEffect(() => {

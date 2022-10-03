@@ -2,6 +2,9 @@ import env from "react-dotenv";
 
 export async function getPosts() {
     var myHeaders = new Headers();
+    myHeaders.append("Content-Type", "application/json");
+    myHeaders.append('Access-Control-Allow-Origin','*');
+    myHeaders.append('Access-Control-Allow-Methods','GET,POST,PUT,PATCH,DELETE');
 
     var requestOptions: RequestInit = {
         method: "GET",
