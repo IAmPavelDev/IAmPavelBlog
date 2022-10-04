@@ -15,7 +15,7 @@ import { postObj } from "../../state/types";
 type PostCreateForm = {
     title: string;
     content: string;
-    tag?: string;
+    tag: string;
 };
 
 type Tag = {
@@ -26,7 +26,7 @@ type Tag = {
 
 const AdminPostForm: FC<{}> = observer(() => {
     const [tagsList, setTagsList] = useState<Array<Tag>>([]);
-    const [newTag, setNewTag] = useState<string>();
+    const [newTag, setNewTag] = useState<string>("");
     const { register, handleSubmit, watch, reset } = useForm<PostCreateForm>();
 
     const onSubmit = (post: PostCreateForm) => {
@@ -96,6 +96,7 @@ const AdminPostForm: FC<{}> = observer(() => {
                             multiline
                             className={style.post__inputs__title}
                             {...register("title", { required: true })}
+                            defaultValue=""
                         />
                         <TextField
                             id="outlined-textarea"
@@ -104,6 +105,7 @@ const AdminPostForm: FC<{}> = observer(() => {
                             placeholder="Content"
                             multiline
                             {...register("content", { required: true })}
+                            defaultValue=""
                         />
                         <div className={style.post__inputs__tags}>
                             <div className={style.inputs__tags__container}>

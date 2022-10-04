@@ -1,31 +1,38 @@
-import { makeAutoObservable } from "mobx";
+import {
+    action,
+    computed,
+    makeObservable,
+    observable,
+    toJS,
+    runInAction,
+} from "mobx";
 import { createPost } from "../server/create-posts";
-import { getPosts } from "../server/get-posts";
+import { fetchPosts } from "../server/fetchPosts";
 import { postObj } from "./types";
 
 class PostsStore {
     posts: postObj[] = [];
     constructor() {
-        makeAutoObservable(this);
+        makeObservable(this, {
+            posts: observable,
+            addPosts: action,
+            loadPosts: action,
+            getPosts: computed,
+        });
     }
     async addPosts(post: postObj) {
-        await createPost(post);
-        this.posts.push(post);
+        const create = async () => await createPost(post);
+        create().then(async () => await this.loadPosts());
     }
     async loadPosts() {
-        const posts = await getPosts();
-        this.posts.push(...posts);
-    }
-    getPosts() {
-        return this.posts.map((post) => {
-            return {
-                content: post.content,
-                title: post.title,
-                tags: post.tags,
-                creationDate: post.creationDate,
-                postId: post.postId,
-            };
+        const posts = await fetchPosts();
+        runInAction(() => {
+            this.posts = posts;
         });
+    }
+    public get getPosts() {
+        console.log(this.posts)
+        return toJS(this.posts);
     }
 }
 

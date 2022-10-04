@@ -1,6 +1,6 @@
 import env from "react-dotenv";
 
-export async function getPosts() {
+export async function fetchPosts() {
     var myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");
     myHeaders.append('Access-Control-Allow-Origin','*');

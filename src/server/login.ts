@@ -23,7 +23,6 @@ export async function login(loginData: loginData) {
         redirect: "follow",
         credentials: "include",
     };
-    console.log(requestOptions.body);
     return fetch(env.SERVER_CONNECTION + "/login", requestOptions)
         .then((response) => response)
         .catch((error) => console.log("error", error));

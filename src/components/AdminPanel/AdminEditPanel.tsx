@@ -1,18 +1,22 @@
-import React, { useEffect, useState } from "react";
-import { getPosts } from "../../server/get-posts";
+import { observer } from "mobx-react-lite";
+import React from "react";
 import store from "../../state/store";
 import { postObj } from "../../state/types";
+import Post from "../Blog/Post/Post";
+import style from "./AdminEditPanel.module.scss";
 
-export default function AdminEditPanel() {
-    const [posts, setPosts] = useState<Array<postObj | void>>([])
-    useEffect(() => {
-        (async () => {
-            store.loadPosts()
-        })()
-        const posts = [...store.getPosts()]
-        setPosts([...posts])
-        console.log(posts)
-    });
+const AdminEditPanel = observer(() => {
+    return (
+        <div className={style.wrapper}>
+            {store.getPosts.map((post: postObj) => {
+                return (
+                    <div key={post.postId} className={style.wrapper__post}>
+                        <Post content={post.content} title={post.title} />
+                    </div>
+                );
+            })}
+        </div>
+    );
+});
 
-    return <>posts</>;
-}
+export default AdminEditPanel;

@@ -55,7 +55,6 @@ const AdminAuth: FC<{ loggedIn: () => void }> = ({ loggedIn }) => {
 
     async function onSubmit(data: AdminLogin) {
         const result = await login(data);
-        console.log(result);
         if (result?.status === 200) {
             loggedIn();
         }
@@ -72,23 +71,27 @@ const AdminAuth: FC<{ loggedIn: () => void }> = ({ loggedIn }) => {
             >
                 <TextField
                     {...register("login", { required: true })}
-                    id="outlined-textarea"
+                    id="outlined-textarea lgn"
                     label="Login"
                     placeholder="Login"
                     className="field"
+                    defaultValue=""
                 />
                 <PasswordBlock>
                     <div onClick={() => setPwdShow(!pwdShow)} className="icon">
                         {pwdShow ? <AiFillEyeInvisible /> : <AiFillEye />}
                     </div>
-                    <TextField
-                        {...register("password", { required: true })}
-                        type={pwdShow ? "text" : "password"}
-                        id="outlined-textarea"
-                        label="Password"
-                        placeholder="Password"
-                        className="field"
-                    />
+                    <Box>
+                        <TextField
+                            {...register("password", { required: true })}
+                            type={pwdShow ? "text" : "password"}
+                            id="outlined-textarea pwd"
+                            label="Password"
+                            placeholder="Password"
+                            className="field"
+                            defaultValue=""
+                        />
+                    </Box>
                 </PasswordBlock>
                 <Button variant="contained" type="submit">
                     Login
