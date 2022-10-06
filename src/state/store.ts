@@ -21,8 +21,13 @@ class PostsStore {
         });
     }
     async addPosts(post: postObj) {
-        const create = async () => await createPost(post);
-        create().then(async () => await this.loadPosts());
+        createPost(post)
+            .then((data) => {
+                this.loadPosts();
+                return data;
+            })
+            .then((data) => this.posts.push(data))
+            .catch(() => console.error("Failed to fetch, str: 26, store.ts"));
     }
     async loadPosts() {
         const posts = await fetchPosts();
@@ -31,7 +36,7 @@ class PostsStore {
         });
     }
     public get getPosts() {
-        console.log(this.posts)
+        console.log(this.posts);
         return toJS(this.posts);
     }
 }

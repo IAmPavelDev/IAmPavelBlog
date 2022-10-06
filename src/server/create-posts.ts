@@ -24,8 +24,7 @@ export async function createPost(postData: postObj) {
         credentials: "include",
     };
 
-    fetch(env.SERVER_CONNECTION + "/posts", requestOptions)
-        .then((response) => response.text())
-        .then((result) => console.log(result))
+    return fetch(env.SERVER_CONNECTION + "/posts", requestOptions)
+        .then((response) => response.json())
         .catch((error) => console.log("error", error));
 }

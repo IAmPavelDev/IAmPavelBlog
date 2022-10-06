@@ -11,7 +11,11 @@ const AdminEditPanel = observer(() => {
             {store.getPosts.map((post: postObj) => {
                 return (
                     <div key={post.postId} className={style.wrapper__post}>
-                        <Post content={post.content} title={post.title} />
+                        <Post
+                            contentEditable={true}
+                            content={post.content}
+                            title={post.title}
+                        />
                     </div>
                 );
             })}

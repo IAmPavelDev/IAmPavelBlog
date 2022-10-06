@@ -3,8 +3,9 @@
     flex-direction: column;
     margin-top: 30px;
     border: 2px solid gray;
-        border-radius: 30px;
-    width: 400px;
+    border-radius: 30px;
+    max-width: 500px;
+    width: 28vw;
     padding: 20px;
     .wrapper__title {
         font-size: 24px;
@@ -12,5 +13,20 @@
     .wrapper__content {
         margin-top: 10px;
         font-size: 16px;
+    }
+    input {
+        border: none;
+    }
+    @media screen and (max-width: 1300px) {
+        & {
+            max-width: none;
+            width: 43vw;
+        }
+    }
+    @media screen and (max-width: 900px) {
+        & {
+            max-width: none;
+            width: 80vw;
+        }
     }
 }
