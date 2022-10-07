@@ -1,8 +1,7 @@
 import env from "react-dotenv";
-import { IPost } from "./../state/types";
 
-export async function createPost(postData: IPost) {
-    var myHeaders = new Headers();
+export async function deletePost(postId:string) {
+    const myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");
     myHeaders.append("Access-Control-Allow-Origin", "*");
     myHeaders.append(
@@ -10,21 +9,13 @@ export async function createPost(postData: IPost) {
         "GET,POST,PUT,PATCH,DELETE"
     );
 
-    var raw = JSON.stringify({
-        title: postData.title,
-        content: postData.content,
-        tags: ["sdsd", "sdcsdcsdc", "sdcsdc"],
-    });
-
     var requestOptions: RequestInit = {
-        method: "POST",
+        method: "DELETE",
         headers: myHeaders,
         redirect: "follow",
-        body: raw,
         credentials: "include",
     };
-
-    return fetch(env.SERVER_CONNECTION + "/posts", requestOptions)
+    return fetch(env.SERVER_CONNECTION + "/posts/" + postId, requestOptions)
         .then((response) => response.json())
         .catch((error) => console.log("error", error));
 }

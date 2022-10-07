@@ -10,7 +10,7 @@ import Card from "@mui/material/Card";
 import PostsStore from "../../state/store";
 import { observer } from "mobx-react-lite";
 import { useForm } from "react-hook-form";
-import { postObj } from "../../state/types";
+import { IPost } from "../../state/types";
 
 type PostCreateForm = {
     title: string;
@@ -33,7 +33,7 @@ const AdminPostForm: FC<{}> = observer(() => {
         const tagsData = tagsList.map((tag: Tag) => {
             return { tagWord: tag.tagWord, id: tag.id };
         });
-        const Post: postObj = {
+        const Post: IPost = {
             title: post.title,
             content: post.content,
             tags: tagsData,

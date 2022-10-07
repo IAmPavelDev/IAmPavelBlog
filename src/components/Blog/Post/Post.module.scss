@@ -4,9 +4,11 @@
     margin-top: 30px;
     border: 2px solid gray;
     border-radius: 30px;
-    max-width: 500px;
-    width: 28vw;
     padding: 20px;
+    .textBox {
+        display: flex;
+        flex-direction: column;
+    }
     .wrapper__title {
         font-size: 24px;
     }
@@ -17,16 +19,29 @@
     input {
         border: none;
     }
-    @media screen and (max-width: 1300px) {
-        & {
-            max-width: none;
-            width: 43vw;
-        }
-    }
+
     @media screen and (max-width: 900px) {
         & {
             max-width: none;
             width: 80vw;
         }
+    }
+}
+.wrapper__full {
+    max-width: 1200px;
+    width: 80vw;
+}
+.wrapper__preview {
+    max-width: 500px;
+    width: 28vw;
+}
+@media screen and (max-width: 1300px) {
+    .wrapper__preview {
+        max-width: none;
+        width: 43vw;
+    }
+    .wrapper__full {
+        max-width: none;
+        width: 80vw;
     }
 }
