@@ -28,12 +28,14 @@
     }
 }
 .wrapper__full {
-    max-width: 1200px;
-    width: 80vw;
+    animation: spread 0.6s 0.6s forwards;
 }
 .wrapper__preview {
     max-width: 500px;
     width: 28vw;
+    height: 300px;
+    overflow: clip;
+    animation: spread 0.6s backwards;
 }
 @media screen and (max-width: 1300px) {
     .wrapper__preview {
@@ -42,6 +44,20 @@
     }
     .wrapper__full {
         max-width: none;
+        width: 80vw;
+    }
+}
+
+@keyframes spread {
+    from {
+        max-width: 500px;
+        width: 28vw;
+        height: 300px;
+        overflow: clip;
+    }
+    to {
+        margin: 0 auto;
+        max-width: 1200px;
         width: 80vw;
     }
 }

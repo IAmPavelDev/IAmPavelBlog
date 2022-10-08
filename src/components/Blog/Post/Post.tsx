@@ -4,6 +4,7 @@ import _ from "lodash";
 import { Box, TextField } from "@mui/material";
 import store from "../../../state/store";
 import { IUpdatePost } from "../../../state/types";
+import { wrapGrid } from "animate-css-grid";
 
 type stateData = { content: string; title: string; postId?: string };
 type stateKey = keyof stateData;
@@ -11,8 +12,17 @@ type stateKey = keyof stateData;
 const Post: FC<
     {
         contentEditable: boolean;
+        parentId: string;
+        parentStyle: { readonly [key: string]: string; };
     } & stateData
-> = ({ content, title, contentEditable = false, postId }) => {
+> = ({
+    content,
+    title,
+    contentEditable = false,
+    postId,
+    parentId,
+    parentStyle,
+}) => {
     const [isNew, setIsNew] = useState(false);
     const [isFull, setIsFull] = useState(false);
     const [initial, setInitial] = useState<stateData>({
@@ -20,6 +30,13 @@ const Post: FC<
         title: title,
         postId: postId,
     });
+
+    {
+        const parent = document.getElementById(parentId);
+        if (parent) {
+            wrapGrid(parent); //library for animation css grid
+        }
+    }
 
     function checkIsNew(newState: stateData) {
         if (_.isEqual(initial, newState)) {
@@ -71,7 +88,14 @@ const Post: FC<
                     ? style.wrapper + " " + style.wrapper__full
                     : style.wrapper + " " + style.wrapper__preview
             }
-            onClick={() => (isFull ? null : setIsFull(true))}
+            onClick={() => {
+                if (!isFull) {
+                    setIsFull(true);
+                    document
+                        .getElementById(parentId)
+                        ?.classList.add(parentStyle.wrapper__post__full);
+                }
+            }}
         >
             {contentEditable && isFull ? (
                 <Box className={style.textBox}>
@@ -102,6 +126,11 @@ const Post: FC<
                     {isNew ? <p>New data</p> : <></>}
                     <button
                         onClick={() => {
+                            document
+                                .getElementById(parentId)
+                                ?.classList.remove(
+                                    parentStyle.wrapper__post__full
+                                );
                             setIsFull((prev) => !prev);
                         }}
                     >
