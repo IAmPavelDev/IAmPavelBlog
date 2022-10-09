@@ -1,10 +1,10 @@
 import React, { FC, useReducer, useState } from "react";
 import style from "./Post.module.scss";
 import _ from "lodash";
-import { Box, TextField } from "@mui/material";
+import { Box, Button, TextField } from "@mui/material";
 import store from "../../../state/store";
 import { IUpdatePost } from "../../../state/types";
-import { wrapGrid } from "animate-css-grid";
+import { FcCollapse } from "react-icons/fc";
 
 type stateData = { content: string; title: string; postId?: string };
 type stateKey = keyof stateData;
@@ -13,7 +13,7 @@ const Post: FC<
     {
         contentEditable: boolean;
         parentId: string;
-        parentStyle: { readonly [key: string]: string; };
+        parentStyle: { readonly [key: string]: string };
     } & stateData
 > = ({
     content,
@@ -31,13 +31,6 @@ const Post: FC<
         postId: postId,
     });
 
-    {
-        const parent = document.getElementById(parentId);
-        if (parent) {
-            wrapGrid(parent); //library for animation css grid
-        }
-    }
-
     function checkIsNew(newState: stateData) {
         if (_.isEqual(initial, newState)) {
             setIsNew(false);
@@ -46,17 +39,23 @@ const Post: FC<
         }
     }
     const [state, dispatch] = useReducer(
-        (state: stateData, action: { type: string; payload: string }) => {
+        (state: stateData, action: { type: string; payload?: string }) => {
             switch (action.type) {
                 case "title": {
+                    if (!action.payload) return state;
                     const newState = { ...state, title: action.payload };
                     checkIsNew(newState);
                     return newState;
                 }
                 case "content": {
+                    if (!action.payload) return state;
                     const newState = { ...state, content: action.payload };
                     checkIsNew(newState);
                     return newState;
+                }
+                case "reset": {
+                    setIsNew(false);
+                    return initial;
                 }
                 default:
                     return state;
@@ -74,11 +73,16 @@ const Post: FC<
         }
         setInitial(state);
         console.log(initial, state, updated);
-        Object.keys(updated).length
-            ? postId
-                ? store.updatePosts(postId, updated)
-                : console.error("PostId not specified")
-            : console.error("Nothing to update");
+        if (!Object.keys(updated).length) {
+            console.error("Nothing to update");
+            return;
+        }
+        if (!postId) {
+            console.error("PostId not specified");
+            return;
+        }
+        store.updatePosts(postId, updated);
+        setIsNew(false);
     }
 
     return (
@@ -100,8 +104,11 @@ const Post: FC<
             {contentEditable && isFull ? (
                 <Box className={style.textBox}>
                     <TextField
-                        id="outlined-textarea"
+                        id="standard-multiline-static"
                         multiline
+                        inputProps={{
+                            maxLength: 50,
+                        }}
                         onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                             dispatch({
                                 type: "title",
@@ -112,7 +119,7 @@ const Post: FC<
                         value={state.title}
                     />
                     <TextField
-                        id="outlined-textarea"
+                        id="standard-multiline-static"
                         multiline
                         onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                             dispatch({
@@ -123,37 +130,79 @@ const Post: FC<
                         className={style.wrapper__content}
                         value={state.content}
                     />
-                    {isNew ? <p>New data</p> : <></>}
-                    <button
-                        onClick={() => {
-                            document
-                                .getElementById(parentId)
-                                ?.classList.remove(
-                                    parentStyle.wrapper__post__full
-                                );
-                            setIsFull((prev) => !prev);
-                        }}
-                    >
-                        Collapse
-                    </button>
-                    <button onClick={updateData}>Update</button>
-                    <button
-                        onClick={() => {
-                            postId
-                                ? store.deletePost(postId)
-                                : console.error("PostId not specified");
-                        }}
-                    >
-                        Delete
-                    </button>
+                    <div className={style.ctrl__btns}>
+                        <Button
+                            variant="contained"
+                            onClick={() => {
+                                document
+                                    .getElementById(parentId)
+                                    ?.classList.remove(
+                                        parentStyle.wrapper__post__full
+                                    );
+                                setIsFull((prev) => !prev);
+                            }}
+                        >
+                            Collapse
+                        </Button>
+                        {isNew ? (
+                            <>
+                                <Button
+                                    variant="contained"
+                                    onClick={updateData}
+                                >
+                                    Update
+                                </Button>
+                                <Button
+                                    variant="contained"
+                                    onClick={() => {
+                                        dispatch({ type: "reset" });
+                                    }}
+                                >
+                                    Reset
+                                </Button>
+                            </>
+                        ) : (
+                            <></>
+                        )}
+                        <Button
+                            variant="contained"
+                            onClick={() => {
+                                postId
+                                    ? store.deletePost(postId)
+                                    : console.error("PostId not specified");
+                            }}
+                        >
+                            Delete
+                        </Button>
+                    </div>
                 </Box>
             ) : (
-                <>
+                <div className={style.textBox}>
                     <div className={style.wrapper__title}>{state.title}</div>
-                    <div className={style.wrapper__content}>
+                    <div
+                        className={style.wrapper__content}
+                        defaultValue={state.content}
+                    >
                         {state.content}
                     </div>
-                </>
+                    {isFull ? (
+                        <div
+                            className={style.textBox__collapse}
+                            onClick={() => {
+                                document
+                                    .getElementById(parentId)
+                                    ?.classList.remove(
+                                        parentStyle.wrapper__post__full
+                                    );
+                                setIsFull((prev) => !prev);
+                            }}
+                        >
+                            <FcCollapse className={style.textBox__collapse__icon} />
+                        </div>
+                    ) : (
+                        <></>
+                    )}
+                </div>
             )}
         </div>
     );

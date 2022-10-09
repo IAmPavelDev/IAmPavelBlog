@@ -4,43 +4,57 @@
     margin-top: 30px;
     border: 2px solid gray;
     border-radius: 30px;
-    padding: 20px;
+    padding: 20px 25px 0 25px;
     .textBox {
         display: flex;
         flex-direction: column;
+        border-bottom: 10px solid white;
+        .ctrl__btns {
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
+        }
+        .textBox__collapse {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border: 2px solid rgba(128, 128, 128, 0.88);
+            background-color: rgba(128, 128, 128, 0.098);
+            border-radius: 20px;
+            height: 35px;
+            width: 200px;
+            margin: 20px auto 0 auto;
+            .textBox__collapse__icon {
+                width: 30px;
+                height: 30px;
+            }
+        }
     }
     .wrapper__title {
-        font-size: 24px;
+        font-size: 1.5rem;
     }
     .wrapper__content {
         margin-top: 10px;
-        font-size: 16px;
+        font-size: 1rem;
     }
     input {
         border: none;
     }
-
-    @media screen and (max-width: 900px) {
-        & {
-            max-width: none;
-            width: 80vw;
-        }
-    }
 }
 .wrapper__full {
-    animation: spread 0.6s 0.6s forwards;
+    animation: spread 1.5s ease-in-out forwards;
 }
 .wrapper__preview {
     max-width: 500px;
     width: 28vw;
     height: 300px;
-    overflow: clip;
-    animation: spread 0.6s backwards;
+    overflow: hidden;
 }
 @media screen and (max-width: 1300px) {
     .wrapper__preview {
         max-width: none;
-        width: 43vw;
+        width: 42vw;
+        height: 300px;
     }
     .wrapper__full {
         max-width: none;
@@ -48,9 +62,18 @@
     }
 }
 
+@media screen and (max-width: 900px) {
+    .wrapper__preview {
+        max-width: none;
+        width: 80vw;
+        max-height: 300px;
+        height: fit-content;
+    }
+}
+
 @keyframes spread {
     from {
-        max-width: 500px;
+        // max-width: 500px;
         width: 28vw;
         height: 300px;
         overflow: clip;

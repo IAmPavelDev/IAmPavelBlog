@@ -94,6 +94,9 @@ const AdminPostForm: FC<{}> = observer(() => {
                             label="Title"
                             placeholder="Title"
                             multiline
+                            inputProps={{
+                                maxLength: 50,
+                            }}
                             className={style.post__inputs__title}
                             {...register("title", { required: true })}
                             defaultValue=""

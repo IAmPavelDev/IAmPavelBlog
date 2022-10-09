@@ -42,7 +42,7 @@ class PostsStore {
             console.error("Post not found");
             return;
         }
-
+        console.log(updatable);
         updatePost(postId, newData).then((server: IPost) => {
             runInAction(() => {
                 this.posts[this.posts.indexOf(updatable)] = server;
@@ -50,7 +50,7 @@ class PostsStore {
         });
     }
     async deletePost(postId: string) {
-        const {deletedPostId} = await deletePost(postId);
+        const { deletedPostId } = await deletePost(postId);
         runInAction(() => {
             this.posts = this.posts.filter(
                 (post: IPost) => post.postId !== deletedPostId

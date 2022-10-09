@@ -1,20 +1,44 @@
+import { observer } from "mobx-react-lite";
 import React, { useEffect } from "react";
+import { v4 as uuid } from "uuid";
+import store from "../../state/store";
+import { IPost } from "../../state/types";
 import Head from "../Head/Head";
 import style from "./Blog.module.scss";
+import Post from "./Post/Post";
 
-const About = () => {
+const PostList = observer(() => {
+    const posts = store.getPosts.length ? (
+        store.getPosts.map((post: IPost) => {
+            const id = uuid().slice(0, 8);
+            return (
+                <div key={post.postId} id={id} className={style.blog__post}>
+                    <Post
+                        title={post.title}
+                        content={post.content}
+                        parentStyle={style}
+                        parentId={id}
+                        contentEditable={false}
+                    />
+                </div>
+            );
+        })
+    ) : (
+        <p>Store's empty</p>
+    );
+    return <div className={style.blog}>{posts}</div>;
+});
+
+const Blog = () => {
     useEffect(() => {
-        (async function () {
-            // await login();
-        })();
+        store.loadPosts();
     });
-
     return (
         <div className={style.wrapper}>
             <Head />
-            <p>Blog</p>
+            <PostList />
         </div>
     );
 };
 
-export default About;
+export default Blog;

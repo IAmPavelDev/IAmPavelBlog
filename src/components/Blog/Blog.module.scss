@@ -1,0 +1,12 @@
+.wrapper {
+    .blog {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+        gap: 15px;
+        width: fit-content;
+        margin: 0 auto;
+        .wrapper__post__full {
+            grid-column: 1 / 4;
+        }
+    }
+}
