@@ -15,6 +15,7 @@ import { IPost } from "../../state/types";
 type PostCreateForm = {
     title: string;
     content: string;
+    preview: string;
     tag: string;
 };
 
@@ -36,6 +37,7 @@ const AdminPostForm: FC<{}> = observer(() => {
         const Post: IPost = {
             title: post.title,
             content: post.content,
+            preview: post.preview,
             tags: tagsData,
         };
         PostsStore.addPosts(Post);
@@ -99,6 +101,18 @@ const AdminPostForm: FC<{}> = observer(() => {
                             }}
                             className={style.post__inputs__title}
                             {...register("title", { required: true })}
+                            defaultValue=""
+                        />
+                        <TextField
+                            id="outlined-textarea"
+                            label="Preview"
+                            placeholder="Preview"
+                            multiline
+                            inputProps={{
+                                maxLength: 250,
+                            }}
+                            className={style.post__inputs__preview}
+                            {...register("preview", { required: true })}
                             defaultValue=""
                         />
                         <TextField

@@ -13,7 +13,8 @@ export async function createPost(postData: IPost) {
     var raw = JSON.stringify({
         title: postData.title,
         content: postData.content,
-        tags: ["sdsd", "sdcsdcsdc", "sdcsdc"],
+        preview: postData.preview,
+        tags: postData.tags,
     });
 
     var requestOptions: RequestInit = {
