@@ -9,6 +9,7 @@ import {
 import { createPost } from "../server/create-posts";
 import { deletePost } from "../server/delete-post";
 import { fetchPosts } from "../server/fetchPosts";
+import { getContent } from "../server/get-content";
 import { updatePost } from "../server/update-posts";
 import { IPost, IUpdatePost } from "./types";
 
@@ -27,6 +28,24 @@ class PostsStore {
         createPost(post)
             .then((data) => this.posts.push(data))
             .catch(() => console.error("Failed to fetch, str: 26, store.ts"));
+    }
+    async loadContent(postId: string): Promise<string> {
+        const content = this.posts.find(
+            (post: IPost) => post.postId === postId
+        )?.content;
+        if (content) {
+            return content;
+        }
+        return await getContent(postId).then(
+            (response: { postId: string; content: string }) => {
+                if (response.postId !== postId) {
+                    throw new Error(
+                        "PostId and response postId not the same, store.ts, str: 40"
+                    );
+                }
+                return response.content;
+            }
+        );
     }
     async loadPosts() {
         const posts = await fetchPosts();

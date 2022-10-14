@@ -33,7 +33,12 @@ const Container = styled.div`
 `;
 const StandWithUkr = () => {
     return (
-        <a target={"_blank"} rel="noreferrer" style={{textDecoration: "none"}} href="https://ukrainer.net/povernys-zhyvym/">
+        <a
+            target={"_blank"}
+            rel="noreferrer"
+            style={{ textDecoration: "none" }}
+            href="https://ukrainer.net/povernys-zhyvym/"
+        >
             <Container>
                 <Text>STAND WITH UKRAINE</Text>
             </Container>

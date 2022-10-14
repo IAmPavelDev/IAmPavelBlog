@@ -3,21 +3,20 @@ import style from "./Post.module.scss";
 import _ from "lodash";
 import { Box, Button, TextField } from "@mui/material";
 import store from "../../../state/store";
-import { IUpdatePost } from "../../../state/types";
+import { IPost, IPostKey, IUpdatePost } from "../../../state/types";
 import { FcCollapse } from "react-icons/fc";
-
-type stateData = { content: string; title: string; postId?: string };
-type stateKey = keyof stateData;
+import postReducer from "./postReducer";
 
 const Post: FC<
     {
         contentEditable: boolean;
         parentId: string;
         parentStyle: { readonly [key: string]: string };
-    } & stateData
+    } & IPost
 > = ({
-    content,
     title,
+    tags,
+    preview,
     contentEditable = false,
     postId,
     parentId,
@@ -25,54 +24,43 @@ const Post: FC<
 }) => {
     const [isNew, setIsNew] = useState(false);
     const [isFull, setIsFull] = useState(false);
-    const [initial, setInitial] = useState<stateData>({
-        content: content,
-        title: title,
-        postId: postId,
+    const [initial, setInitial] = useState<IPost>({
+        title,
+        postId,
+        preview,
+        tags,
     });
 
-    function checkIsNew(newState: stateData) {
+    function checkIsNew(newState: IPost) {
         if (_.isEqual(initial, newState)) {
             setIsNew(false);
         } else {
             setIsNew(true);
         }
     }
+
     const [state, dispatch] = useReducer(
-        (state: stateData, action: { type: string; payload?: string }) => {
-            switch (action.type) {
-                case "title": {
-                    if (!action.payload) return state;
-                    const newState = { ...state, title: action.payload };
-                    checkIsNew(newState);
-                    return newState;
-                }
-                case "content": {
-                    if (!action.payload) return state;
-                    const newState = { ...state, content: action.payload };
-                    checkIsNew(newState);
-                    return newState;
-                }
-                case "reset": {
-                    setIsNew(false);
-                    return initial;
-                }
-                default:
-                    return state;
-            }
-        },
+        postReducer(initial, checkIsNew),
         initial
     );
+
+    function stateAction(type: string, data?: string) {
+        data
+            ? dispatch({
+                  type: type,
+                  payload: data,
+              })
+            : dispatch({ type });
+    }
 
     function updateData() {
         const updated: IUpdatePost = {};
         for (const [key, value] of Object.entries(state)) {
-            if (value !== initial[key as stateKey]) {
-                updated[key as stateKey] = value;
+            if (value !== initial[key as IPostKey]) {
+                updated[key as IPostKey] = value;
             }
         }
         setInitial(state);
-        console.log(initial, state, updated);
         if (!Object.keys(updated).length) {
             console.error("Nothing to update");
             return;
@@ -85,6 +73,35 @@ const Post: FC<
         setIsNew(false);
     }
 
+    async function loadContent() {
+        if (!state.postId) {
+            console.error("postId not provided");
+            return;
+        }
+        dispatch({
+            type: "load content",
+            payload: await store.loadContent(state.postId),
+        });
+    }
+
+    function changeFullMode(mode: string) {
+        if (mode === "open") {
+            if (!isFull) {
+                document
+                    .getElementById(parentId)
+                    ?.classList.add(parentStyle.wrapper__post__full);
+                loadContent();
+                setIsFull(true);
+            }
+        }
+        if (mode === "close") {
+            document
+                .getElementById(parentId)
+                ?.classList.remove(parentStyle.wrapper__post__full);
+            setIsFull((prev) => !prev);
+        }
+    }
+
     return (
         <div
             className={
@@ -92,14 +109,6 @@ const Post: FC<
                     ? style.wrapper + " " + style.wrapper__full
                     : style.wrapper + " " + style.wrapper__preview
             }
-            onClick={() => {
-                if (!isFull) {
-                    setIsFull(true);
-                    document
-                        .getElementById(parentId)
-                        ?.classList.add(parentStyle.wrapper__post__full);
-                }
-            }}
         >
             {contentEditable && isFull ? (
                 <Box className={style.textBox}>
@@ -109,38 +118,25 @@ const Post: FC<
                         inputProps={{
                             maxLength: 50,
                         }}
-                        onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                            dispatch({
-                                type: "title",
-                                payload: e.target.value,
-                            });
-                        }}
+                        onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                            stateAction("title", e.target.value)
+                        }
                         className={style.wrapper__title}
                         value={state.title}
                     />
                     <TextField
                         id="standard-multiline-static"
                         multiline
-                        onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                            dispatch({
-                                type: "content",
-                                payload: e.target.value,
-                            });
-                        }}
+                        onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                            stateAction("content", e.target.value)
+                        }
                         className={style.wrapper__content}
                         value={state.content}
                     />
                     <div className={style.ctrl__btns}>
                         <Button
                             variant="contained"
-                            onClick={() => {
-                                document
-                                    .getElementById(parentId)
-                                    ?.classList.remove(
-                                        parentStyle.wrapper__post__full
-                                    );
-                                setIsFull((prev) => !prev);
-                            }}
+                            onClick={() => changeFullMode("close")}
                         >
                             Collapse
                         </Button>
@@ -154,9 +150,7 @@ const Post: FC<
                                 </Button>
                                 <Button
                                     variant="contained"
-                                    onClick={() => {
-                                        dispatch({ type: "reset" });
-                                    }}
+                                    onClick={() => stateAction("reset")}
                                 >
                                     Reset
                                 </Button>
@@ -181,26 +175,42 @@ const Post: FC<
                     <div className={style.wrapper__title}>{state.title}</div>
                     <div
                         className={style.wrapper__content}
-                        defaultValue={state.content}
+                        defaultValue={state.preview}
                     >
-                        {state.content}
+                        {isFull ? state.content : state.preview}
+                    </div>
+                    <div className={style.textBox__tags}>
+                        {state.tags?.map(
+                            (tag: { tagWord: string; id: string }) => {
+                                return (
+                                    <div
+                                        key={tag.id}
+                                        className={style.textBox__tags__tag}
+                                    >
+                                        #{tag.tagWord}
+                                    </div>
+                                );
+                            }
+                        )}
                     </div>
                     {isFull ? (
                         <div
                             className={style.textBox__collapse}
-                            onClick={() => {
-                                document
-                                    .getElementById(parentId)
-                                    ?.classList.remove(
-                                        parentStyle.wrapper__post__full
-                                    );
-                                setIsFull((prev) => !prev);
-                            }}
+                            onClick={() => changeFullMode("close")}
                         >
-                            <FcCollapse className={style.textBox__collapse__icon} />
+                            <FcCollapse
+                                className={style.textBox__collapse__icon}
+                            />
                         </div>
                     ) : (
-                        <></>
+                        <div
+                            className={style.textBox__open}
+                            onClick={() => changeFullMode("open")}
+                        >
+                            <FcCollapse
+                                className={style.textBox__open__icon}
+                            />
+                        </div>
                     )}
                 </div>
             )}

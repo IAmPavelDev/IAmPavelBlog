@@ -4,6 +4,7 @@ import { useForm } from "react-hook-form";
 import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
 import styled from "styled-components";
 import { login } from "./../../server/login";
+import { setTokenRefresh } from "../../server/token-refresh";
 
 type AdminLogin = {
     login: string;
@@ -56,6 +57,7 @@ const AdminAuth: FC<{ loggedIn: () => void }> = ({ loggedIn }) => {
     async function onSubmit(data: AdminLogin) {
         const result = await login(data);
         if (result?.status === 200) {
+            setTokenRefresh();
             loggedIn();
         }
         reset();

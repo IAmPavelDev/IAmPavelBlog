@@ -21,7 +21,8 @@ const AdminEditPanel = observer(() => {
                         >
                             <Post
                                 contentEditable={true}
-                                content={post.content}
+                                tags={post.tags}
+                                preview={post.preview}
                                 title={post.title}
                                 postId={post.postId}
                                 parentId={id}
