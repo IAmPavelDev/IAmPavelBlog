@@ -1,8 +1,9 @@
 import { observer } from "mobx-react-lite";
 import React, { useEffect } from "react";
 import { v4 as uuid } from "uuid";
+import Tag from "../../Elements/Tag";
 import store from "../../state/store";
-import { IPost } from "../../state/types";
+import { IPost, ITag } from "../../state/types";
 import Head from "../Head/Head";
 import style from "./Blog.module.scss";
 import Post from "./Post/Post";
@@ -33,6 +34,16 @@ const PostList = observer(() => {
     return <div className={style.blog}>{posts}</div>;
 });
 
+const TagsInSearch = observer(() => {
+    return (
+        <div className={style.filterTags}>
+            {store.tagsInUse.map((tag: ITag) => {
+                return <Tag key={tag.id} removable tagData={tag.tagWord} />;
+            })}
+        </div>
+    );
+});
+
 const Blog = () => {
     useEffect(() => {
         store.loadPosts();
@@ -40,6 +51,7 @@ const Blog = () => {
     return (
         <div className={style.wrapper}>
             <Head />
+            <TagsInSearch />
             <PostList />
         </div>
     );

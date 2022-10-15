@@ -1,3 +1,4 @@
+@import "./../../../style/variables.module.scss";
 .wrapper {
     display: flex;
     flex-direction: column;
@@ -18,12 +19,6 @@
             gap: 5px;
             margin-top: 20px;
             bottom: 0;
-            .textBox__tags__tag {
-                border: 1px solid gray;
-                border-radius: 8px;
-                padding: 2px 4px;
-                cursor: pointer;
-            }
         }
         .ctrl__btns {
             display: flex;
@@ -41,9 +36,13 @@
             width: 200px;
             margin: 20px auto 0 auto;
             cursor: pointer;
+            transition: all 0.5s;
             .textBox__collapse__icon {
                 width: 30px;
                 height: 30px;
+            }
+            &:hover {
+                border-color: $greenTerminal;
             }
         }
         .textBox__open {
@@ -57,10 +56,14 @@
             width: 200px;
             margin: 20px auto 0 auto;
             cursor: pointer;
+            transition: all 0.5s;
             .textBox__open__icon {
                 transform: rotate(180deg);
                 width: 20px;
                 height: 20px;
+            }
+            &:hover {
+                border-color: $greenTerminal;
             }
         }
     }

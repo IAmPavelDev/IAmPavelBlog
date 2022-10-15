@@ -11,22 +11,29 @@ import { deletePost } from "../server/delete-post";
 import { fetchPosts } from "../server/fetchPosts";
 import { getContent } from "../server/get-content";
 import { updatePost } from "../server/update-posts";
-import { IPost, IUpdatePost } from "./types";
+import { IPost, ITag, IUpdatePost } from "./types";
 
 class PostsStore {
     posts: IPost[] = [];
+    postsCarrier: IPost[] = [];
+    tagsInSearch: ITag[] = [];
     constructor() {
         makeObservable(this, {
             posts: observable,
+            tagsInSearch: observable,
             addPosts: action,
             loadPosts: action,
             updatePosts: action,
+            searchByTag: action,
             getPosts: computed,
         });
     }
     async addPosts(post: IPost) {
         createPost(post)
-            .then((data) => this.posts.push(data))
+            .then((data) => {
+                this.postsCarrier.push(data);
+                this.posts.push(data);
+            })
             .catch(() => console.error("Failed to fetch, str: 26, store.ts"));
     }
     async loadContent(postId: string): Promise<string> {
@@ -48,7 +55,33 @@ class PostsStore {
         );
     }
     async loadPosts() {
-        const posts = await fetchPosts();
+        this.postsCarrier = await fetchPosts();
+        runInAction(() => {
+            this.tagsInSearch = [];
+            this.posts = this.postsCarrier;
+        });
+    }
+    searchByTag(tag: ITag) {
+        if (
+            this.tagsInSearch.find(
+                (tagExisted: ITag) => tag.tagWord === tagExisted.tagWord
+            )
+        ) {
+            return;
+        }
+        const posts = this.posts.filter((post: IPost) => {
+            let result = false;
+            post.tags?.forEach((postTag: ITag) => {
+                if (postTag.tagWord === tag.tagWord) result = true;
+            });
+            return result;
+        });
+        if (!posts) {
+            console.error("post's not found, store.ts, str:70");
+            return;
+        }
+        console.log(toJS(posts));
+        this.tagsInSearch.push(tag);
         runInAction(() => {
             this.posts = posts;
         });
@@ -61,7 +94,6 @@ class PostsStore {
             console.error("Post not found");
             return;
         }
-        console.log(updatable);
         updatePost(postId, newData).then((server: IPost) => {
             runInAction(() => {
                 this.posts[this.posts.indexOf(updatable)] = server;
@@ -71,13 +103,38 @@ class PostsStore {
     async deletePost(postId: string) {
         const { deletedPostId } = await deletePost(postId);
         runInAction(() => {
+            this.postsCarrier = this.postsCarrier.filter(
+                (post: IPost) => post.postId !== deletedPostId
+            );
             this.posts = this.posts.filter(
                 (post: IPost) => post.postId !== deletedPostId
             );
         });
     }
+    deleteTagInUse(tag: string) {
+        const tagsForSearch: ITag[] = this.tagsInSearch.filter(
+            (tagInSearch: ITag) => {
+                return tagInSearch.tagWord !== tag;
+            }
+        );
+        runInAction(() => {
+            this.tagsInSearch = [];
+        });
+        if (tagsForSearch.length) {
+            tagsForSearch.forEach((tag: ITag) => {
+                this.searchByTag(tag);
+            });
+            return;
+        }
+        runInAction(() => {
+            this.posts = this.postsCarrier;
+        });
+    }
     public get getPosts() {
         return toJS(this.posts);
+    }
+    public get tagsInUse() {
+        return toJS(this.tagsInSearch);
     }
 }
 

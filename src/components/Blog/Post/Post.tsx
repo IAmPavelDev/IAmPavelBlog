@@ -6,6 +6,7 @@ import store from "../../../state/store";
 import { IPost, IPostKey, IUpdatePost } from "../../../state/types";
 import { FcCollapse } from "react-icons/fc";
 import postReducer from "./postReducer";
+import Tag from "../../../Elements/Tag";
 
 const Post: FC<
     {
@@ -185,9 +186,9 @@ const Post: FC<
                                 return (
                                     <div
                                         key={tag.id}
-                                        className={style.textBox__tags__tag}
+                                        onClick={() => store.searchByTag(tag)}
                                     >
-                                        #{tag.tagWord}
+                                        <Tag tagData={tag.tagWord} />
                                     </div>
                                 );
                             }
@@ -207,9 +208,7 @@ const Post: FC<
                             className={style.textBox__open}
                             onClick={() => changeFullMode("open")}
                         >
-                            <FcCollapse
-                                className={style.textBox__open__icon}
-                            />
+                            <FcCollapse className={style.textBox__open__icon} />
                         </div>
                     )}
                 </div>
