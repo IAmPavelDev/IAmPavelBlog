@@ -80,7 +80,6 @@ class PostsStore {
             console.error("post's not found, store.ts, str:70");
             return;
         }
-        console.log(toJS(posts));
         this.tagsInSearch.push(tag);
         runInAction(() => {
             this.posts = posts;

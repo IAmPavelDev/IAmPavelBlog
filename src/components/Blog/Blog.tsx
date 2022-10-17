@@ -5,6 +5,7 @@ import Tag from "../../Elements/Tag";
 import store from "../../state/store";
 import { IPost, ITag } from "../../state/types";
 import Head from "../Head/Head";
+import Search from "../Search/Search";
 import style from "./Blog.module.scss";
 import Post from "./Post/Post";
 
@@ -51,6 +52,7 @@ const Blog = () => {
     return (
         <div className={style.wrapper}>
             <Head />
+            <Search />
             <TagsInSearch />
             <PostList />
         </div>
