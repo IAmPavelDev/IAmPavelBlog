@@ -11,6 +11,8 @@ import { deletePost } from "../server/delete-post";
 import { fetchPosts } from "../server/fetchPosts";
 import { getContent } from "../server/get-content";
 import { updatePost } from "../server/update-posts";
+import searchLocal from "./search";
+import searchByTag from "./searchByTag";
 import { IPost, ITag, IUpdatePost } from "./types";
 
 class PostsStore {
@@ -34,7 +36,7 @@ class PostsStore {
                 this.postsCarrier.push(data);
                 this.posts.push(data);
             })
-            .catch(() => console.error("Failed to fetch, str: 26, store.ts"));
+            .catch(() => console.error("Failed to fetch"));
     }
     async loadContent(postId: string): Promise<string> {
         const content = this.posts.find(
@@ -46,10 +48,20 @@ class PostsStore {
         return await getContent(postId).then(
             (response: { postId: string; content: string }) => {
                 if (response.postId !== postId) {
-                    throw new Error(
-                        "PostId and response postId not the same, store.ts, str: 40"
-                    );
+                    throw new Error("PostId and response postId not the same");
                 }
+                runInAction(() => {
+                    this.posts.forEach((post: IPost) => {
+                        if (post.postId === postId) {
+                            post.content = response.content;
+                        }
+                    });
+                    this.postsCarrier.forEach((post: IPost) => {
+                        if (post.postId === postId) {
+                            post.content = response.content;
+                        }
+                    });
+                });
                 return response.content;
             }
         );
@@ -61,29 +73,46 @@ class PostsStore {
             this.posts = this.postsCarrier;
         });
     }
-    searchByTag(tag: ITag) {
-        if (
-            this.tagsInSearch.find(
-                (tagExisted: ITag) => tag.tagWord === tagExisted.tagWord
-            )
-        ) {
-            return;
-        }
-        const posts = this.posts.filter((post: IPost) => {
-            let result = false;
-            post.tags?.forEach((postTag: ITag) => {
-                if (postTag.tagWord === tag.tagWord) result = true;
+    async searchPost(data: string, type: string) {
+        if (!data) {
+            runInAction(() => {
+                this.posts = this.postsCarrier;
             });
-            return result;
-        });
-        if (!posts) {
-            console.error("post's not found, store.ts, str:70");
+            if (this.tagsInSearch.length) {
+                this.tagsInSearch.forEach((tag: ITag) => {
+                    this.searchByTag(tag);
+                });
+            }
             return;
         }
-        this.tagsInSearch.push(tag);
         runInAction(() => {
-            this.posts = posts;
+            this.posts = searchLocal(this.postsCarrier, data, type);
         });
+    }
+    searchByTag(tag?: ITag) {
+        if (!tag) {
+            this.tagsInSearch.forEach((t: ITag) => {
+                this.searchByTag(t);
+            });
+            return;
+        }
+        const postsWithNeededTag: IPost[] | undefined = searchByTag(
+            tag,
+            this.tagsInSearch,
+            this.postsCarrier
+        );
+        if (postsWithNeededTag?.length) {
+            if (
+                !this.tagsInSearch.find(
+                    (tagExisted: ITag) => tag.tagWord === tagExisted.tagWord
+                )
+            ) {
+                this.tagsInSearch.push(tag);
+            }
+            runInAction(() => {
+                this.posts = postsWithNeededTag;
+            });
+        }
     }
     async updatePosts(postId: string, newData: IUpdatePost) {
         const updatable: IPost | undefined = this.posts.find(

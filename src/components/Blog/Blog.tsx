@@ -30,7 +30,7 @@ const PostList = observer(() => {
             })
             .reverse()
     ) : (
-        <p>Store's empty</p>
+        <p>Loading...</p>
     );
     return <div className={style.blog}>{posts}</div>;
 });
