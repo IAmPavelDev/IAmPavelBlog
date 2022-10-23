@@ -1,7 +1,7 @@
 import { observer } from "mobx-react-lite";
 import React from "react";
 import store from "../../state/store";
-import { IPost } from "../../state/types";
+import { IPost } from "../../types";
 import Post from "../Blog/Post/Post";
 import style from "./AdminEditPanel.module.scss";
 import { v4 as uuid } from "uuid";

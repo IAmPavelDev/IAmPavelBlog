@@ -1,5 +1,5 @@
 import { toJS } from "mobx";
-import { IPost, ITag } from "./types";
+import { IPost, ITag } from "../types";
 
 export default function searchByTag(tag:ITag, tagsInSearch: ITag[], allPosts: IPost[]) {
     if (

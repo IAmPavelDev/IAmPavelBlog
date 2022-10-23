@@ -9,6 +9,7 @@ const TagContainer = styled.div`
     cursor: pointer;
     user-select: none;
     transition: all 0.3s;
+    width: fit-content;
     &:hover {
         border-color: ${(props: { removable?: boolean }) =>
             props.removable ? "red" : "#1bd23d"};

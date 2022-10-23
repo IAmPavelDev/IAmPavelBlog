@@ -3,7 +3,7 @@ import React, { useEffect } from "react";
 import { v4 as uuid } from "uuid";
 import Tag from "../../Elements/Tag";
 import store from "../../state/store";
-import { IPost, ITag } from "../../state/types";
+import { IPost, ITag } from "../../types";
 import Head from "../Head/Head";
 import Search from "../Search/Search";
 import style from "./Blog.module.scss";
@@ -15,7 +15,7 @@ const PostList = observer(() => {
             .map((post: IPost) => {
                 const id = uuid().slice(0, 8);
                 return (
-                    <div key={post.postId} id={id} className={style.blog__post}>
+                    <div key={id} id={id} className={style.blog__post}>
                         <Post
                             contentEditable={false}
                             tags={post.tags}

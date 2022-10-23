@@ -21,4 +21,10 @@ export interface IUpdatePost {
     postId?: string;
 }
 
+export interface IFetchData {
+    data: IPost[];
+    total: number;
+    page: number;
+}
+
 export type IPostKey = keyof IPost;

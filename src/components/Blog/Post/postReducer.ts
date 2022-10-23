@@ -1,4 +1,4 @@
-import { IPost } from "../../../state/types";
+import { IPost } from "../../../types";
 
 const postReducer = (
     initialState: IPost,

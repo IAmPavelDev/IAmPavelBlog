@@ -10,7 +10,7 @@ import Card from "@mui/material/Card";
 import PostsStore from "../../state/store";
 import { observer } from "mobx-react-lite";
 import { useForm } from "react-hook-form";
-import { IPost } from "../../state/types";
+import { IPost } from "../../types";
 
 type PostCreateForm = {
     title: string;

@@ -1,7 +1,5 @@
 import env from "react-dotenv";
-import { IPost, IUpdatePost } from "./../state/types";
-
-
+import { IPost, IUpdatePost } from "../types";
 
 export async function updatePost(
     postId: string,

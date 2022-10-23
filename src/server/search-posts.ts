@@ -1,5 +1,5 @@
 import env from "react-dotenv";
-import { IPost } from "../state/types";
+import { IPost } from "../types";
 
 export default async function searchPosts(data: string, type: string): Promise<IPost[]> {
     var myHeaders = new Headers();
