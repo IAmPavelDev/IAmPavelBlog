@@ -1,4 +1,3 @@
-import env from "react-dotenv";
 import { IPost } from "../types";
 
 export default async function searchPosts(data: string, type: string): Promise<IPost[]> {
@@ -13,7 +12,7 @@ export default async function searchPosts(data: string, type: string): Promise<I
         redirect: "follow",
     };
 
-    const posts:IPost[] = await fetch(env.SERVER_CONNECTION + `/posts?s=${data}&t=${type}`, requestOptions)
+    const posts:IPost[] = await fetch(process.env.REACT_APP_SERVER_CONNECTION + `/posts?s=${data}&t=${type}`, requestOptions)
         .then((response) => response.json())
         .catch((error) => console.log("error", error));
 

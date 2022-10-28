@@ -32,10 +32,11 @@ class PostsStore {
     });
   }
   async addPosts(post: IPost) {
-    createPost(post)
+    return createPost(post)
       .then((data) => {
         this.postsCarrier.push(data);
         this.posts.push(data);
+        return data;
       })
       .catch(() => console.error("Failed to fetch"));
   }
@@ -77,39 +78,36 @@ class PostsStore {
         this.posts = response.data;
       });
     }
+    return response.data;
   }
   async searchPost(data: string, type: string) {
+    const runTagsSearch = (collectionToSearch?: IPost[]) =>
+      this.tagsInSearch && this.searchByTag(undefined, collectionToSearch);
+
     if (!data) {
       runInAction(() => {
         this.posts = this.postsCarrier;
       });
-      if (this.tagsInSearch.length) {
-        this.tagsInSearch.forEach((tag: ITag) => {
-          this.searchByTag(tag);
-        });
-      }
+      runTagsSearch();
       return;
     }
-    const localAvailable = searchLocal(this.postsCarrier, data, type);
-    const localIds: string[] = localAvailable.map((post: IPost) =>
-      post.postId ? post.postId : ""
-    );
-    console.log("localAvailable-->", localAvailable);
-    console.log("localIds-->", localIds);
-
-    const restOnServer = await fetchPosts(this.page, data, localIds);
-
-    console.log("restOnServer--> ", restOnServer);
+    const localFinded = searchLocal(this.postsCarrier, data, type);
+    const restOfFindedOnServer = await fetchPosts(this.page, data, type);
 
     runInAction(() => {
-      if (restOnServer)
-        this.postsCarrier = [...this.postsCarrier, ...restOnServer.data];
-      this.posts = restOnServer
-        ? [...localAvailable, ...restOnServer.data]
-        : localAvailable;
+      if (restOfFindedOnServer)
+        this.postsCarrier = [
+          ...this.postsCarrier,
+          ...restOfFindedOnServer.data,
+        ];
+      this.posts = restOfFindedOnServer
+        ? [...localFinded, ...restOfFindedOnServer.data]
+        : localFinded;
     });
+    runTagsSearch(this.posts);
   }
-  searchByTag(tag?: ITag) {
+
+  searchByTag(tag?: ITag, collectionToFilter: IPost[] = this.postsCarrier) {
     if (!tag) {
       this.tagsInSearch.forEach((t: ITag) => {
         this.searchByTag(t);
@@ -119,7 +117,7 @@ class PostsStore {
     const postsWithNeededTag: IPost[] | undefined = searchByTag(
       tag,
       this.tagsInSearch,
-      this.postsCarrier
+      collectionToFilter
     );
     if (postsWithNeededTag?.length) {
       if (
@@ -134,6 +132,7 @@ class PostsStore {
       });
     }
   }
+
   async updatePosts(postId: string, newData: IUpdatePost) {
     const updatable: IPost | undefined = this.posts.find(
       (post: IPost) => post.postId === postId
@@ -142,10 +141,12 @@ class PostsStore {
       console.error("Post not found");
       return;
     }
-    updatePost(postId, newData).then((server: IPost) => {
+    return updatePost(postId, newData).then((server: IPost) => {
       runInAction(() => {
         this.posts[this.posts.indexOf(updatable)] = server;
+        this.postsCarrier[this.postsCarrier.indexOf(updatable)] = server;
       });
+      return server;
     });
   }
   async deletePost(postId: string) {

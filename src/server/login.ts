@@ -1,5 +1,3 @@
-import env from "react-dotenv";
-
 type loginData = {
     login: string;
     password: string;
@@ -23,7 +21,7 @@ export async function login(loginData: loginData) {
         redirect: "follow",
         credentials: "include",
     };
-    return fetch(env.SERVER_CONNECTION + "/login", requestOptions)
+    return fetch(process.env.REACT_APP_SERVER_CONNECTION + "/login", requestOptions)
         .then((response) => response)
         .catch((error) => console.log("error", error));
 }
