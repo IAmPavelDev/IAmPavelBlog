@@ -63,38 +63,46 @@ describe("store methods", () => {
     });
   });
 
-  // test("search", () => {
-  //   const postRnd =
-  //     store.postsCarrier[Math.floor(Math.random() * store.postsCarrier.length)]; //geting random post
-  //   expect(postRnd).toBeTruthy();
-  //   test("search by all", () => {
-  //     store.searchPost(postRnd.content ?? "", "all");
-  //     expect(
-  //       store.getPosts.find((post) => post.postId === postRnd.postId)
-  //     ).toEqual(postRnd);
-  //   });
+  test("posts loader", () => {
+    store.loadPosts().then((response) => {
+      expect(typeof response).toBe("IPost[]");
+    });
+  });
 
-  //   test("search by content", () => {
-  //     store.searchPost(postRnd.content ?? "", "content");
-  //     expect(
-  //       store.getPosts.find((post) => post.postId === postRnd.postId)
-  //     ).toEqual(postRnd);
-  //   });
+  test("search", () => {
+    store.loadPosts().then((response: IPost[]) => {
+      const postRnd = response[Math.floor(Math.random() * 9)]; //geting random post
+      expect(postRnd).toBeTruthy();
 
-  //   test("search by preview", () => {
-  //     store.searchPost(postRnd.preview ?? "", "preview");
-  //     expect(
-  //       store.getPosts.find((post) => post.postId === postRnd.postId)
-  //     ).toEqual(postRnd);
-  //   });
+      test("search by all", () => {
+        store.searchPost(postRnd.content ?? "", "all");
+        expect(
+          store.getPosts.find((post) => post.postId === postRnd.postId)
+        ).toEqual(postRnd);
+      });
 
-  //   test("search by title", () => {
-  //     store.searchPost(postRnd.title ?? "", "title");
-  //     expect(
-  //       store.getPosts.find((post) => post.postId === postRnd.postId)
-  //     ).toEqual(postRnd);
-  //   });
-  // });
+      test("search by content", () => {
+        store.searchPost(postRnd.content ?? "", "content");
+        expect(
+          store.getPosts.find((post) => post.postId === postRnd.postId)
+        ).toEqual(postRnd);
+      });
+
+      test("search by preview", () => {
+        store.searchPost(postRnd.preview ?? "", "preview");
+        expect(
+          store.getPosts.find((post) => post.postId === postRnd.postId)
+        ).toEqual(postRnd);
+      });
+
+      test("search by title", () => {
+        store.searchPost(postRnd.title ?? "", "title");
+        expect(
+          store.getPosts.find((post) => post.postId === postRnd.postId)
+        ).toEqual(postRnd);
+      });
+    });
+  });
 
   test("removing posts", () => {
     TestPostId && store.deletePost(TestPostId);
