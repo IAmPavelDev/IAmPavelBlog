@@ -9,7 +9,6 @@ const AdminPanel = () => {
     useEffect(() => {
         store.loadPosts();
     });
-    console.log(null)
     return isLogedIn ? (
         <>
             <AdminPostForm />

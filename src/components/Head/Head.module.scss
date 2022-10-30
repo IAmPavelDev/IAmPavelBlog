@@ -1,22 +1,84 @@
 @import "./../../style/variables.module.scss";
 .wrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  .wrapper__panel {
+    // position: absolute;
+    // margin-top: 140px;
     display: flex;
-    flex-direction: column;
-    justify-content: center;
-    .wrapper__standImg {
-        margin: 0 auto;
-        width: 100%;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    height: 80px;
+    width: 100%;
+    background-color: rgba(0, 0, 0, 0.2);
+    .panel__logo {
+      font-size: 25px;
+      font-weight: 600;
+      padding-left: 70px;
+      text-decoration: none;
+      color: rgba(229, 229, 229, 1);
+      transition: color 0.3s;
+      &:hover {
+        color: white;
+      }
     }
-    .wrapper__links {
+    .panel__right {
+      display: flex;
+      flex-direction: row;
+      .panel__routes {
         display: flex;
         flex-direction: row;
-        justify-content: center;
-        .wrapper__link {
-            text-decoration: none;
-            Button {
-                margin-top: 10px;
-                color: $greenTerminal;
-            }
+        background-color: transparent;
+        .panel__routes__route {
+          margin: auto;
+          background-color: transparent;
+          text-decoration: none;
+          color: rgba(229, 229, 229, 1);
+          transition: color 0.3s;
+          &:hover {
+            color: white;
+          }
+          & .routes__route__selected {
+            color: white;
+          }
         }
+      }
+      .panel__links {
+        display: flex;
+        align-items: center;
+        gap: 18px;
+        padding: 0 18px;
+        .panel__links__link {
+          color: rgba(229, 229, 229, 1);
+          transition: color 0.3s;
+          cursor: pointer;
+          &:hover {
+            color: white;
+          }
+          & .links__link__selected {
+            color: white;
+          }
+        }
+      }
+      .panel__search__btn {
+        display: flex;
+        align-items: center;
+        margin: 0 70px 0 17px;
+        color:rgba(229, 229, 229, 1);
+        cursor: pointer;
+        font-weight: 600;
+        transition: color 0.3s;
+        &:hover {
+            color: white;
+        }
+      }
+      .panel__spacer {
+        color: white;
+        font-weight: 200;
+        cursor: default;
+      }
     }
+  }
 }

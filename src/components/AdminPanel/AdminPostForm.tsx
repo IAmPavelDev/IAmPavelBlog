@@ -12,6 +12,7 @@ import { observer } from "mobx-react-lite";
 import { useForm } from "react-hook-form";
 import { IPost } from "../../types";
 import { uuid } from "uuidv4";
+import CompleteEditor from "./CompleteEditor";
 
 type PostCreateForm = {
   title: string;
@@ -123,6 +124,7 @@ const AdminPostForm: FC<{}> = observer(() => {
               {...register("content", { required: true })}
               defaultValue=""
             />
+            <CompleteEditor />
             <div className={style.post__inputs__tags}>
               <div className={style.inputs__tags__container}>
                 {tagsList.map((tag: Tag) => {
