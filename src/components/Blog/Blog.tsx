@@ -21,6 +21,7 @@ const PostList = observer(() => {
               preview={post.preview}
               title={post.title}
               postId={post.postId}
+              previewImage={post.previewImage}
               parentId={id}
               parentStyle={style}
             />

@@ -4,8 +4,9 @@
   flex-direction: column;
   justify-content: center;
   .wrapper__panel {
-    // position: absolute;
-    // margin-top: 140px;
+    position: absolute;
+    margin-top: 140px;
+    z-index: 1000;
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -76,7 +77,7 @@
       }
       .panel__spacer {
         color: white;
-        font-weight: 200;
+        font-weight: 300;
         cursor: default;
       }
     }

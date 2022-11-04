@@ -11,6 +11,7 @@ export async function createPost(postData: IPost) {
     content: postData.content,
     preview: postData.preview,
     tags: postData.tags,
+    previewImage: postData.previewImage,
   });
 
   var requestOptions: RequestInit = {
@@ -21,7 +22,10 @@ export async function createPost(postData: IPost) {
     credentials: "include",
   };
 
-  return fetch(process.env.REACT_APP_SERVER_CONNECTION + "/posts", requestOptions)
+  return fetch(
+    process.env.REACT_APP_SERVER_CONNECTION + "/posts",
+    requestOptions
+  )
     .then((response) => response.json())
     .catch((error) => console.log("error", error));
 }

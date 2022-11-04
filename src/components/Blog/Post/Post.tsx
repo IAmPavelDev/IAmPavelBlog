@@ -79,6 +79,7 @@ const Post: FC<
   preview,
   contentEditable = false,
   postId,
+  previewImage,
   parentId,
   parentStyle,
 }) => {
@@ -89,6 +90,7 @@ const Post: FC<
     postId,
     preview,
     tags,
+    previewImage,
   });
 
   function checkIsNew(newState: IPost) {

@@ -16,6 +16,8 @@ const testPost: IPost = {
     { tagWord: "testtesttest", id: v4() },
     { tagWord: "testtesttest", id: v4() },
   ],
+  previewImage:
+    "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fwww.colourbox.com%2Fpreview%2F4990666-yellow-red-orange-and-green-leaves-of-spiraea-meadowsweet-shrub-hdr.jpg&f=1&nofb=1&ipt=3ea54b39a3c51f6d3f5231a990427d5953e1dd993ae6ea67f3dba12f8892e37b&ipo=images",
 };
 
 const updatePostData: IUpdatePost = {

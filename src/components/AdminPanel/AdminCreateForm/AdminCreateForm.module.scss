@@ -1,4 +1,4 @@
-@import "./../../style/variables.module.scss";
+@import "../../../style/variables.module.scss";
 
 .wrapper {
     display: flex;
@@ -6,7 +6,7 @@
     justify-items: center;
     max-width: 1200px;
     width: 100%;
-    margin: 0 auto;
+    margin: 100px auto;
     .post {
         display: flex;
         flex-direction: column;
