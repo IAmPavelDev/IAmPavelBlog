@@ -60,7 +60,7 @@ const AdminCreateFormView: FC<{
               placeholder="Preview"
               multiline
               inputProps={{
-                maxLength: 250,
+                maxLength: 150,
               }}
               className={style.post__inputs__preview}
               {...register("preview", { required: true })}

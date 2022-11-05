@@ -15,7 +15,7 @@ const BTN = styled.button`
   outline: none;
   border: 0px solid transparent;
   font-size: 1rem;
-  padding: 8px 20px;
+  padding-top: 15px;
   cursor: pointer;
   text-decoration: none;
   font-family: "Hack";
@@ -38,7 +38,7 @@ const Stick = styled.span`
   background-color: #d4a373;
   transition: all 0.2s;
   height: 2px;
-  margin: 0 auto;
+  margin: 5px auto;
 `;
 
 const Button: FC<{

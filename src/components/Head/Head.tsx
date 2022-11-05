@@ -8,8 +8,6 @@ import { Link, useLocation } from "react-router-dom";
 
 const Head: FC<{}> = () => {
   const locate = useLocation();
-  console.log();
-
   return (
     <div className={style.wrapper}>
       <div className={style.wrapper__standImg}>
@@ -17,7 +15,7 @@ const Head: FC<{}> = () => {
       </div>
       <div className={style.wrapper__panel}>
         <Link to="/" className={style.panel__logo}>
-          BLOG
+          IAMPAVELBLOG
         </Link>
         <div className={style.panel__right}>
           <div className={style.panel__routes}>

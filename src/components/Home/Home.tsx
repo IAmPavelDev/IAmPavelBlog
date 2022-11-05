@@ -13,7 +13,7 @@ const Home: FC<{}> = () => {
     <div className={style.wrapper}>
       <Head />
       <SlideRecent />
-      {/* <Blog /> */}
+      <Blog />
     </div>
   );
 };
