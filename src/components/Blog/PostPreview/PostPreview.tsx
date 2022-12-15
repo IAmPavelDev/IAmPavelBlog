@@ -11,6 +11,7 @@ const PostPreview: FC<{
   preview: string;
   tags?: ITag[];
 }> = ({ imageUrl, date, title, preview, tags }) => {
+  console.log("post");
   return (
     <div className={style.preview}>
       <div className={style.preview__image}>

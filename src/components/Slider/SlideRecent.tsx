@@ -53,8 +53,6 @@ const SlideRecent: FC<{}> = observer(() => {
     autoplay: true,
     autoplaySpeed: 5000,
   };
-  console.log(store.getPosts);
-
   return (
     <div className={style.wrapper}>
       <div>

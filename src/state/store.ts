@@ -14,6 +14,7 @@ import { updatePost } from "../server/update-posts";
 import searchLocal from "./search";
 import searchByTag from "./searchByTag";
 import { IPost, ITag, IUpdatePost } from "../types";
+import { injectStores } from "@mobx-devtools/tools";
 
 class PostsStore {
   posts: IPost[] = [];
@@ -71,11 +72,11 @@ class PostsStore {
   async loadPosts() {
     const response = await fetchPosts(this.page);
     if (response.page === this.page) {
-      this.page = +1;
+      this.page = this.page + 1;
       runInAction(() => {
         this.tagsInSearch = [];
-        this.postsCarrier = response.data;
-        this.posts = response.data;
+        this.postsCarrier = [...this.postsCarrier, ...response.data];
+        this.posts = [...this.posts, ...response.data];
       });
     }
     return response.data;
@@ -186,5 +187,6 @@ class PostsStore {
     return toJS(this.tagsInSearch);
   }
 }
-
-export default new PostsStore();
+const store = new PostsStore();
+injectStores({ store });
+export default store;

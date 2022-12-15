@@ -1,6 +1,7 @@
 import { observer } from "mobx-react-lite";
-import React, { useEffect } from "react";
+import React, { FC, memo, useEffect, useRef, useState } from "react";
 import { v4 as uuid } from "uuid";
+import LoadingAni from "../../Elements/LoadingAni";
 import Tag from "../../Elements/Tag";
 import store from "../../state/store";
 import { IPost, ITag } from "../../types";
@@ -9,74 +10,84 @@ import style from "./Blog.module.scss";
 import Post from "./Post/Post";
 import PostPreview from "./PostPreview/PostPreview";
 
-// const PostList = observer(() => {
-//   const posts = store.getPosts.length ? (
-//     store.getPosts
-//       .map((post: IPost) => {
-//         const id = uuid().slice(0, 8);
-//         return (
-//           <div key={id} id={id} className={style.blog__post}>
-//             <Post
-//               contentEditable={false}
-//               tags={post.tags}
-//               preview={post.preview}
-//               title={post.title}
-//               postId={post.postId}
-//               previewImage={post.previewImage}
-//               parentId={id}
-//               parentStyle={style}
-//             />
-//           </div>
-//         );
-//       })
-//       .reverse()
-//   ) : (
-//     <p>Loading...</p>
-//   );
-//   return <div className={style.blog}>{posts}</div>;
-// });
+const PostsDataToNodesTraspilator = (data: IPost[]) =>
+  data.map((post: IPost) => {
+    const id = uuid().slice(0, 8);
+    return (
+      <div key={id} id={id} className={style.wrapper__blog__post}>
+        <PostPreview
+          imageUrl={post.previewImage}
+          date={post.creationDate}
+          title={post.title}
+          preview={post.preview}
+          tags={post.tags}
+        />
+      </div>
+    );
+  });
 
-// const TagsInSearch = observer(() => {
-//   return (
-//     <div className={style.filterTags}>
-//       {store.tagsInUse.map((tag: ITag) => {
-//         return <Tag key={tag.id} removable tagData={tag.tagWord} />;
-//       })}
-//     </div>
-//   );
-// });
+const PostsList: FC<{
+  isLoadingCallbackHandler: (arg0: (arg0: boolean) => void) => void;
+}> = observer(({ isLoadingCallbackHandler }) => {
+  console.log("list");
+  const posts = useRef<JSX.Element[]>([]);
 
-const PostsList = observer(() => {
-  const posts = store.getPosts.length ? (
-    store.getPosts
-      .map((post: IPost) => {
-        const id = uuid().slice(0, 8);
-        return (
-          <div key={id} id={id} className={style.blog__post}>
-            <PostPreview
-              imageUrl={post.previewImage}
-              date={post.creationDate}
-              title={post.title}
-              preview={post.preview}
-              tags={post.tags}
-            />
-          </div>
-        );
-      })
-      .reverse()
-  ) : (
-    <p>Loading...</p>
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  useEffect(() => {
+    setIsLoading(false);
+  });
+
+  isLoadingCallbackHandler(setIsLoading);
+
+  const newPosts: JSX.Element[] = PostsDataToNodesTraspilator(
+    store.getPosts.slice(posts.current.length, store.getPosts.length)
   );
-  return <div className={style.blog}>{posts}</div>;
+  posts.current = [...posts.current, ...newPosts];
+
+  return (
+    <div className={style.wrapper__blog}>
+      {isLoading ? (
+        <>
+          {[...posts.current]}{" "}
+          <div className={style.blog__loadingSpinner}>
+            <LoadingAni />
+          </div>
+        </>
+      ) : (
+        [...posts.current, ...newPosts]
+      )}
+    </div>
+  );
 });
 
 const Blog = () => {
+  console.log("blog");
+  const [isFullMode, setIsFullMode] = useState<boolean>(false);
   useEffect(() => {
     store.loadPosts();
   });
+
+  let isLoadingCallback: (arg0: boolean) => void = () => {};
+  const isLoadingCallbackHandler = (setIsLoading: (arg0: boolean) => void) =>
+    (isLoadingCallback = setIsLoading);
+
   return (
     <div className={style.wrapper}>
-      <PostsList />
+      <PostsList isLoadingCallbackHandler={isLoadingCallbackHandler} />
+      {isFullMode ? (
+        <></>
+      ) : (
+        <div
+          className={style.wrapper__loadmore}
+          onClick={() => {
+            setIsFullMode(true);
+            isLoadingCallback(true);
+            store.loadPosts();
+          }}
+        >
+          View more posts
+        </div>
+      )}
     </div>
   );
 };
