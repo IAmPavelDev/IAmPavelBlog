@@ -6,6 +6,7 @@ import AdminPanel from "./components/AdminPanel/AdminPanel";
 import reportWebVitals from "./reportWebVitals";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Home from "./components/Home/Home";
+import Post from "./components/Blog/Post/Post";
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
@@ -16,6 +17,7 @@ root.render(
       <Routes>
         <Route path="/about" element={<App />} />
         <Route path="/" element={<Home />} />
+        <Route path="/post/:postId" element={<Post />} />
         <Route path="/admin" element={<AdminPanel />} />
       </Routes>
     </BrowserRouter>

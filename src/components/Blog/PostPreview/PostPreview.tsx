@@ -1,4 +1,5 @@
 import React, { FC } from "react";
+import { Link } from "react-router-dom";
 import DateCard from "../../../Elements/DateCard";
 import TagCard from "../../../Elements/TagCard";
 import { ITag } from "../../../types";
@@ -10,12 +11,13 @@ const PostPreview: FC<{
   title: string;
   preview: string;
   tags?: ITag[];
-}> = ({ imageUrl, date, title, preview, tags }) => {
+  postId?: string;
+}> = ({ imageUrl, date, title, preview, tags, postId }) => {
   console.log("post");
   return (
-    <div className={style.preview}>
+    <Link to={"/post/" + postId} className={style.preview}>
       <div className={style.preview__image}>
-        <img src={imageUrl} />
+        <img src={imageUrl} alt={"preview " + title} />
         <div className={style.preview__mask} />
         <div className={style.preview__image__tags}>
           {tags?.slice(0, 3).map((tag: ITag) => (
@@ -32,7 +34,7 @@ const PostPreview: FC<{
       <div className={style.preview__text}>
         {preview.split("").slice(0, 150).join("")}
       </div>
-    </div>
+    </Link>
   );
 };
 

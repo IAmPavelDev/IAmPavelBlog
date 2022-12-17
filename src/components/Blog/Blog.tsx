@@ -1,13 +1,10 @@
 import { observer } from "mobx-react-lite";
-import React, { FC, memo, useEffect, useRef, useState } from "react";
+import React, { FC, useEffect, useRef, useState } from "react";
 import { v4 as uuid } from "uuid";
 import LoadingAni from "../../Elements/LoadingAni";
-import Tag from "../../Elements/Tag";
 import store from "../../state/store";
-import { IPost, ITag } from "../../types";
-import Search from "../Search/Search";
+import { IPost } from "../../types";
 import style from "./Blog.module.scss";
-import Post from "./Post/Post";
 import PostPreview from "./PostPreview/PostPreview";
 
 const PostsDataToNodesTraspilator = (data: IPost[]) =>
@@ -21,6 +18,7 @@ const PostsDataToNodesTraspilator = (data: IPost[]) =>
           title={post.title}
           preview={post.preview}
           tags={post.tags}
+          postId={post.postId}
         />
       </div>
     );
@@ -35,7 +33,7 @@ const PostsList: FC<{
   const [isLoading, setIsLoading] = useState<boolean>(false);
   useEffect(() => {
     setIsLoading(false);
-  });
+  }, [setIsLoading]);
 
   isLoadingCallbackHandler(setIsLoading);
 
