@@ -6,7 +6,9 @@ import store from "./state/store";
 function App() {
   useEffect(() => {
     store.loadPosts();
+
   });
+
   return (
     <div className={style.app__wrapper}>
       <Head />
