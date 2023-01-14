@@ -14,10 +14,12 @@ const Post = () => {
 
   const location = useLocation();
   useEffect(() => {
-    const postData = store.getPosts.find(
-      (post: IPost) => post.postId === location.pathname.split("/")[2]
-    );
-    postData && setData(postData);
+    const postData = store.loadPostById(location.pathname.split("/")[2]);
+    postData.then((post) => {
+      console.log(post);
+
+      post && setData(post);
+    });
   }, [location.pathname]);
   return (
     <>

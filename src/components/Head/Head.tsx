@@ -1,22 +1,34 @@
-import React, { FC } from "react";
+import React, { FC, useEffect } from "react";
 import style from "./Head.module.scss";
 import { AiFillGithub } from "react-icons/ai";
 import { FaTelegramPlane, FaSearch } from "react-icons/fa";
 import Button from "../../Elements/Button";
 import StandWithUkr from "./../../Elements/StandWithUkr";
 import { Link, useLocation } from "react-router-dom";
+import LoadingLinkToHome from "../../Elements/LoadingLinkToHome";
 
 const Head: FC<{}> = () => {
   const locate = useLocation();
+  let startLoader: () => void = () => {};
+
+  useEffect(() => {
+    startLoader();
+  });
+
   return (
     <div className={style.wrapper}>
       <div className={style.wrapper__standImg}>
         <StandWithUkr />
       </div>
       <div className={style.wrapper__panel}>
-        <Link to="/" className={style.panel__logo}>
-          IAMPAVELBLOG
-        </Link>
+        <LoadingLinkToHome
+          className={style.panel__logo}
+          text="Iampavel"
+          start={(start) => {
+            startLoader = start;
+          }}
+          delay={1000}
+        />
         <div className={style.panel__right}>
           <div className={style.panel__routes}>
             <Link className={style.panel__routes__route} to={"/"}>
@@ -28,8 +40,22 @@ const Head: FC<{}> = () => {
           </div>
           <p className={style.panel__spacer}>|</p>
           <div className={style.panel__links}>
-            <AiFillGithub className={style.panel__links__link} />
-            <FaTelegramPlane className={style.panel__links__link} />
+            <a
+              target={"_blank"}
+              rel="noreferrer"
+              style={{ textDecoration: "none" }}
+              href="https://github.com/IAmPavelDev"
+            >
+              <AiFillGithub className={style.panel__links__link} />
+            </a>
+            <a
+              target={"_blank"}
+              rel="noreferrer"
+              style={{ textDecoration: "none" }}
+              href="https://t.me/g3t_P4v3l"
+            >
+              <FaTelegramPlane className={style.panel__links__link} />
+            </a>
           </div>
           <p className={style.panel__spacer}>|</p>
           <div className={style.panel__search__btn}>

@@ -1,4 +1,4 @@
-export async function getContent(postId: string) {
+export async function getPostById(postId: string, isOnlyContent: boolean) {
   var myHeaders = new Headers();
   myHeaders.append("Content-Type", "application/json");
   myHeaders.append("Access-Control-Allow-Origin", "*");
@@ -11,7 +11,10 @@ export async function getContent(postId: string) {
   };
 
   return await fetch(
-    process.env.REACT_APP_SERVER_CONNECTION + "/posts/" + postId,
+    process.env.REACT_APP_SERVER_CONNECTION +
+      "/posts/" +
+      postId +
+      (isOnlyContent ? "?mode=onlyContent" : ""),
     requestOptions
   )
     .then((response) => response.json())

@@ -13,20 +13,18 @@ const BTN = styled.button`
   background-color: transparent;
   transition: all 0.6s;
   outline: none;
-  border: 0px solid transparent;
-  font-size: 1rem;
+  border: 0 solid transparent;
+  font-size: 1em;
   padding-top: 15px;
   cursor: pointer;
   text-decoration: none;
-  font-family: "Hack";
-  font-size: 0.8rem;
-  src: local("Hack"),
-    url("./../Hack_Font_Family_(Fontmirror)/Hack Regular 400.ttf"),
-    format("truetype");
+  //font-family: "Hack", sans-serif;
+  //src: local("Hack"),
+  //  url("./../Hack_Font_Family_(Fontmirror)/Hack Regular 400.ttf"),
+  //  format("truetype");
   font-weight: 600;
   color: ${(props: { isSelected: boolean }) =>
     props.isSelected ? "white" : "rgba(229, 229, 229, 1)"};
-  transition: color 0.3s;
   &:hover {
     color: white;
   }
@@ -35,7 +33,7 @@ const BTN = styled.button`
 const Stick = styled.span`
   width: ${(props: { isHovered: boolean; isSelected: boolean }) =>
     props.isHovered ? "40px" : props.isSelected ? "25px" : "0px"};
-  background-color: #d4a373;
+  background-color: #e2ccbb;
   transition: all 0.2s;
   height: 2px;
   margin: 5px auto;

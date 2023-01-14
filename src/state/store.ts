@@ -9,12 +9,13 @@ import {
 import { createPost } from "../server/create-posts";
 import { deletePost } from "../server/delete-post";
 import { fetchPosts } from "../server/fetchPosts";
-import { getContent } from "../server/get-content";
+import { getPostById } from "../server/get-post-by-id";
 import { updatePost } from "../server/update-posts";
 import searchLocal from "./search";
 import searchByTag from "./searchByTag";
 import { IPost, ITag, IUpdatePost } from "../types";
 import { injectStores } from "@mobx-devtools/tools";
+import post from "../components/Blog/Post/Post";
 
 class PostsStore {
   posts: IPost[] = [];
@@ -41,33 +42,55 @@ class PostsStore {
       })
       .catch(() => console.error("Failed to fetch"));
   }
-  async loadContent(postId: string): Promise<string> {
-    const content = this.posts.find(
-      (post: IPost) => post.postId === postId
-    )?.content;
-    if (content) {
-      return content;
-    }
-    return await getContent(postId).then(
-      (response: { postId: string; content: string }) => {
-        if (response.postId !== postId) {
-          throw new Error("PostId and response postId not the same");
-        }
-        runInAction(() => {
-          this.posts.forEach((post: IPost) => {
-            if (post.postId === postId) {
-              post.content = response.content;
-            }
-          });
-          this.postsCarrier.forEach((post: IPost) => {
-            if (post.postId === postId) {
-              post.content = response.content;
-            }
-          });
-        });
-        return response.content;
-      }
+  async loadPostById(postId: string): Promise<IPost> {
+    const neededPostIndex = this.posts.findIndex(
+      (post) => post.postId === postId
     );
+    const neededPostCarrierIndex = this.postsCarrier.findIndex(
+      (post) => post.postId === postId
+    );
+
+    if (
+      this.posts[neededPostIndex] &&
+      this.postsCarrier[neededPostCarrierIndex] &&
+      this.posts[neededPostIndex]?.content
+    ) {
+      return this.posts[neededPostIndex];
+    }
+
+    if (
+      this.posts[neededPostIndex] &&
+      this.postsCarrier[neededPostCarrierIndex]
+    ) {
+      return await getPostById(postId, true).then(
+        (response: { postId: string; content: string }) => {
+          if (response.postId !== postId) {
+            throw new Error("PostId and response postId not the same");
+          }
+          runInAction(() => {
+            this.posts[neededPostIndex].content = response.content;
+
+            this.postsCarrier[neededPostCarrierIndex].content =
+              response.content;
+          });
+
+          return this.posts[neededPostIndex];
+        }
+      );
+    }
+
+    return await getPostById(postId, false).then((response: IPost) => {
+      console.log(response);
+
+      if (response.postId !== postId) {
+        throw new Error("PostId and response postId not the same");
+      }
+      runInAction(() => {
+        this.posts.push(response);
+        this.postsCarrier.push(response);
+      });
+      return response;
+    });
   }
   async loadPosts() {
     const response = await fetchPosts(this.page);
@@ -179,6 +202,14 @@ class PostsStore {
     runInAction(() => {
       this.posts = this.postsCarrier;
     });
+  }
+  public async getPostById(id: string) {
+    const post = this.getPosts.find((post: IPost) => post.postId === id);
+    if (!post) {
+      const serverPost = await fetchPosts(1, id);
+      console.log(serverPost);
+    }
+    return await post;
   }
   public get getPosts() {
     return toJS(this.posts);

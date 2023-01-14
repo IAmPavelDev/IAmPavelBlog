@@ -56,14 +56,14 @@ describe("store methods", () => {
       });
   });
 
-  test("content loader", () => {
-    store.loadContent(TestPostId).then((content) => {
-      expect(typeof content).toBe("string");
-    });
-    store.loadContent(v4()).then((content) => {
-      expect(content).toBe(undefined);
-    });
-  });
+  // test("content loader", () => {
+  //   store.loadContent(TestPostId).then((content) => {
+  //     expect(typeof content).toBe("string");
+  //   });
+  //   store.loadContent(v4()).then((content) => {
+  //     expect(content).toBe(undefined);
+  //   });
+  // });
 
   test("posts loader", () => {
     store.loadPosts().then((response) => {
