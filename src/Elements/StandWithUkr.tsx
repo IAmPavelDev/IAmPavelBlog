@@ -3,11 +3,12 @@ import styled from "styled-components";
 const Text = styled.div`
   text-align: center;
   font-weight: 600;
-  font-size: 2rem;
+  font-size: min(2rem, 8vw);
+  white-space: nowrap;
   background: -webkit-linear-gradient(red 0%, red 50%, black 50%, black 100%);
-  background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
+  background-clip: text;
   user-select: none;
   cursor: pointer;
 `;
@@ -27,9 +28,6 @@ const Container = styled.div`
   );
   cursor: pointer;
   opacity: 1;
-  @media (max-width: 356px) {
-    height: 80px;
-  } ;
 `;
 const StandWithUkr = () => {
   return (

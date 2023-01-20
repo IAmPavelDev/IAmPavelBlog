@@ -2,30 +2,48 @@
   width: 100%;
   position: relative;
   .wrapper__panel {
-    position: absolute;
+    position: fixed;
     top: 60px;
     z-index: 1;
     width: calc(100% - 40px);
     display: flex;
     align-items: center;
-    justify-content: space-between;
-
-    background: linear-gradient(
-      to top,
-      transparent 0%,
-      rgba(0, 0, 0, 0.72) 100%
-    );
+    background-color: rgba(33, 33, 33, 1);
     padding: 0 20px;
+    height: 51px;
     .panel__logo {
-      text-decoration: none;
+      height: 100vh;
+      left: 0;
       color: white;
+      background-color: rgba(33, 33, 33, 1);
+      width: 100vw;
+      top: -60px;
+      position: absolute;
+      font-size: 12vw;
       font-weight: 800;
-      font-size: 2rem;
+      .panel__logo__text {
+        margin-top: 50vh;
+        margin-left: 50vw;
+        width: -moz-fit-content; /* Safari/WebKit uses a non-standard name */
+        width: -moz-max-content; /* Firefox/Gecko */
+        width: fit-content; /* Chrome */
+        transform: translate(-50%, -50%);
+        white-space: nowrap;
+      }
+    }
+    .panel__logo__open {
+      animation: loadingAnimationBg linear 1.8s;
+      animation-fill-mode: both;
+      .panel__logo__text__open {
+        animation: loadingAnimationContent linear 1.8s;
+        animation-fill-mode: both;
+      }
     }
     .panel__right {
       display: flex;
       align-items: center;
       gap: 10px;
+      margin: 0 0 0 auto;
       .panel__route {
         text-decoration: none;
         color: white;
@@ -44,5 +62,49 @@
         margin: 5px 8px 0 8px;
       }
     }
+  }
+  .panel__right__mobile {
+    margin: 0 0 0 auto;
+    .mobile__btn {
+      color: white;
+      text-transform: uppercase;
+      letter-spacing: -1.5px;
+      font-size: min(2rem, 10vw);
+      font-weight: 800;
+      white-space: nowrap;
+      text-decoration: none;
+      cursor: pointer;
+      user-select: none;
+    }
+  }
+}
+@keyframes loadingAnimationBg {
+  20% {
+    background: transparent;
+  }
+  50% {
+    background: transparent;
+    height: auto;
+    top: 0;
+    left: 0;
+  }
+  100% {
+    position: relative;
+    background: transparent;
+    height: auto;
+    top: 0;
+    left: 0;
+  }
+}
+
+@keyframes loadingAnimationContent {
+  50%,
+  100% {
+    margin: 0 0 0 0;
+    transform: none;
+    text-decoration: none;
+    color: white;
+    font-weight: 800;
+    font-size: min(2rem, 10vw);
   }
 }

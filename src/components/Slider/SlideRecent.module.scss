@@ -3,18 +3,12 @@ $whiteColor: rgba(229, 229, 229, 1);
 .wrapper {
   .wrapper__slider {
     height: calc(100vh - 50px);
-    @media (max-width: 356px) {
-      height: calc(100vh - 80px);
-    }
     .wrapper__slider__slide {
       position: relative;
       .slide__image__back {
         img {
           width: 100%;
           height: calc(100vh - 60px);
-          @media (max-width: 356px) {
-            height: calc(100vh - 80px);
-          }
           object-fit: cover;
         }
         .mask {

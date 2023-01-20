@@ -9,10 +9,10 @@ const WrapperEnterAnimation = keyframes`
 `;
 
 const Wrapper = styled.div`
-  position: absolute;
+  position: fixed;
   left: 0;
   top: -60px;
-  height: 100vh;
+  height: calc(100vh + 60px);
   width: 100%;
   background-color: rgba(33, 33, 33, 1);
   z-index: 1;
@@ -38,24 +38,12 @@ const LogoAnimationContentDesktop = keyframes`
   to {
     background-color: transparent;
     color: rgba(229, 229, 229, 1);
-    font-size: 2.25rem;
+    font-size: min(2rem, 8vw);
     font-weight: 800;
     letter-spacing: -1px;
-    left: 70px;
+    left: 20px;
     transform: none;
-    top: 80px;
-  }
-`;
-
-const LogoAnimationContentMobile = keyframes`
-  to {
-    background-color: transparent;
-    color: rgba(229, 229, 229, 1);
-    font-size: 2.25rem;
-    font-weight: 800;
-    letter-spacing: -1px;
-    top: 90px;
-    left: 50%;
+    top: 64px;
   }
 `;
 
@@ -72,7 +60,7 @@ const WrapperAnimate = styled.div`
   position: absolute;
   top: -60px;
   left: 0;
-  height: 100vh;
+  height: calc(100vh + 60px);
   width: 100%;
   background-color: rgba(33, 33, 33, 1);
   animation: ${LogoAnimationWrapper} linear 1s;
@@ -93,10 +81,6 @@ const ContentAnimate = styled.div`
   white-space: nowrap;
   animation: ${LogoAnimationContentDesktop} ease-in-out 1s;
   animation-fill-mode: both;
-  @media (max-width: 600px) {
-    animation: ${LogoAnimationContentMobile} ease-in-out 1s;
-    animation-fill-mode: both;
-  }
 `;
 
 const LoadingLinkToHome: FC<{
@@ -121,19 +105,19 @@ const LoadingLinkToHome: FC<{
 
   return (
     <>
-      {isLoaded ? (
-        <Link className={className} to="/">
-          {text}
-        </Link>
-      ) : isAnimationStart ? (
-        <WrapperAnimate>
-          <ContentAnimate>{text}</ContentAnimate>
-        </WrapperAnimate>
-      ) : (
-        <Wrapper>
-          <Content>{text}</Content>
-        </Wrapper>
-      )}
+      {/*{isLoaded ? (*/}
+      {/*  // <Link className={className} to="/">*/}
+      {/*  //   {text}*/}
+      {/*  // </Link>*/}
+      {/*) : isAnimationStart ? (*/}
+      {/*  <WrapperAnimate>*/}
+      {/*    <ContentAnimate>{text}</ContentAnimate>*/}
+      {/*  </WrapperAnimate>*/}
+      {/*) : (*/}
+      {/*  <Wrapper>*/}
+      {/*    <Content>{text}</Content>*/}
+      {/*  </Wrapper>*/}
+      {/*)}*/}
     </>
   );
 };

@@ -13,5 +13,8 @@ export default ({ mode }: { mode: string }) => {
     define: {
       "process.env": env,
     },
+    server: {
+      port: 3000,
+    },
   });
 };
