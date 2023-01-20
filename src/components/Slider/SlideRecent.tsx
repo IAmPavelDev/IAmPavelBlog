@@ -1,4 +1,4 @@
-import React, { FC, useRef } from "react";
+import React, { FC, useEffect, useRef } from "react";
 import style from "./SlideRecent.module.scss";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
@@ -8,7 +8,6 @@ import { IPost, ITag } from "../../types";
 import { observer } from "mobx-react-lite";
 import TagCard from "../../Elements/TagCard";
 import DateCard from "../../Elements/DateCard";
-
 const Slide: FC<{
   previewImage: string;
   tags: ITag[];
@@ -43,9 +42,19 @@ const Slide: FC<{
   );
 };
 
-const SlideRecent: FC<{}> = observer(() => {
+const SlideRecent = observer(() => {
+  const sliderWrapper = useRef<HTMLDivElement>(null);
+  const slider = useRef<Slider>(null);
+  useEffect(() => {
+    window.addEventListener("blur", () => {
+      slider.current && slider.current.slickPause();
+    });
+    window.addEventListener("focus", () => {
+      slider.current && slider.current.slickPlay();
+    });
+  });
   const sliderOptions = {
-    dots: true,
+    dots: false,
     arrows: false,
     slidesToShow: 1,
     slidesToScroll: 1,
@@ -55,8 +64,12 @@ const SlideRecent: FC<{}> = observer(() => {
   };
   return (
     <div className={style.wrapper}>
-      <div>
-        <Slider className={style.wrapper__slider} {...sliderOptions}>
+      <div ref={sliderWrapper}>
+        <Slider
+          ref={slider}
+          className={style.wrapper__slider}
+          {...sliderOptions}
+        >
           {store.getPosts.slice(0, 5).map((post: IPost) => (
             <Slide
               previewImage={post.previewImage}
@@ -64,6 +77,12 @@ const SlideRecent: FC<{}> = observer(() => {
               title={post.title}
               date={post.creationDate}
               preview={post.preview}
+              key={(post.previewImage + post.title).slice(
+                parseInt(
+                  ((post.previewImage + post.title).length / 3).toFixed(0)
+                ),
+                (Math.random() + 0.5) * 10
+              )}
             />
           ))}
         </Slider>

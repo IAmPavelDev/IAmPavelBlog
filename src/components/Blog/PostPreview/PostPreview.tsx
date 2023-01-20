@@ -13,7 +13,6 @@ const PostPreview: FC<{
   tags?: ITag[];
   postId?: string;
 }> = ({ imageUrl, date, title, preview, tags, postId }) => {
-  console.log("post");
   return (
     <Link to={"/post/" + postId} className={style.preview}>
       <div className={style.preview__image}>

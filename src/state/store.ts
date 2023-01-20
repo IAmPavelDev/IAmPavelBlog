@@ -15,7 +15,6 @@ import searchLocal from "./search";
 import searchByTag from "./searchByTag";
 import { IPost, ITag, IUpdatePost } from "../types";
 import { injectStores } from "@mobx-devtools/tools";
-import post from "../components/Blog/Post/Post";
 
 class PostsStore {
   posts: IPost[] = [];

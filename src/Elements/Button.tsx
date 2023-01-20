@@ -18,10 +18,6 @@ const BTN = styled.button`
   padding-top: 15px;
   cursor: pointer;
   text-decoration: none;
-  //font-family: "Hack", sans-serif;
-  //src: local("Hack"),
-  //  url("./../Hack_Font_Family_(Fontmirror)/Hack Regular 400.ttf"),
-  //  format("truetype");
   font-weight: 600;
   color: ${(props: { isSelected: boolean }) =>
     props.isSelected ? "white" : "rgba(229, 229, 229, 1)"};

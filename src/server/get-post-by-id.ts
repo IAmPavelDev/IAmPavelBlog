@@ -4,7 +4,7 @@ export async function getPostById(postId: string, isOnlyContent: boolean) {
   myHeaders.append("Access-Control-Allow-Origin", "*");
   myHeaders.append("Access-Control-Allow-Methods", "GET,POST,PUT,PATCH,DELETE");
 
-  var requestOptions: RequestInit = {
+  const requestOptions: RequestInit = {
     method: "GET",
     headers: myHeaders,
     redirect: "follow",

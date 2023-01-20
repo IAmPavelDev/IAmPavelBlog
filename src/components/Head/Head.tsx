@@ -1,4 +1,4 @@
-import React, { FC, useEffect } from "react";
+import React, { FC, useEffect, useState } from "react";
 import style from "./Head.module.scss";
 import { AiFillGithub } from "react-icons/ai";
 import { FaTelegramPlane, FaSearch } from "react-icons/fa";
@@ -11,8 +11,15 @@ const Head: FC<{}> = () => {
   const locate = useLocation();
   let startLoader: () => void = () => {};
 
+  const [isDesktop, setIsDesktop] = useState<boolean>(window.innerWidth > 440);
+
   useEffect(() => {
     startLoader();
+    window.addEventListener("resize", () => {
+      // if (window.innerWidth > 440 !== isMenuOpen) {
+      //   setIsMenuOpen(window.innerWidth > 440);
+      // }
+    });
   });
 
   return (
@@ -23,30 +30,27 @@ const Head: FC<{}> = () => {
       <div className={style.wrapper__panel}>
         <LoadingLinkToHome
           className={style.panel__logo}
-          text="Iampavel"
+          text="PT-BLOG"
           start={(start) => {
             startLoader = start;
           }}
-          delay={1000}
         />
-        <div className={style.panel__right}>
-          <div className={style.panel__routes}>
-            <Link className={style.panel__routes__route} to={"/"}>
+        {isDesktop ? (
+          <div className={style.panel__right}>
+            <Link className={style.panel__route} to={"/"}>
               <Button isSelected={locate.pathname === "/"}>Home</Button>
             </Link>
-            <Link className={style.panel__routes__route} to={"/about"}>
+            <Link className={style.panel__route} to={"/about"}>
               <Button isSelected={locate.pathname === "/about"}>About</Button>
             </Link>
-          </div>
-          <p className={style.panel__spacer}>|</p>
-          <div className={style.panel__links}>
+            <p className={style.panel__spacer}>|</p>
             <a
               target={"_blank"}
               rel="noreferrer"
               style={{ textDecoration: "none" }}
               href="https://github.com/IAmPavelDev"
             >
-              <AiFillGithub className={style.panel__links__link} />
+              <AiFillGithub className={style.panel__link} />
             </a>
             <a
               target={"_blank"}
@@ -54,14 +58,16 @@ const Head: FC<{}> = () => {
               style={{ textDecoration: "none" }}
               href="https://t.me/g3t_P4v3l"
             >
-              <FaTelegramPlane className={style.panel__links__link} />
+              <FaTelegramPlane className={style.panel__link} />
             </a>
+            <p className={style.panel__spacer}>|</p>
+            <div className={style.panel__link}>
+              <FaSearch />
+            </div>
           </div>
-          <p className={style.panel__spacer}>|</p>
-          <div className={style.panel__search__btn}>
-            <FaSearch />
-          </div>
-        </div>
+        ) : (
+          <div>Open</div>
+        )}
       </div>
     </div>
   );

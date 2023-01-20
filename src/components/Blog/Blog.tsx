@@ -9,7 +9,7 @@ import PostPreview from "./PostPreview/PostPreview";
 
 const PostsDataToNodesTraspilator = (data: IPost[]) =>
   data.map((post: IPost) => {
-    const id = uuid().slice(0, 8);
+    const id = uuid();
     return (
       <div key={id} id={id} className={style.wrapper__blog__post}>
         <PostPreview
@@ -27,7 +27,6 @@ const PostsDataToNodesTraspilator = (data: IPost[]) =>
 const PostsList: FC<{
   isLoadingCallbackHandler: (arg0: (arg0: boolean) => void) => void;
 }> = observer(({ isLoadingCallbackHandler }) => {
-  console.log("list");
   const posts = useRef<JSX.Element[]>([]);
 
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -59,7 +58,6 @@ const PostsList: FC<{
 });
 
 const Blog = () => {
-  console.log("blog");
   const [isFullMode, setIsFullMode] = useState<boolean>(false);
   useEffect(() => {
     store.loadPosts();

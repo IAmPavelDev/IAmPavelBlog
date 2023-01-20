@@ -4,7 +4,7 @@ export async function deletePost(postId: string) {
   myHeaders.append("Access-Control-Allow-Origin", "*");
   myHeaders.append("Access-Control-Allow-Methods", "GET,POST,PUT,PATCH,DELETE");
 
-  var requestOptions: RequestInit = {
+  const requestOptions: RequestInit = {
     method: "DELETE",
     headers: myHeaders,
     redirect: "follow",

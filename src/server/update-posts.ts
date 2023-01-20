@@ -8,16 +8,19 @@ export async function updatePost(
   myHeaders.append("Content-Type", "application/json");
   myHeaders.append("Access-Control-Allow-Origin", "*");
   myHeaders.append("Access-Control-Allow-Methods", "GET,POST,PUT,PATCH,DELETE");
-  var raw = JSON.stringify(newData);
+  const raw = JSON.stringify(newData);
 
-  var requestOptions: RequestInit = {
+  const requestOptions: RequestInit = {
     method: "PATCH",
     headers: myHeaders,
     redirect: "follow",
     body: raw,
     credentials: "include",
   };
-  return fetch(process.env.REACT_APP_SERVER_CONNECTION + "/posts/" + postId, requestOptions)
+  return fetch(
+    process.env.REACT_APP_SERVER_CONNECTION + "/posts/" + postId,
+    requestOptions
+  )
     .then((response) => response.json())
     .catch((error) => console.log("error", error));
 }

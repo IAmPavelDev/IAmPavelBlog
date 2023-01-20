@@ -1,16 +1,7 @@
-import styled, { keyframes } from "styled-components";
-
-const StandWithUkrAnimation = keyframes`
-  to {
-    opacity: 1;
-  }
-`;
+import styled from "styled-components";
 
 const Text = styled.div`
-  display: flex;
-  align-content: center;
-  justify-content: center;
-  margin: 0;
+  text-align: center;
   font-weight: 600;
   font-size: 2rem;
   background: -webkit-linear-gradient(red 0%, red 50%, black 50%, black 100%);
@@ -35,10 +26,10 @@ const Container = styled.div`
     #ffd700 100%
   );
   cursor: pointer;
-  opacity: 0;
-  animation: ${StandWithUkrAnimation} linear 0.3s;
-  animation-fill-mode: both;
-  //animation-delay: 0.5s;
+  opacity: 1;
+  @media (max-width: 356px) {
+    height: 80px;
+  } ;
 `;
 const StandWithUkr = () => {
   return (

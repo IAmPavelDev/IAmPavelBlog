@@ -1,4 +1,4 @@
-function clearIntervalCreator(id: NodeJS.Timer): () => void {
+function clearIntervalCreator(id: number): () => void {
   return () => clearInterval(id);
 }
 
@@ -11,12 +11,12 @@ export function setTokenRefresh() {
 }
 
 function refreshToken() {
-  var myHeaders = new Headers();
+  const myHeaders = new Headers();
   myHeaders.append("Content-Type", "application/json");
   myHeaders.append("Access-Control-Allow-Origin", "*");
   myHeaders.append("Access-Control-Allow-Methods", "GET,POST,PUT,PATCH,DELETE");
 
-  var requestOptions: RequestInit = {
+  const requestOptions: RequestInit = {
     method: "GET",
     headers: myHeaders,
     redirect: "follow",

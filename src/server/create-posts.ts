@@ -14,7 +14,7 @@ export async function createPost(postData: IPost) {
     previewImage: postData.previewImage,
   });
 
-  var requestOptions: RequestInit = {
+  const requestOptions: RequestInit = {
     method: "POST",
     headers: myHeaders,
     redirect: "follow",

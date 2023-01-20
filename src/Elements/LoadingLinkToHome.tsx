@@ -31,6 +31,7 @@ const Content = styled.div`
   color: white;
   letter-spacing: -1px;
   text-transform: uppercase;
+  white-space: nowrap;
 `;
 
 const LogoAnimationContentDesktop = keyframes`
@@ -89,6 +90,7 @@ const ContentAnimate = styled.div`
   color: white;
   letter-spacing: -1px;
   text-transform: uppercase;
+  white-space: nowrap;
   animation: ${LogoAnimationContentDesktop} ease-in-out 1s;
   animation-fill-mode: both;
   @media (max-width: 600px) {

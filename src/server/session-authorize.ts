@@ -1,16 +1,19 @@
 export default function sessionAuthorize() {
-  var myHeaders = new Headers();
+  const myHeaders = new Headers();
   myHeaders.append("Content-Type", "application/json");
   myHeaders.append("Access-Control-Allow-Origin", "*");
   myHeaders.append("Access-Control-Allow-Methods", "GET,POST,PUT,PATCH,DELETE");
 
-  var requestOptions: RequestInit = {
+  const requestOptions: RequestInit = {
     method: "GET",
     headers: myHeaders,
     redirect: "follow",
   };
 
-  fetch(process.env.REACT_APP_SERVER_CONNECTION + `/sessionEntrance`, requestOptions)
+  fetch(
+    process.env.REACT_APP_SERVER_CONNECTION + `/sessionEntrance`,
+    requestOptions
+  )
     .then((response) => response.json())
     .catch((error) => console.log("error", error));
 }
