@@ -2,6 +2,7 @@ import React, { FC, useEffect, useRef, useState } from "react";
 import style from "./Head.module.scss";
 import { AiFillGithub } from "react-icons/ai";
 import { FaTelegramPlane, FaSearch } from "react-icons/fa";
+import { MdArrowForwardIos } from "react-icons/md";
 import Button from "../../Elements/Button";
 import StandWithUkr from "./../../Elements/StandWithUkr";
 import { Link, useLocation } from "react-router-dom";
@@ -96,9 +97,58 @@ const Head: FC<{}> = () => {
         ) : (
           <div className={style.panel__right__mobile}>
             {isMobileMenuOpen ? (
-              <div></div>
+              <div className={style.mobile__menu}>
+                <div
+                  className={style.mobile__menu__btn}
+                  onClick={() => setIsMobileMenuOpen(false)}
+                >
+                  HIDE
+                  <MdArrowForwardIos />
+                </div>
+                <div className={style.mobile__menu__routes}>
+                  <div className={style.route}>
+                    <Link className={style.route} to={"/"}>
+                      <Button isSelected={locate.pathname === "/"}>Home</Button>
+                    </Link>
+                  </div>
+                  <div className={style.route}>
+                    <Link className={style.route} to={"/about"}>
+                      <Button isSelected={locate.pathname === "/about"}>
+                        About
+                      </Button>
+                    </Link>
+                  </div>
+                </div>
+                <div className={style.mobile__menu__links}>
+                  <a
+                    target={"_blank"}
+                    rel="noreferrer"
+                    style={{ textDecoration: "none" }}
+                    href="https://github.com/IAmPavelDev"
+                  >
+                    <AiFillGithub className={style.panel__link} />
+                  </a>
+                  <a
+                    target={"_blank"}
+                    rel="noreferrer"
+                    style={{ textDecoration: "none" }}
+                    href="https://t.me/g3t_P4v3l"
+                  >
+                    <FaTelegramPlane className={style.panel__link} />
+                  </a>
+                  <p className={style.panel__spacer}>|</p>
+                  <div className={style.panel__link}>
+                    <FaSearch />
+                  </div>
+                </div>
+              </div>
             ) : (
-              <div className={style.mobile__btn}>MENU</div>
+              <div
+                className={style.mobile__btn}
+                onClick={() => setIsMobileMenuOpen(true)}
+              >
+                MENU
+              </div>
             )}
           </div>
         )}
