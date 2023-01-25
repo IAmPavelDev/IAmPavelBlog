@@ -1,6 +1,7 @@
 .wrapper {
   width: 100%;
   position: relative;
+  user-select: none;
   .wrapper__panel {
     position: fixed;
     top: 60px;
@@ -11,34 +12,6 @@
     background-color: rgba(33, 33, 33, 1);
     padding: 0 20px;
     height: 51px;
-    .panel__logo {
-      height: 100vh;
-      left: 0;
-      color: white;
-      background-color: rgba(33, 33, 33, 1);
-      width: 100vw;
-      top: -60px;
-      position: absolute;
-      font-size: 12vw;
-      font-weight: 800;
-      .panel__logo__text {
-        margin-top: 50vh;
-        margin-left: 50vw;
-        width: -moz-fit-content; /* Safari/WebKit uses a non-standard name */
-        width: -moz-max-content; /* Firefox/Gecko */
-        width: fit-content; /* Chrome */
-        transform: translate(-50%, -50%);
-        white-space: nowrap;
-      }
-    }
-    .panel__logo__open {
-      animation: loadingAnimationBg linear 1.8s;
-      animation-fill-mode: both;
-      .panel__logo__text__open {
-        animation: loadingAnimationContent linear 1.8s;
-        animation-fill-mode: both;
-      }
-    }
     .panel__right {
       display: flex;
       align-items: center;
@@ -64,8 +37,18 @@
     }
   }
   .panel__right__mobile {
-    margin: 0 0 0 auto;
     user-select: none;
+    margin: 0 0 0 auto;
+    position: relative;
+    z-index: 3;
+    .mobile__blurBg {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100vh;
+      backdrop-filter: blur(10px);
+    }
     .mobile__btn {
       color: white;
       text-transform: uppercase;
@@ -76,12 +59,12 @@
       text-decoration: none;
     }
     .mobile__menu {
-      background: rgba(33, 33, 33, 1);
+      background: rgba(33, 33, 33, 0.9);
       position: fixed;
       top: 0;
       right: 0;
       height: 100vh;
-      width: 100%;
+      width: min(100%, 200px);
       .mobile__menu__btn {
         color: white;
         font-weight: 800;
@@ -97,6 +80,13 @@
           text-decoration: none;
           color: white;
           font-size: 1.1rem;
+          background-color: #424242;
+          margin: 20px;
+          height: 60px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          border-radius: 10px;
           //border: 0.5px solid transparent;
           //border-bottom-color: white;
           //border-top-color: white;
@@ -106,35 +96,5 @@
         }
       }
     }
-  }
-}
-@keyframes loadingAnimationBg {
-  20% {
-    background: transparent;
-  }
-  50% {
-    background: transparent;
-    height: auto;
-    top: 0;
-    left: 0;
-  }
-  100% {
-    position: relative;
-    background: transparent;
-    height: auto;
-    top: 0;
-    left: 0;
-  }
-}
-
-@keyframes loadingAnimationContent {
-  50%,
-  100% {
-    margin: 0 0 0 0;
-    transform: none;
-    text-decoration: none;
-    color: white;
-    font-weight: 800;
-    font-size: min(2rem, 10vw);
   }
 }

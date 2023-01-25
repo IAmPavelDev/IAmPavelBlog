@@ -43,16 +43,6 @@ const Slide: FC<{
 };
 
 const SlideRecent = observer(() => {
-  const sliderWrapper = useRef<HTMLDivElement>(null);
-  const slider = useRef<Slider>(null);
-  useEffect(() => {
-    window.addEventListener("blur", () => {
-      slider.current && slider.current.slickPause();
-    });
-    window.addEventListener("focus", () => {
-      slider.current && slider.current.slickPlay();
-    });
-  });
   const sliderOptions = {
     dots: false,
     arrows: false,
@@ -64,12 +54,8 @@ const SlideRecent = observer(() => {
   };
   return (
     <div className={style.wrapper}>
-      <div ref={sliderWrapper}>
-        <Slider
-          ref={slider}
-          className={style.wrapper__slider}
-          {...sliderOptions}
-        >
+      <div>
+        <Slider className={style.wrapper__slider} {...sliderOptions}>
           {store.getPosts.slice(0, 5).map((post: IPost) => (
             <Slide
               previewImage={post.previewImage}

@@ -1,0 +1,58 @@
+.wrapper {
+  position: fixed;
+  text-decoration: none;
+  user-select: none;
+  z-index: 1;
+}
+.panel__logo__bg {
+  position: fixed;
+  height: 100vh;
+  width: 100%;
+  background-color: rgba(33, 33, 33, 1);
+  left: 0;
+  top: 0;
+}
+.panel__logo__text {
+  position: relative;
+  z-index: 1;
+  color: white;
+  font-size: 12vw;
+  font-weight: 800;
+}
+.panel__logo__bg_open {
+  animation: loadingAnimationBg ease-out 1s;
+  animation-fill-mode: both;
+}
+.panel__logo__text_open {
+  animation: loadingAnimationContent ease-out 1s;
+  animation-fill-mode: both;
+}
+.panel__text__inner {
+  animation: textUpCorrector ease-out 1s;
+  animation-fill-mode: both;
+}
+@keyframes loadingAnimationBg {
+  99% {
+    opacity: 0;
+    height: 100vh;
+    width: 100%;
+  }
+  100% {
+    z-index: -1;
+    height: 0;
+    width: 0;
+    opacity: 0;
+  }
+}
+
+@keyframes loadingAnimationContent {
+  to {
+    transform: none;
+    font-size: 2rem;
+  }
+}
+@keyframes textUpCorrector {
+  to {
+    transform: translateY(0);
+  }
+}

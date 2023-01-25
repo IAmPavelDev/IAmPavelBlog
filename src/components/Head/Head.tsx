@@ -6,12 +6,21 @@ import { MdArrowForwardIos } from "react-icons/md";
 import Button from "../../Elements/Button";
 import StandWithUkr from "./../../Elements/StandWithUkr";
 import { Link, useLocation } from "react-router-dom";
+import LoadingLinkToHome from "../../Elements/LoadingAnimationLogo/LoadingLinkToHome";
 
-const ANIMATION_LOADING_DELAY = 1000;
+const PanelShifter = (panel: HTMLDivElement) => {
+  if (window.scrollY > 60 && panel) {
+    panel.style.top = 0 + "px";
+  }
+  if (window.scrollY <= 60 && panel) {
+    panel.style.top = 60 - window.scrollY + "px";
+  }
+};
 
 const Head: FC<{}> = () => {
   const locate = useLocation();
-  let startLoader: () => void = () => {};
+
+  let logoAnimationStart: (() => void) | null = null;
 
   const panel = useRef<HTMLDivElement>(null);
 
@@ -19,32 +28,13 @@ const Head: FC<{}> = () => {
 
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState<boolean>(false);
 
-  const isLoaded = useRef<boolean>(false);
-
   useEffect(() => {
-    startLoader();
-
-    setTimeout(() => (isLoaded.current = true), ANIMATION_LOADING_DELAY);
-    const logo = panel.current && (panel.current.children[0] as HTMLDivElement);
-    setTimeout(() => {
-      logo?.classList.add(style.panel__logo__open);
-      logo?.children[0].classList.add(style.panel__logo__text__open);
-    }, 500);
+    logoAnimationStart && logoAnimationStart();
 
     window.addEventListener("scroll", (e: Event) => {
-      if (window.scrollY > 60 && panel.current) {
-        panel.current.style.top = 0 + "px";
-        if (logo?.className.includes(style.panel__logo)) {
-          logo.style.top = 0 + "px";
-        }
-      }
-      if (window.scrollY <= 60 && panel.current) {
-        panel.current.style.top = 60 - window.scrollY + "px";
-        if (logo?.className.includes(style.panel__logo)) {
-          logo.style.top = window.scrollY - 60 + "px";
-        }
-      }
+      panel.current && PanelShifter(panel.current);
     });
+
     window.addEventListener("resize", (e: UIEvent) => {
       if (!isDesktop && window.innerWidth > 530) {
         setIsDesktop(true);
@@ -61,9 +51,14 @@ const Head: FC<{}> = () => {
         <StandWithUkr />
       </div>
       <div className={style.wrapper__panel} ref={panel}>
-        <div className={style.panel__logo}>
-          <div className={style.panel__logo__text}>PT-BLOG</div>
-        </div>
+        <LoadingLinkToHome
+          text="PT-BLOG"
+          start={(startCallBack) => {
+            logoAnimationStart = startCallBack;
+          }}
+          linkTo="/"
+          durationMS={1200}
+        />
         {isDesktop ? (
           <div className={style.panel__right}>
             <Link className={style.panel__route} to={"/"}>
@@ -97,51 +92,56 @@ const Head: FC<{}> = () => {
         ) : (
           <div className={style.panel__right__mobile}>
             {isMobileMenuOpen ? (
-              <div className={style.mobile__menu}>
-                <div
-                  className={style.mobile__menu__btn}
-                  onClick={() => setIsMobileMenuOpen(false)}
-                >
-                  HIDE
-                  <MdArrowForwardIos />
-                </div>
-                <div className={style.mobile__menu__routes}>
-                  <div className={style.route}>
-                    <Link className={style.route} to={"/"}>
-                      <Button isSelected={locate.pathname === "/"}>Home</Button>
-                    </Link>
-                  </div>
-                  <div className={style.route}>
-                    <Link className={style.route} to={"/about"}>
-                      <Button isSelected={locate.pathname === "/about"}>
-                        About
-                      </Button>
-                    </Link>
-                  </div>
-                </div>
-                <div className={style.mobile__menu__links}>
-                  <a
-                    target={"_blank"}
-                    rel="noreferrer"
-                    style={{ textDecoration: "none" }}
-                    href="https://github.com/IAmPavelDev"
+              <>
+                <div className={style.mobile__blurBg} />
+                <div className={style.mobile__menu}>
+                  <div
+                    className={style.mobile__menu__btn}
+                    onClick={() => setIsMobileMenuOpen(false)}
                   >
-                    <AiFillGithub className={style.panel__link} />
-                  </a>
-                  <a
-                    target={"_blank"}
-                    rel="noreferrer"
-                    style={{ textDecoration: "none" }}
-                    href="https://t.me/g3t_P4v3l"
-                  >
-                    <FaTelegramPlane className={style.panel__link} />
-                  </a>
-                  <p className={style.panel__spacer}>|</p>
-                  <div className={style.panel__link}>
-                    <FaSearch />
+                    HIDE
+                    <MdArrowForwardIos />
+                  </div>
+                  <div className={style.mobile__menu__routes}>
+                    <div className={style.route}>
+                      <Link className={style.route} to={"/"}>
+                        <Button isSelected={locate.pathname === "/"}>
+                          Home
+                        </Button>
+                      </Link>
+                    </div>
+                    <div className={style.route}>
+                      <Link className={style.route} to={"/about"}>
+                        <Button isSelected={locate.pathname === "/about"}>
+                          About
+                        </Button>
+                      </Link>
+                    </div>
+                  </div>
+                  <div className={style.mobile__menu__links}>
+                    <a
+                      target={"_blank"}
+                      rel="noreferrer"
+                      style={{ textDecoration: "none" }}
+                      href="https://github.com/IAmPavelDev"
+                    >
+                      <AiFillGithub className={style.panel__link} />
+                    </a>
+                    <a
+                      target={"_blank"}
+                      rel="noreferrer"
+                      style={{ textDecoration: "none" }}
+                      href="https://t.me/g3t_P4v3l"
+                    >
+                      <FaTelegramPlane className={style.panel__link} />
+                    </a>
+                    <p className={style.panel__spacer}>|</p>
+                    <div className={style.panel__link}>
+                      <FaSearch />
+                    </div>
                   </div>
                 </div>
-              </div>
+              </>
             ) : (
               <div
                 className={style.mobile__btn}
