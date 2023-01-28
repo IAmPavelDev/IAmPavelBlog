@@ -40,14 +40,13 @@
     user-select: none;
     margin: 0 0 0 auto;
     position: relative;
-    z-index: 3;
     .mobile__blurBg {
       position: fixed;
       top: 0;
       left: 0;
       width: 100%;
       height: 100vh;
-      backdrop-filter: blur(10px);
+      z-index: 1;
     }
     .mobile__btn {
       color: white;
@@ -57,14 +56,17 @@
       font-weight: 800;
       white-space: nowrap;
       text-decoration: none;
+      z-index: 2;
     }
     .mobile__menu {
       background: rgba(33, 33, 33, 0.9);
       position: fixed;
       top: 0;
-      right: 0;
-      height: 100vh;
+      bottom: 0;
       width: min(100%, 200px);
+      display: flex;
+      flex-direction: column;
+      z-index: 2;
       .mobile__menu__btn {
         color: white;
         font-weight: 800;
@@ -76,25 +78,91 @@
         padding: 10px;
       }
       .mobile__menu__routes {
-        .route {
-          text-decoration: none;
+        justify-self: flex-start;
+      }
+      .route {
+        text-decoration: none;
+        color: white;
+        font-size: 1.1rem;
+        background-color: #424242;
+        margin: 20px;
+        padding: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 10px;
+      }
+      .mobile__menu__links {
+        margin-top: auto;
+        margin-bottom: 20px;
+        width: 80%;
+        align-self: center;
+        display: flex;
+        justify-content: space-around;
+        .link {
           color: white;
-          font-size: 1.1rem;
-          background-color: #424242;
-          margin: 20px;
-          height: 60px;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          border-radius: 10px;
-          //border: 0.5px solid transparent;
-          //border-bottom-color: white;
-          //border-top-color: white;
-          a {
-            //border: 1px solid transparent;
-          }
+          font-size: 1.5rem;
         }
       }
     }
+  }
+}
+.hideMobilePanelAnimation {
+  .mobile__menu {
+    animation: hidePanelAnimation linear;
+    animation-fill-mode: both;
+  }
+  .mobile__blurBg {
+    animation: mobileMenuFadeOut linear;
+    animation-fill-mode: both;
+  }
+}
+.displayMobilePanelAnimation {
+  .mobile__menu {
+    right: -100%;
+    animation: menuAnimationBar ease-in-out 0.6s;
+    animation-fill-mode: both;
+  }
+  .mobile__blurBg {
+    backdrop-filter: blur(0);
+    animation: mobileMenuFadeIn linear 0.6s;
+    animation-fill-mode: both;
+  }
+}
+.displayMobilePanelStatic {
+  .mobile__menu {
+    right: 0;
+  }
+  .mobile__blurBg {
+    backdrop-filter: blur(10px);
+  }
+}
+.hideMobilePanelStatic {
+  .mobile__menu {
+    right: -100%;
+  }
+  .mobile__blurBg {
+    backdrop-filter: blur(0);
+  }
+}
+@keyframes hidePanelAnimation {
+  to {
+    right: -100%;
+  }
+}
+
+@keyframes menuAnimationBar {
+  to {
+    right: 0;
+  }
+}
+@keyframes mobileMenuFadeIn {
+  to {
+    backdrop-filter: blur(10px);
+  }
+}
+@keyframes mobileMenuFadeOut {
+  to {
+    backdrop-filter: blur(0);
   }
 }

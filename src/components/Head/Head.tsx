@@ -17,6 +17,46 @@ const PanelShifter = (panel: HTMLDivElement) => {
   }
 };
 
+const useHideMobilePanelActuator = (
+  hideSetState: (isDisplayed: boolean) => void,
+  durationMS: number,
+  toHideAnimationClass: string,
+  toShowAnimationClass: string,
+  toHideStatic: string,
+  toShowStatic: string
+) => {
+  return (
+    menuPanelElement: HTMLDivElement | null,
+    mode: "hide" | "display"
+  ) => {
+    if (!menuPanelElement) {
+      console.error("can't find mobile panel node");
+      return;
+    }
+    Array.from(menuPanelElement.children).forEach((element) => {
+      (element as HTMLElement).style.animationDuration = durationMS + "ms";
+    });
+    if (mode === "hide") {
+      menuPanelElement.classList.add(toHideAnimationClass);
+      setTimeout(() => {
+        menuPanelElement.classList.remove(toHideAnimationClass);
+        menuPanelElement.classList.add(toHideStatic);
+        hideSetState(false);
+      }, durationMS);
+    }
+    if (mode === "display") {
+      hideSetState(true);
+      menuPanelElement.classList.remove(toShowStatic);
+      menuPanelElement.classList.remove(toHideStatic);
+      menuPanelElement.classList.add(toShowAnimationClass);
+      setTimeout(() => {
+        menuPanelElement.classList.remove(toShowAnimationClass);
+        menuPanelElement.classList.add(toShowStatic);
+      }, durationMS);
+    }
+  };
+};
+
 const Head: FC<{}> = () => {
   const locate = useLocation();
 
@@ -24,9 +64,20 @@ const Head: FC<{}> = () => {
 
   const panel = useRef<HTMLDivElement>(null);
 
+  const mobilePanel = useRef<HTMLDivElement>(null);
+
   const [isDesktop, setIsDesktop] = useState<boolean>(window.innerWidth > 440);
 
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState<boolean>(false);
+
+  const HideMobilePanelActuator = useHideMobilePanelActuator(
+    setIsMobileMenuOpen,
+    600,
+    style.hideMobilePanelAnimation,
+    style.displayMobilePanelAnimation,
+    style.hideMobilePanelStatic,
+    style.displayMobilePanelStatic
+  );
 
   useEffect(() => {
     logoAnimationStart && logoAnimationStart();
@@ -90,33 +141,35 @@ const Head: FC<{}> = () => {
             </div>
           </div>
         ) : (
-          <div className={style.panel__right__mobile}>
+          <div ref={mobilePanel} className={style.panel__right__mobile}>
             {isMobileMenuOpen ? (
               <>
                 <div className={style.mobile__blurBg} />
                 <div className={style.mobile__menu}>
                   <div
                     className={style.mobile__menu__btn}
-                    onClick={() => setIsMobileMenuOpen(false)}
+                    onClick={() =>
+                      HideMobilePanelActuator(mobilePanel.current, "hide")
+                    }
                   >
                     HIDE
                     <MdArrowForwardIos />
                   </div>
                   <div className={style.mobile__menu__routes}>
-                    <div className={style.route}>
-                      <Link className={style.route} to={"/"}>
-                        <Button isSelected={locate.pathname === "/"}>
-                          Home
-                        </Button>
-                      </Link>
-                    </div>
-                    <div className={style.route}>
-                      <Link className={style.route} to={"/about"}>
-                        <Button isSelected={locate.pathname === "/about"}>
-                          About
-                        </Button>
-                      </Link>
-                    </div>
+                    <Link className={style.route} to={"/"}>
+                      <Button isSelected={locate.pathname === "/"}>Home</Button>
+                    </Link>
+                    <Link className={style.route} to={"/about"}>
+                      <Button isSelected={locate.pathname === "/about"}>
+                        About
+                      </Button>
+                    </Link>
+                    <hr />
+                    <Link className={style.route} to={"/about"}>
+                      <Button isSelected={locate.pathname === "/search"}>
+                        Search
+                      </Button>
+                    </Link>
                   </div>
                   <div className={style.mobile__menu__links}>
                     <a
@@ -125,7 +178,7 @@ const Head: FC<{}> = () => {
                       style={{ textDecoration: "none" }}
                       href="https://github.com/IAmPavelDev"
                     >
-                      <AiFillGithub className={style.panel__link} />
+                      <AiFillGithub className={style.link} />
                     </a>
                     <a
                       target={"_blank"}
@@ -133,23 +186,22 @@ const Head: FC<{}> = () => {
                       style={{ textDecoration: "none" }}
                       href="https://t.me/g3t_P4v3l"
                     >
-                      <FaTelegramPlane className={style.panel__link} />
+                      <FaTelegramPlane className={style.link} />
                     </a>
-                    <p className={style.panel__spacer}>|</p>
-                    <div className={style.panel__link}>
-                      <FaSearch />
-                    </div>
                   </div>
                 </div>
               </>
             ) : (
-              <div
-                className={style.mobile__btn}
-                onClick={() => setIsMobileMenuOpen(true)}
-              >
-                MENU
-              </div>
+              <></>
             )}
+            <div
+              className={style.mobile__btn}
+              onClick={() =>
+                HideMobilePanelActuator(mobilePanel.current, "display")
+              }
+            >
+              MENU
+            </div>
           </div>
         )}
       </div>
