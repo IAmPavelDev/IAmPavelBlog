@@ -15,6 +15,7 @@ import DateCard from "shared/ui/DateCard";
 import { ITag } from "shared/types/ITag";
 import { LazyLoadImage } from "react-lazy-load-image-component";
 import "react-lazy-load-image-component/src/effects/blur.css";
+import {IFetchData} from "../../shared/types";
 
 const Slide: FC<{
   postId?: string;
@@ -24,7 +25,7 @@ const Slide: FC<{
   >("Loading");
 
   postId &&
-    store.postStore.getPostById(postId).then((postData?: IPost) => {
+    store.postStore.getPostPreviewDataById(postId).then((postData: IPost) => {
       if (!postData || postData.postId != postId) {
         setPostDataState("Error");
         return;

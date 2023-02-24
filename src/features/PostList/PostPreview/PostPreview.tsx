@@ -17,7 +17,7 @@ const PostPreview: FC<{
   >("Loading");
 
   postId &&
-    store.postStore.getPostById(postId).then((postData?: IPost) => {
+    store.postStore.getPostPreviewDataById(postId).then((postData?: IPost) => {
       if (!postData || postData.postId != postId) {
         setPostDataState("Error");
         return;

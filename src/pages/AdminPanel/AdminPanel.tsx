@@ -11,6 +11,7 @@ export const AdminPanel = () => {
   useEffect(() => {
     store.postStore.loadPosts();
   });
+  
   return isLoggedIn ? (
     <>
       <AdminCreateForm />

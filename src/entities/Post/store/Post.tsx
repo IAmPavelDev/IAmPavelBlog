@@ -36,6 +36,24 @@ export class PostsStore {
       getPostsIdsToDisplay: computed,
     });
   }
+
+  postsSetter(postsToAdd:IPost[]) {
+    const postsIds: string[] = [];
+    runInAction(() => {
+      this.postsCarrier = [...this.postsCarrier, ...postsToAdd].filter(
+        (el: IPost) => {
+          if (el.postId && postsIds.includes(el.postId)) {
+            return false;
+          } else {
+            el.postId && postsIds.push(el.postId);
+            return true;
+          }
+        }
+      );
+      this.posts = this.postsCarrier;
+    })
+  }
+
   async addPosts(post: IPost) {
     return createPost(post)
       .then((data) => {
@@ -46,50 +64,41 @@ export class PostsStore {
       .catch(() => console.error("Failed to fetch"));
   }
   async loadPostById(postId: string): Promise<IPost> {
-    const neededPostIndex = this.posts.findIndex(
-      (post) => post.postId === postId
-    );
-    const neededPostCarrierIndex = this.postsCarrier.findIndex(
-      (post) => post.postId === postId
+    const neededPostIdx = this.postsCarrier.findIndex(
+      (post: IPost) => post.postId === postId
     );
 
     if (
-      this.posts[neededPostIndex] &&
-      this.postsCarrier[neededPostCarrierIndex] &&
-      this.posts[neededPostIndex]?.content
+      this.postsCarrier[neededPostIdx] &&
+      this.postsCarrier[neededPostIdx]?.content?.length
     ) {
-      return this.posts[neededPostIndex];
+      return this.postsCarrier[neededPostIdx];
     }
 
-    if (
-      this.posts[neededPostIndex] &&
-      this.postsCarrier[neededPostCarrierIndex]
-    ) {
+    if (this.postsCarrier[neededPostIdx]) {
       return await getPostById(postId, true).then(
         (response: { postId: string; content: string }) => {
           if (response.postId !== postId) {
             throw new Error("PostId and response postId not the same");
           }
           runInAction(() => {
-            this.posts[neededPostIndex].content = response.content;
-
-            this.postsCarrier[neededPostCarrierIndex].content =
-              response.content;
+            this.postsCarrier[neededPostIdx] = {
+              ...this.postsCarrier[neededPostIdx],
+              content: response.content,
+            };
+            this.posts = [...this.postsCarrier];
           });
 
-          return this.posts[neededPostIndex];
+          return this.postsCarrier[neededPostIdx];
         }
       );
     }
 
     return await getPostById(postId, false).then((response: IPost) => {
-      console.log(response);
-
       if (response.postId !== postId) {
         throw new Error("PostId and response postId not the same");
       }
       runInAction(() => {
-        this.posts.push(response);
         this.postsCarrier.push(response);
       });
       return response;
@@ -99,11 +108,7 @@ export class PostsStore {
     const response = await fetchPosts(this.page);
     if (response.page === this.page) {
       this.page = this.page + 1;
-      runInAction(() => {
-        this.tagsInSearch = [];
-        this.postsCarrier = [...this.postsCarrier, ...response.data];
-        this.posts = [...this.posts, ...response.data];
-      });
+      this.postsSetter(response.data)
     }
     return response.data;
   }
@@ -210,17 +215,18 @@ export class PostsStore {
       this.posts = this.postsCarrier;
     });
   }
-  public async getPostById(id: string) {
+  public async getPostPreviewDataById(id: string) {
     //TODO
     const post = this.posts.find((post: IPost) => post.postId === id);
+
     if (!post) {
       const serverPost = await fetchPosts(1, id);
-      console.log(serverPost);
+      return serverPost.data[0];
     }
     return post;
   }
   public get getPostsIdsToDisplay() {
-    return toJS(this.posts).map((post: IPost) => post.postId);
+    return this.posts.map((post: IPost) => post.postId);
   }
   public get tagsInUse() {
     return toJS(this.tagsInSearch);

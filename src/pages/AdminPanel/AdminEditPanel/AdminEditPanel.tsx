@@ -8,7 +8,7 @@ import { v4 as uuid } from "uuid";
 export const AdminEditPanel = observer(() => {
   return (
     <div className={style.wrapper}>
-      {store.postStore.getPosts
+      {/* {store.postStore.getPostsIdsToDisplay
         .map((post: IPost) => {
           const id = uuid().slice(0, 8);
           return (
@@ -22,7 +22,7 @@ export const AdminEditPanel = observer(() => {
             </div>
           );
         })
-        .reverse()}
+        .reverse()} */}
     </div>
   );
 });

@@ -14,7 +14,8 @@ const LoadingLinkToHome: FC<{
   const logoTextInner = useRef<HTMLDivElement>(null);
   const logoBg = useRef<HTMLDivElement>(null);
 
-  const [isOpened, setIsOpened] = useState(false);
+  const isOpened = useRef<boolean>(false);
+  const [, reload] = useState(false);
 
   useEffect(() => {
     start(() => {
@@ -25,7 +26,10 @@ const LoadingLinkToHome: FC<{
           logoText.current.classList.add(style.panel__logo__text_open);
         logoTextInner.current &&
           logoTextInner.current.classList.add(style.panel__text__inner);
-        setTimeout(() => setIsOpened(true), durationMS);
+        setTimeout(() => {
+          isOpened.current = true;
+          reload(true);
+        }, durationMS);
       }, delay);
     });
 
@@ -55,32 +59,25 @@ const LoadingLinkToHome: FC<{
 
   return (
     <>
-      {linkTo && isOpened ? (
+      {linkTo && isOpened.current ? (
         <Link className={[className, style.wrapper].join(" ")} to={linkTo}>
           <div
-            // ref={logoBg}
             className={[
               style.panel__logo__bg,
               style["panel__logo__bg-static"],
             ].join(" ")}
           ></div>
           <div
-            // ref={logoText}
             className={[
               style.panel__logo__text,
               style["panel__logo__text-static"],
             ].join(" ")}
           >
-            <div
-              // ref={logoTextInner}
-              className={style["panel__text__inner-static"]}
-            >
-              {text}
-            </div>
+            <div className={style["panel__text__inner-static"]}>{text}</div>
           </div>
         </Link>
       ) : (
-        <div className={[className, style.wrapper].join(" ")}>
+        <div className={[className, style.wrapper, style.fadeIn].join(" ")}>
           <div ref={logoBg} className={style.panel__logo__bg}></div>
           <div ref={logoText} className={style.panel__logo__text}>
             <div ref={logoTextInner}>{text}</div>

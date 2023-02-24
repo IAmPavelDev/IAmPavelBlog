@@ -1,19 +1,28 @@
-export async function deletePost(postId: string) {
-  const myHeaders = new Headers();
-  myHeaders.append("Content-Type", "application/json");
-  myHeaders.append("Access-Control-Allow-Origin", "*");
-  myHeaders.append("Access-Control-Allow-Methods", "GET,POST,PUT,PATCH,DELETE");
+import sessionAuthorize from "../users/session-authorize";
 
-  const requestOptions: RequestInit = {
-    method: "DELETE",
-    headers: myHeaders,
-    redirect: "follow",
-    credentials: "include",
-  };
-  return fetch(
-    process.env.REACT_APP_SERVER_CONNECTION + "/posts/" + postId,
-    requestOptions
-  )
-    .then((response) => response.json())
-    .catch((error) => console.log("error", error));
+export async function deletePost(postId: string) {
+  if (await sessionAuthorize()) {
+    const myHeaders = new Headers();
+    myHeaders.append("Content-Type", "application/json");
+    myHeaders.append("Access-Control-Allow-Origin", "*");
+    myHeaders.append(
+      "Access-Control-Allow-Methods",
+      "GET,POST,PUT,PATCH,DELETE"
+    );
+
+    const requestOptions: RequestInit = {
+      method: "DELETE",
+      headers: myHeaders,
+      redirect: "follow",
+      credentials: "include",
+    };
+    return fetch(
+      process.env.REACT_APP_SERVER_CONNECTION + "/posts/" + postId,
+      requestOptions
+    )
+      .then((response) => response.json())
+      .catch((error) => console.log("error", error));
+  } else {
+    throw new Error("user unauthorized");
+  }
 }
