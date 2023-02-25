@@ -1,6 +1,11 @@
 import React, { FC, useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
+import { createContext } from "vm";
 import style from "./LoadingAnimationLogo.module.scss";
+
+
+// const LogoStartAnimation = createContext(null);
+
 
 const LoadingLinkToHome: FC<{
   className?: string;
@@ -77,7 +82,7 @@ const LoadingLinkToHome: FC<{
           </div>
         </Link>
       ) : (
-        <div className={[className, style.wrapper, style.fadeIn].join(" ")}>
+        <div className={[className, style.wrapper].join(" ")}>
           <div ref={logoBg} className={style.panel__logo__bg}></div>
           <div ref={logoText} className={style.panel__logo__text}>
             <div ref={logoTextInner}>{text}</div>

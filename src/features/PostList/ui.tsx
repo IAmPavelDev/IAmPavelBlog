@@ -19,12 +19,11 @@ const Wrapper: FC<{ page?: number }> = observer(() => {
 });
 
 export const PostList = () => {
-  const currentPage = useRef<number>(0);
+  const currentPage = useRef<number>(1);
 
   useEffect(() => {
     store.postStore
-      .loadPosts()
-      .then(() => (currentPage.current = store.postStore.getCurrentPage()));
+      .loadPosts(currentPage.current);
   });
 
   return <Wrapper page={currentPage.current} />;

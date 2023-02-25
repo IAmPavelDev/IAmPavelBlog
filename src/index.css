@@ -9,6 +9,18 @@ body {
   /*animation-fill-mode: both;*/
   /*opacity: 0;*/
 }
+
+body::-webkit-scrollbar {
+  width: 8px;
+  background-color: rgb(51, 51, 51);
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: rgb(171, 171, 171);
+  border-radius: 5px;
+}
+
+
 @keyframes fromFade {
   to {
     opacity: 1;

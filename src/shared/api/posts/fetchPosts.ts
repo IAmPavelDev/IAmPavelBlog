@@ -15,6 +15,9 @@ export async function fetchPosts(
       "GET,POST,PUT,PATCH,DELETE"
     );
 
+    console.log(page);
+    
+
     const requestOptions: RequestInit = {
       method: "GET",
       headers: myHeaders,

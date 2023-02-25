@@ -1,14 +1,19 @@
-import React, { useEffect } from "react";
+import React, { lazy, Suspense, useEffect } from "react";
 import { withProviders } from "./providers";
+import { LoadingBadgeForGlobalSuspense } from "../shared/ui/LoadingBadgeForGloabalSuspense";
 
-import { Routing } from "pages";
+const Routing = lazy(() =>
+  import("pages").then((module) => ({ default: module.Routing }))
+);
 
 const App = () => {
-  // useEffect(() => {
-  //   return () => localStorage.removeItem("sessionAuth");
-  // })
-
-  return <div className="app">{<Routing />}</div>;
+  return (
+    <div className="app">
+      <Suspense fallback={<LoadingBadgeForGlobalSuspense text={"pt-blog"} />}>
+        {<Routing />}
+      </Suspense>
+    </div>
+  );
 };
 
 export default withProviders(App);

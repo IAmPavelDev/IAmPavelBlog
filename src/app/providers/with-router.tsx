@@ -5,7 +5,7 @@ export const withRouter = (component: () => ReactNode) => () =>
   (
     <BrowserRouter>
       <Suspense
-      // fallback={<Spin delay={300} className="overlay" size="large" />} //TODO
+      fallback={<div>Loading...</div>} //TODO
       >
         {component()}
       </Suspense>

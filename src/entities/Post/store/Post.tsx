@@ -24,7 +24,7 @@ export class PostsStore {
   posts: IPost[] = [];
   postsCarrier: IPost[] = [];
   tagsInSearch: ITag[] = [];
-  page: number = 1;
+  lastLoadedPage: number = 0;
   constructor() {
     makeObservable(this, {
       posts: observable,
@@ -37,7 +37,7 @@ export class PostsStore {
     });
   }
 
-  postsSetter(postsToAdd:IPost[]) {
+  postsSetter(postsToAdd: IPost[]) {
     const postsIds: string[] = [];
     runInAction(() => {
       this.postsCarrier = [...this.postsCarrier, ...postsToAdd].filter(
@@ -51,7 +51,7 @@ export class PostsStore {
         }
       );
       this.posts = this.postsCarrier;
-    })
+    });
   }
 
   async addPosts(post: IPost) {
@@ -104,17 +104,21 @@ export class PostsStore {
       return response;
     });
   }
-  async loadPosts() {
-    const response = await fetchPosts(this.page);
-    if (response.page === this.page) {
-      this.page = this.page + 1;
-      this.postsSetter(response.data)
+  async loadPosts(page: number) {
+    console.log(page, this.lastLoadedPage);
+
+    if (page > this.lastLoadedPage) {
+      const response = await fetchPosts(page);
+      if (response.page === page) {
+        this.lastLoadedPage = this.lastLoadedPage + 1;
+        this.postsSetter(response.data);
+      }
+      return response.data;
     }
-    return response.data;
   }
 
   getCurrentPage() {
-    return this.page;
+    return this.lastLoadedPage;
   }
   async searchPost(data: string, type: string) {
     const runTagsSearch = (collectionToSearch?: IPost[]) =>
@@ -128,7 +132,11 @@ export class PostsStore {
       return;
     }
     const localFinded = LocalSearch(this.postsCarrier, data, type);
-    const restOfFindedOnServer = await fetchPosts(this.page, data, type);
+    const restOfFindedOnServer = await fetchPosts(
+      this.lastLoadedPage,
+      data,
+      type
+    );
 
     runInAction(() => {
       if (restOfFindedOnServer)
