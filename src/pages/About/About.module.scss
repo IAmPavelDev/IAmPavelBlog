@@ -1,0 +1,8 @@
+@import "/src/shared/style/vars.scss";
+
+.wrapper {
+    background-color: $darkColor;
+    display: flex;
+    justify-content: center;
+    height: 300dvh;
+}

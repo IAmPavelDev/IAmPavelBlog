@@ -1,4 +1,4 @@
-import React, { lazy, Suspense, useEffect } from "react";
+import React, { lazy, Suspense } from "react";
 import { withProviders } from "./providers";
 import { LoadingBadgeForGlobalSuspense } from "../shared/ui/LoadingBadgeForGloabalSuspense";
 

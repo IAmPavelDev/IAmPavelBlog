@@ -1,6 +1,6 @@
 import React, { FC, useState } from "react";
 import styled from "styled-components";
-import "shared/fonts/Hack_Font_Family_(Fontmirror)/Hack Regular 400.ttf";
+// import "shared/fonts/Hack_Font_Family_(Fontmirror)/Hack Regular 400.ttf";
 
 const Container = styled.div`
   display: flex;

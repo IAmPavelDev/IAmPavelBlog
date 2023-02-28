@@ -118,7 +118,7 @@ export const Head: FC<{}> = () => {
               <Button isSelected={locate.pathname === "/"}>Home</Button>
             </Link>
             <Link className={style.panel__route} to={"/about"}>
-              <Button isSelected={locate.pathname === "/about"}>About</Button>
+              <Button isSelected={locate.pathname === "/about"}>About me</Button>
             </Link>
             <p className={style.panel__spacer}>|</p>
             <a

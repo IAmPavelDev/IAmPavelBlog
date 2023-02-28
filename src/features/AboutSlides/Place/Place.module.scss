@@ -1,0 +1,47 @@
+@import "/src/shared/style/vars.scss";
+
+.wrapper {
+    height: calc(100dvh - 60px);
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    max-width: 1700px;
+    width: 100%;
+    position: fixed;
+    .wrapper__left {
+        background-image: url("assets/Ukraine.webp");
+        background-repeat: no-repeat;
+        background-size: cover;
+        background-position: right;
+        width: 65vw;
+        height: 90%;
+        -webkit-box-shadow: inset 11px 0px min(8vw, 200px) min(9vw, 200px) rgba(51, 51, 51, 1);
+        -moz-box-shadow: inset 11px 0px min(8vw, 200px) min(9vw, 200px) rgba(51, 51, 51, 1);
+        box-shadow: inset 11px 0px min(8vw, 200px) min(9vw, 200px) rgba(51, 51, 51, 1);
+    }
+
+    .wrapper__right {
+        width: 30vw;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: min(2rem, 10vw);
+        font-weight: 800;
+        color: white;
+        text-align: center;
+        padding-right: 5vw;
+    }
+    @media (max-width: 1000px) {
+        & {
+            flex-direction: column;
+            .wrapper__left {
+                width: 90vw;
+                height: min(120vw, 70dvh);
+            }
+            .wrapper__right {
+                width: 80vw;
+            }
+        }
+    }
+}
