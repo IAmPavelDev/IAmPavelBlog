@@ -1,0 +1,45 @@
+@import "/src/shared/style/vars.scss";
+
+.wrapper {
+    height: calc(100dvh - 60px);
+    opacity: 0.9;
+    width: 100vw;
+    background-color: $darkColor;
+    position: fixed;
+    transform: translateY(110%) scale(1.2);
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    .wrapper__content {
+        width: 100vw;
+        height: 100%;
+        position: absolute;
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+        justify-content: center;
+        align-items: center;
+        font-size: min(3rem, 10vw);
+        font-weight: 800;
+        color: white;
+        text-align: center;
+        padding-left: 5vw;
+        background-color: rgba(51, 51, 51, 0.4);
+        span {
+            font-size: min(1.5rem, 10vw);
+            font-weight: 700;
+        }
+    }
+    .wrapper__bg {
+        width: 100vw;
+        height: 100%;
+        video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border: none;
+            outline: none;
+        }
+    }
+}

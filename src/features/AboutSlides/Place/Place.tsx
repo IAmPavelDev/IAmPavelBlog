@@ -4,9 +4,8 @@ import { useEffect, useRef } from "react";
 export const Place = () => {
   const first = useRef<HTMLDivElement>(null);
   useEffect(() => {
-    window.addEventListener("scroll", (e) => {
-      console.log(window.scrollY);
-      if (first.current) {
+    window.addEventListener("scroll", () => {
+      if (first.current && window.scrollY < 990) {
         first.current.style.transform =
           "scale(" + (1000 - window.scrollY) / 1000 + ")";
       }
