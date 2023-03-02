@@ -2,7 +2,22 @@
 
 .wrapper {
     background-color: $darkColor;
-    display: flex;
-    justify-content: center;
     height: 300dvh;
+    position: relative;
+    .wrapper__slides {
+        height: calc(100dvh - 51px);
+        width: 100vw;
+        position: fixed;
+        display: block;
+        z-index: 0;
+        .slides__xp {
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 100%;
+            width: 100%;
+            transform: translateY(110%) scale(1.2);
+            z-index: 1;
+        }
+    }
 }
