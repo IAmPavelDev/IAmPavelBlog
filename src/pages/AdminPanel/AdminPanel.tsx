@@ -8,9 +8,6 @@ import AdminCreateForm from "./AdminCreateForm/AdminCreateForm";
 
 export const AdminPanel = () => {
   const [isLoggedIn, setIsLoggedIn] = useState<Boolean>(false);
-  useEffect(() => {
-    store.postStore.loadPosts();
-  });
   
   return isLoggedIn ? (
     <>

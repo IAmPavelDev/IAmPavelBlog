@@ -37,7 +37,7 @@ const CompleteEditor: FC<{ setContentData: (data: string) => void }> = ({
 
   return (
     <div>
-      <JoditReact config={config} onChange={(e: string) => setContentData(e)} />
+      {/* <JoditReact config={config} onChange={(e: string) => setContentData(e)} /> */}
     </div>
   );
 };
