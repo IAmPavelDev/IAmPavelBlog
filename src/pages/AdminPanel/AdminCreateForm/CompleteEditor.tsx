@@ -1,5 +1,4 @@
 import React, { FC } from "react";
-import JoditReact from "jodit-react-ts";
 import "jodit/build/jodit.min.css";
 
 const CompleteEditor: FC<{ setContentData: (data: string) => void }> = ({
