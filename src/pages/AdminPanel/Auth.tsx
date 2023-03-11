@@ -56,7 +56,6 @@ const Auth: FC<{ loggedIn: () => void }> = ({ loggedIn }) => {
 
   const loginInvoker = (data?: AdminLogin) => {
     login(data).then((result) => {
-      console.log(result?.status);
       if (result?.status === 200) {
         setTokenRefresh();
         loggedIn();

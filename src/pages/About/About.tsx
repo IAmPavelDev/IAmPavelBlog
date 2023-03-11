@@ -1,5 +1,5 @@
 import { Slide } from "features/AboutSlide";
-import { CSSProperties, useEffect, useRef } from "react";
+import { CSSProperties, useEffect, useRef, useState } from "react";
 import style from "./About.module.scss";
 
 import { ReactComponent as MobX } from "./TecIcons/Mobx-icon.svg";
@@ -18,6 +18,7 @@ export const About = () => {
   const place = useRef<HTMLDivElement>(null);
   const xp = useRef<HTMLDivElement>(null);
   const tec = useRef<HTMLDivElement>(null);
+  const [activeSlides, setActiveSlides] = useState<Number[]>([1]);
 
   useEffect(() => {
     window.addEventListener("scroll", () => {
@@ -31,6 +32,19 @@ export const About = () => {
             xp.current.style.transform = `translateY(${
               (1200 - window.scrollY) / 10
             }%) scale(${-0.000209 * window.scrollY + 1.25})`;
+            if (
+              Y < 300
+            ) {
+              setActiveSlides([1]);
+            } else if (
+              Y >= 300 && Y <= 750
+            ) {
+              setActiveSlides([1, 2]);
+            } else if (
+              Y > 750
+            ) {
+              setActiveSlides([2]);
+            }
             break;
           }
           case Y >= 1200 && Y <= 1250: {
@@ -63,6 +77,7 @@ export const About = () => {
           <Slide
             MainText="Hi, I'm Paul Tkachenko, frontend developer from Odesa, Ukraine."
             videoLink="/assets/Ukraine.mp4"
+            active={activeSlides.includes(1)}
           />
         </div>
         <div ref={xp} className={style.slides__xp}>
@@ -70,6 +85,7 @@ export const About = () => {
             MainText="I started programming for myself a year ago"
             SubText="On background you can see one of my projects"
             videoLink="/assets/gosurf.mp4"
+            active={activeSlides.includes(2)}
           />
         </div>
         <div ref={tec} className={style.slides__tecs}>

@@ -1,14 +1,31 @@
-import { useRef, FC } from "react";
+import { useRef, FC, useEffect } from "react";
 import style from "./Slide.module.scss";
+import { ClimbingBoxLoader } from "react-spinners";
 
 export const Slide: FC<{
   MainText: string;
   SubText?: string;
   videoLink: string;
-}> = ({ MainText, SubText, videoLink }) => {
-
+  active: boolean;
+}> = ({ MainText, SubText, videoLink, active }) => {
   /*y = -0.000209 * x + 1.25 func for moving scale from 1.2 to 1 
   with scrolling from 100 to 1200 pixels */
+
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const videoLastPlayedTime = useRef<number>(0);
+
+  useEffect(() => {
+    if (videoRef.current) {
+      if (active) {
+        videoRef.current.currentTime = videoLastPlayedTime.current;
+        videoRef.current.play();
+      } else {
+        videoRef.current.pause();
+        videoLastPlayedTime.current = videoRef.current.currentTime;
+        videoRef.current.currentTime = 0;
+      }
+    }
+  });
 
   return (
     <div className={style.wrapper}>
@@ -24,7 +41,15 @@ export const Slide: FC<{
         )}
       </div>
       <div className={style.wrapper__bg}>
-        <video autoPlay muted loop playsInline poster="https://mir-s3-cdn-cf.behance.net/project_modules/disp/04de2e31234507.564a1d23645bf.gif" disablePictureInPicture src={videoLink} />
+        <video
+          muted
+          preload="metadata"
+          loop
+          playsInline
+          disablePictureInPicture
+          src={videoLink}
+          ref={videoRef}
+        />
       </div>
     </div>
   );

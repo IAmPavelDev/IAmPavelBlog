@@ -2,9 +2,10 @@ import React, { FC, useEffect, useRef, useState } from "react";
 import style from "./Head.module.scss";
 import { Link, useLocation } from "react-router-dom";
 
-import { AiFillGithub } from "react-icons/ai";
-import { FaTelegramPlane, FaSearch } from "react-icons/fa";
-import { MdArrowForwardIos } from "react-icons/md";
+import { ReactComponent as AiFillGithub } from "/public/icons/AiFillGithub.svg";
+import { ReactComponent as MdArrowForwardIos } from "/public/icons/MdArrowForwardIos.svg";
+import { ReactComponent as FaTelegramPlane } from "/public/icons/FaTelegramPlane.svg";
+import { ReactComponent as FaSearch } from "/public/icons/FaSearch.svg";
 
 import Button from "./Button";
 import StandWithUkr from "./StandWithUkraineBadge";
@@ -19,14 +20,14 @@ const PanelShifter = (panel: HTMLDivElement) => {
   }
 };
 
-const useHideMobilePanelActuator = (
+function useHideMobilePanelActuator(
   hideSetState: (isDisplayed: boolean) => void,
   durationMS: number,
   toHideAnimationClass: string,
   toShowAnimationClass: string,
   toHideStatic: string,
   toShowStatic: string
-) => {
+) {
   return (
     menuPanelElement: HTMLDivElement | null,
     mode: "hide" | "display"

@@ -1,12 +1,19 @@
 import React, { lazy } from "react";
 import { Routes, Route } from "react-router";
-import { Home } from "./Home";
-import { PostPage } from "./PostPage";
 import { Head } from "../features/Head";
+
+const Home = lazy(() =>
+  import("./Home").then((module) => ({ default: module.Home }))
+);
 const AdminPanel = lazy(() =>
   import("./AdminPanel").then((module) => ({ default: module.AdminPanel }))
 );
-import { About } from "./About";
+const  PostPage = lazy(() =>
+import("./PostPage").then((module) => ({ default: module.PostPage }))
+);
+const About = lazy(() =>
+import("./About").then((module) => ({ default: module.About }))
+);
 
 export const Routing = () => {
   return (

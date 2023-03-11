@@ -24,8 +24,6 @@ export default async function sessionAuthorize() {
     )
       .then((response) => response.json())
       .then((res) => {
-        console.log(res);
-
         if (res.status === "success") {
           localStorage.setItem("sessionAuth", res.status);
           return true;
