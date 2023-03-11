@@ -105,8 +105,6 @@ export class PostsStore {
     });
   }
   async loadPosts(page: number) {
-    console.log(page, this.lastLoadedPage);
-
     if (page > this.lastLoadedPage) {
       const response = await fetchPosts(page);
       if (response.page === page) {

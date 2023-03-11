@@ -3,16 +3,16 @@ type loginData = {
   password: string;
 };
 
-export async function login(loginData: loginData) {
+export async function login(loginData?: loginData) {
   const myHeaders = new Headers();
   myHeaders.append("Content-Type", "application/json");
   myHeaders.append("Access-Control-Allow-Origin", "*");
   myHeaders.append("Access-Control-Allow-Methods", "GET,POST,PUT,PATCH,DELETE");
 
-  const raw = JSON.stringify({
+  const raw = loginData ? JSON.stringify({
     username: loginData.login,
     password: loginData.password,
-  });
+  }) : null;
 
   const requestOptions: RequestInit = {
     method: "POST",

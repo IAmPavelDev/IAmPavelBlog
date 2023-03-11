@@ -3,7 +3,9 @@ import { Routes, Route } from "react-router";
 import { Home } from "./Home";
 import { PostPage } from "./PostPage";
 import { Head } from "../features/Head";
-const AdminPanel = lazy(() => import("./AdminPanel"));
+const AdminPanel = lazy(() =>
+  import("./AdminPanel").then((module) => ({ default: module.AdminPanel }))
+);
 import { About } from "./About";
 
 export const Routing = () => {

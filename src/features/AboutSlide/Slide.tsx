@@ -24,7 +24,7 @@ export const Slide: FC<{
         )}
       </div>
       <div className={style.wrapper__bg}>
-        <video autoPlay muted loop src={videoLink} />
+        <video autoPlay muted loop playsInline poster="https://mir-s3-cdn-cf.behance.net/project_modules/disp/04de2e31234507.564a1d23645bf.gif" disablePictureInPicture src={videoLink} />
       </div>
     </div>
   );

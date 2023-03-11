@@ -8,4 +8,5 @@ export interface IUpdatePost {
   creationDate?: Date;
   postId?: string;
   previewImage?: string;
+  previewImagePlaceholder?: string;
 }

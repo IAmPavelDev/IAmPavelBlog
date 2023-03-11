@@ -15,7 +15,6 @@ import DateCard from "shared/ui/DateCard";
 import { ITag } from "shared/types/ITag";
 import { LazyLoadImage } from "react-lazy-load-image-component";
 import "react-lazy-load-image-component/src/effects/blur.css";
-import {IFetchData} from "../../shared/types";
 
 const Slide: FC<{
   postId?: string;
@@ -47,9 +46,8 @@ const Slide: FC<{
         <LazyLoadImage
           src={postDataState.previewImage}
           alt="background"
-          effect="opacity"
           className={style.img}
-          placeholderSrc={"/placeholder-image.jpg"}
+          placeholderSrc={postDataState.previewImagePlaceholder}
         />
       </div>
       <div className={style.slide__content}>
