@@ -1,4 +1,4 @@
-import { useRef, FC, useEffect } from "react";
+import { useRef, FC, useEffect, memo } from "react";
 import style from "./Slide.module.scss";
 import { ClimbingBoxLoader } from "react-spinners";
 
@@ -7,7 +7,7 @@ export const Slide: FC<{
   SubText?: string;
   videoLink: string;
   active: boolean;
-}> = ({ MainText, SubText, videoLink, active }) => {
+}> = memo(({ MainText, SubText, videoLink, active }) => {
   /*y = -0.000209 * x + 1.25 func for moving scale from 1.2 to 1 
   with scrolling from 100 to 1200 pixels */
 
@@ -53,4 +53,4 @@ export const Slide: FC<{
       </div>
     </div>
   );
-};
+});

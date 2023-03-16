@@ -2,10 +2,10 @@ import React, { FC, useEffect, useRef, useState } from "react";
 import style from "./Head.module.scss";
 import { Link, useLocation } from "react-router-dom";
 
-import { ReactComponent as AiFillGithub } from "/public/icons/AiFillGithub.svg";
-import { ReactComponent as MdArrowForwardIos } from "/public/icons/MdArrowForwardIos.svg";
-import { ReactComponent as FaTelegramPlane } from "/public/icons/FaTelegramPlane.svg";
-import { ReactComponent as FaSearch } from "/public/icons/FaSearch.svg";
+import { ReactComponent as AiFillGithub } from "shared/icons/AiFillGithub.svg";
+import { ReactComponent as MdArrowForwardIos } from "shared/icons/MdArrowForwardIos.svg";
+import { ReactComponent as FaTelegramPlane } from "shared/icons/FaTelegramPlane.svg";
+import { ReactComponent as FaSearch } from "shared/icons/FaSearch.svg";
 
 import Button from "./Button";
 import StandWithUkr from "./StandWithUkraineBadge";

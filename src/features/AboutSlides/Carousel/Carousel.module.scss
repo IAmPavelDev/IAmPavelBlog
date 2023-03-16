@@ -1,0 +1,60 @@
+@use "sass:math";
+@import "/src/shared/style/vars.scss";
+
+.sliderContainer {
+  transform-style: preserve-3d;
+  transform: rotateX(-10deg);
+}
+.tecs__props {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100vw;
+  height: 100dvh;
+  position: absolute;
+  transform-style: preserve-3d;
+  box-sizing: border-box;
+  transform: rotateY(-360deg) translateZ(-412px);
+  animation: swirl 40s steps(10000, end) infinite;
+  user-select: none;
+  @keyframes swirl {
+    from {
+      transform: rotateY(-360deg);
+    }
+    to {
+      transform: rotateY(0deg);
+    }
+  }
+  .props__prop {
+    width: min(100px, 14vw);
+    height: min(100px, 14vw);
+    position: absolute;
+    transform: rotateY(calc(32.72deg * calc(var(--idx) - 1)))
+      translateZ(min(45vw, 500px));
+  }
+  .props__prop svg,
+  img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transform-style: preserve-3d;
+    cursor: pointer;
+    -webkit-box-reflect: below 10px
+      linear-gradient(transparent, transparent, rgba(51, 51, 51, 0.2));
+  }
+}
+.info {
+  width: calc(100vw - 60px);
+  padding: 0 30px;
+  position: absolute;
+  top: 20%;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: min(3rem, max(1.5rem, 3vw));
+  color: white;
+  font-weight: 800;
+  text-align: center;
+}
