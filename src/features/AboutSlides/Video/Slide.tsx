@@ -1,13 +1,13 @@
 import { useRef, FC, useEffect, memo } from "react";
 import style from "./Slide.module.scss";
-import { ClimbingBoxLoader } from "react-spinners";
 
 export const Slide: FC<{
   MainText: string;
   SubText?: string;
-  videoLink: string;
+  src: string;
+  placeholder: string;
   active: boolean;
-}> = memo(({ MainText, SubText, videoLink, active }) => {
+}> = memo(({ MainText, SubText, src, active, placeholder }) => {
   /*y = -0.000209 * x + 1.25 func for moving scale from 1.2 to 1 
   with scrolling from 100 to 1200 pixels */
 
@@ -43,11 +43,12 @@ export const Slide: FC<{
       <div className={style.wrapper__bg}>
         <video
           muted
-          preload="metadata"
+          preload="auto" //starting load entire video with page
           loop
           playsInline
           disablePictureInPicture
-          src={videoLink}
+          src={src}
+          poster={placeholder}
           ref={videoRef}
         />
       </div>

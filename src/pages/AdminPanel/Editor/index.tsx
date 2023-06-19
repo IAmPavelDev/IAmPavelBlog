@@ -1,3 +1,3 @@
-import Editor from "./Editor";
+import EditorSetUp from "./Editor";
 
-export default Editor;
+export default EditorSetUp;

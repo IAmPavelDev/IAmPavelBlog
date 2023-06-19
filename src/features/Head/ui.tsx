@@ -58,7 +58,7 @@ function useHideMobilePanelActuator(
       }, durationMS);
     }
   };
-};
+}
 
 export const Head: FC<{}> = () => {
   const locate = useLocation();
@@ -112,6 +112,7 @@ export const Head: FC<{}> = () => {
           }}
           linkTo="/"
           durationMS={1200}
+          delay={1000}
         />
         {isDesktop ? (
           <div className={style.panel__right}>
@@ -119,7 +120,9 @@ export const Head: FC<{}> = () => {
               <Button isSelected={locate.pathname === "/"}>Home</Button>
             </Link>
             <Link className={style.panel__route} to={"/about"}>
-              <Button isSelected={locate.pathname === "/about"}>About me</Button>
+              <Button isSelected={locate.pathname === "/about"}>
+                About me
+              </Button>
             </Link>
             <p className={style.panel__spacer}>|</p>
             <a

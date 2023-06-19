@@ -9,6 +9,7 @@ import * as DOMPurify from "dompurify";
 // import { useSpring } from "@react-spring/web";
 import { dateToValidString } from "../../shared/tools/dateToValidString";
 import { AiOutlineDislike, AiOutlineEye, AiOutlineLike } from "react-icons/ai";
+import { motion } from "framer-motion";
 
 export const PostPage = () => {
   const [data, setData] = useState<IPost | null>(null);
@@ -36,7 +37,12 @@ export const PostPage = () => {
     return <>Loading...</>;
   }
   return (
-    <div className={style.wrapper}>
+    <motion.div
+      className={style.wrapper}
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+    >
       <div className={style.wrapper__head}>
         <img className={style.head__image} src={data.previewImage} alt="" />
         <div className={style.head__mask}></div>
@@ -72,9 +78,12 @@ export const PostPage = () => {
               )}
             />
           </div>
-          <div className={style.wrapper__ctl__views}><AiOutlineEye />200</div>
+          <div className={style.wrapper__ctl__views}>
+            <AiOutlineEye />
+            200
+          </div>
         </div>
       </div>
-    </div>
+    </motion.div>
   );
 };

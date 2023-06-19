@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import style from "./About.module.scss";
 import { VideoSlide, Carousel } from "features/AboutSlides";
+import { motion } from "framer-motion";
 
 export const About = () => {
   const place = useRef<HTMLDivElement>(null);
@@ -73,12 +74,18 @@ export const About = () => {
   }, [window]);
 
   return (
-    <div className={style.wrapper}>
+    <motion.div
+      className={style.wrapper}
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+    >
       <div className={style.wrapper__slides}>
         <div ref={place} className={style.slides__place}>
           <VideoSlide
             MainText="Hi, I'm Paul Tkachenko, frontend developer from Odesa, Ukraine."
-            videoLink="/assets/Ukraine.mp4"
+            src="/assets/Ukraine.mp4"
+            placeholder="/assets/ukraine_placeholder.jpg"
             active={activeSlides[0]}
           />
         </div>
@@ -86,7 +93,8 @@ export const About = () => {
           <VideoSlide
             MainText="I started programming for myself a year ago"
             SubText="On background you can see one of my projects"
-            videoLink="/assets/gosurf.mp4"
+            src="/assets/gosurf.mp4"
+            placeholder="/assets/gosurf_placeholder.png"
             active={activeSlides[1]}
           />
         </div>
@@ -94,6 +102,6 @@ export const About = () => {
           <Carousel />
         </div>
       </div>
-    </div>
+    </motion.div>
   );
 };

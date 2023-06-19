@@ -5,6 +5,8 @@ $whiteColor: rgba(229, 229, 229, 1);
     height: calc(100vh - 50px);
     .wrapper__slider__slide {
       position: relative;
+      max-width: 100vw;
+      overflow: hidden;
       .slide__image__back {
         .img {
           width: 100vw;

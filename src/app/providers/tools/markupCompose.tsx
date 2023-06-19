@@ -1,14 +1,16 @@
-import { ReactNode } from "react";
-const compose =
-  (...wrappers: ((component: () => ReactNode) => () => JSX.Element)[]) =>
-  (appComponent: () => JSX.Element) =>
-    wrappers.reduceRight(
+function compose(
+  ...wrappers: ((component: () => JSX.Element) => () => JSX.Element)[]
+) {
+  return function (appComponent: () => JSX.Element) {
+    return wrappers.reduceRight(
       (
         appComponentAcc: () => JSX.Element,
-        wrapper: (component: () => ReactNode) => () => JSX.Element
+        wrapper: (component: () => JSX.Element) => () => JSX.Element
       ) => {
         return wrapper(appComponentAcc);
       },
       appComponent
     );
+  };
+}
 export default compose;

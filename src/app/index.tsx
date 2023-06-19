@@ -1,19 +1,9 @@
-import React, { lazy, Suspense } from "react";
+import React, { lazy } from "react";
 import { withProviders } from "./providers";
-import { LoadingBadgeForGlobalSuspense } from "../shared/ui/LoadingBadgeForGloabalSuspense";
-
 const Routing = lazy(() =>
   import("pages").then((module) => ({ default: module.Routing }))
 );
 
-const App = () => {
-  return (
-    <div className="app">
-      <Suspense fallback={<LoadingBadgeForGlobalSuspense text={"pt-blog"} />}>
-        {<Routing />}
-      </Suspense>
-    </div>
-  );
-};
+const App = () => <div className="app">{<Routing />}</div>;
 
 export default withProviders(App);

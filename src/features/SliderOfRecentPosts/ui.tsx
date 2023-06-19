@@ -43,11 +43,17 @@ const Slide: FC<{
     <div className={style.wrapper__slider__slide}>
       <div className={style.slide__image__back}>
         <div className={style.mask} />
+        {/*<img*/}
+        {/*  src={postDataState.previewImage}*/}
+        {/*  alt="background"*/}
+        {/*  className={style.img}*/}
+        {/*/>*/}
         <LazyLoadImage
           src={postDataState.previewImage}
           alt="background"
           className={style.img}
           placeholderSrc={postDataState.previewImagePlaceholder}
+          effect="opacity"
         />
       </div>
       <div className={style.slide__content}>
