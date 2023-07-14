@@ -32,7 +32,7 @@ const PostPreview: FC<{
     return <></>;
   }
   return (
-    <Link to={"/post/" + postId} className={style.preview}>
+    <div className={style.preview}>
       <div className={style.preview__image}>
         <LazyLoadImage
           src={postDataState.previewImage}
@@ -45,7 +45,7 @@ const PostPreview: FC<{
         <div className={style.preview__image__tags}>
           {postDataState.tags?.slice(0, 3).map((tag: ITag) => (
             <div key={tag.id} className={style.tags__tag}>
-              <TagCard type="light" text={tag.tagWord} />
+              <TagCard type="light" text={tag.content} />
             </div>
           ))}
         </div>
@@ -60,7 +60,7 @@ const PostPreview: FC<{
       <div className={style.preview__text}>
         {postDataState.preview.split("").slice(0, 150).join("")}
       </div>
-    </Link>
+    </div>
   );
 };
 

@@ -43,11 +43,6 @@ const Slide: FC<{
     <div className={style.wrapper__slider__slide}>
       <div className={style.slide__image__back}>
         <div className={style.mask} />
-        {/*<img*/}
-        {/*  src={postDataState.previewImage}*/}
-        {/*  alt="background"*/}
-        {/*  className={style.img}*/}
-        {/*/>*/}
         <LazyLoadImage
           src={postDataState.previewImage}
           alt="background"
@@ -60,7 +55,7 @@ const Slide: FC<{
         <div className={style.slide__content__tags}>
           {postDataState.tags?.slice(0, 3).map((tag: ITag) => (
             <div key={tag.id}>
-              <TagCard type="light" text={tag.tagWord} />
+              <TagCard type="light" text={tag.content} />
             </div>
           ))}
         </div>

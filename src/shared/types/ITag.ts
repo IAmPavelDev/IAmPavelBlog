@@ -1,4 +1,5 @@
 export interface ITag {
-  tagWord: string;
+  content: string;
   id: string;
+  postsIds: string[];
 }

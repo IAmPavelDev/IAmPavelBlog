@@ -4,7 +4,7 @@ export interface IPost {
   title: string;
   content?: string;
   preview: string;
-  tags?: Array<ITag>;
+  tags: Array<ITag>;
   creationDate?: Date;
   postId?: string;
   previewImage: string;

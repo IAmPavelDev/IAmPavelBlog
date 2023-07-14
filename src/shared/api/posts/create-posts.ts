@@ -1,7 +1,7 @@
 import { IPost } from "shared/types";
 import sessionAuthorize from "../users/session-authorize";
 
-export async function createPost(postData: IPost) {
+export async function createPost(postData: IPost): Promise<IPost> {
   if (await sessionAuthorize()) {
     var myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");

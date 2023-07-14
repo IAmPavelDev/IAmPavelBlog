@@ -7,7 +7,7 @@ import { ReactComponent as MdArrowForwardIos } from "shared/icons/MdArrowForward
 import { ReactComponent as FaTelegramPlane } from "shared/icons/FaTelegramPlane.svg";
 import { ReactComponent as FaSearch } from "shared/icons/FaSearch.svg";
 
-import Button from "./Button";
+import MenuLink from "./MenuLink";
 import StandWithUkr from "./StandWithUkraineBadge";
 import LoadingLinkToHome from "./LoadingAnimationToLogo";
 
@@ -106,7 +106,7 @@ export const Head: FC<{}> = () => {
       </div>
       <div className={style.wrapper__panel} ref={panel}>
         <LoadingLinkToHome
-          text="PT-BLOG"
+          text="IAmPaul"
           start={(startCallBack) => {
             logoAnimationStart = startCallBack;
           }}
@@ -117,12 +117,12 @@ export const Head: FC<{}> = () => {
         {isDesktop ? (
           <div className={style.panel__right}>
             <Link className={style.panel__route} to={"/"}>
-              <Button isSelected={locate.pathname === "/"}>Home</Button>
+              <MenuLink isSelected={locate.pathname === "/"}>Home</MenuLink>
             </Link>
             <Link className={style.panel__route} to={"/about"}>
-              <Button isSelected={locate.pathname === "/about"}>
+              <MenuLink isSelected={locate.pathname === "/about"}>
                 About me
-              </Button>
+              </MenuLink>
             </Link>
             <p className={style.panel__spacer}>|</p>
             <a
@@ -163,18 +163,20 @@ export const Head: FC<{}> = () => {
                   </div>
                   <div className={style.mobile__menu__routes}>
                     <Link className={style.route} to={"/"}>
-                      <Button isSelected={locate.pathname === "/"}>Home</Button>
+                      <MenuLink isSelected={locate.pathname === "/"}>
+                        Home
+                      </MenuLink>
                     </Link>
                     <Link className={style.route} to={"/about"}>
-                      <Button isSelected={locate.pathname === "/about"}>
+                      <MenuLink isSelected={locate.pathname === "/about"}>
                         About
-                      </Button>
+                      </MenuLink>
                     </Link>
                     <hr />
                     <Link className={style.route} to={"/about"}>
-                      <Button isSelected={locate.pathname === "/search"}>
+                      <MenuLink isSelected={locate.pathname === "/search"}>
                         Search
-                      </Button>
+                      </MenuLink>
                     </Link>
                   </div>
                   <div className={style.mobile__menu__links}>

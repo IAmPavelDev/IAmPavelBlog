@@ -21,12 +21,14 @@ import {
 } from "mobx";
 
 export class PostsStore {
+  newCreatedPost: IPost | null = null;
   posts: IPost[] = [];
   postsCarrier: IPost[] = [];
   tagsInSearch: ITag[] = [];
   lastLoadedPage: number = 0;
   constructor() {
     makeObservable(this, {
+      newCreatedPost: observable,
       posts: observable,
       tagsInSearch: observable,
       addPosts: action,
@@ -51,6 +53,13 @@ export class PostsStore {
         }
       );
       this.posts = this.postsCarrier;
+    });
+  }
+
+  adminNewPostSet(newPost: IPost) {
+    console.log(newPost);
+    runInAction(() => {
+      this.newCreatedPost = newPost;
     });
   }
 
@@ -95,6 +104,7 @@ export class PostsStore {
     }
 
     return await getPostById(postId, false).then((response: IPost) => {
+      console.log(postId, response.postId);
       if (response.postId !== postId) {
         throw new Error("PostId and response postId not the same");
       }
@@ -164,7 +174,7 @@ export class PostsStore {
     if (postsWithNeededTag?.length) {
       if (
         !this.tagsInSearch.find(
-          (tagExisted: ITag) => tag.tagWord === tagExisted.tagWord
+          (tagExisted: ITag) => tag.content === tagExisted.content
         )
       ) {
         this.tagsInSearch.push(tag);
@@ -205,7 +215,7 @@ export class PostsStore {
   deleteTagInUse(tag: string) {
     const tagsForSearch: ITag[] = this.tagsInSearch.filter(
       (tagInSearch: ITag) => {
-        return tagInSearch.tagWord !== tag;
+        return tagInSearch.content !== tag;
       }
     );
     runInAction(() => {
@@ -231,10 +241,16 @@ export class PostsStore {
     }
     return post;
   }
-  public get getPostsIdsToDisplay() {
-    return this.posts.map((post: IPost) => post.postId);
+  public get getPostsIdsToDisplay(): string[] {
+    return this.posts.map((post: IPost) => {
+      if (!post.postId) throw new Error("post id not found");
+      return post.postId;
+    });
   }
   public get tagsInUse() {
     return toJS(this.tagsInSearch);
+  }
+  public get adminCreatedPost() {
+    return toJS(this.newCreatedPost);
   }
 }

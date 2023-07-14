@@ -9,7 +9,7 @@ export const withSuspense = (component: () => ReactNode) => () => {
   });
 
   return isFirstLoading ? (
-    <Suspense fallback={<LoadingBadgeForGlobalSuspense text={"pt-blog"} />}>
+    <Suspense fallback={<LoadingBadgeForGlobalSuspense text={"IAmPaul"} />}>
       {component()}
     </Suspense>
   ) : (

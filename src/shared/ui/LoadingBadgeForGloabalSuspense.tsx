@@ -20,7 +20,6 @@ const Text = styled.div`
   font-size: 12vw;
   font-weight: 800;
   text-align: center;
-  text-transform: uppercase;
   user-select: none;
 `;
 
