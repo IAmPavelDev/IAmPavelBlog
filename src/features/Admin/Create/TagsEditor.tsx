@@ -58,7 +58,7 @@ export const TagsEditor: FC<{
               );
             }}
           >
-            <TagCard type="dark" text={tag.content} />
+            <TagCard type="dark" text={tag.content} id={tag.id} />
           </div>
         );
       })}
@@ -86,7 +86,11 @@ export const TagsEditor: FC<{
                     tag.current.value = null;
                   }}
                 >
-                  <TagCard type="dark" text={suggestedTag.content} />
+                  <TagCard
+                    type="dark"
+                    text={suggestedTag.content}
+                    id={suggestedTag.id}
+                  />
                 </div>
               );
             })}

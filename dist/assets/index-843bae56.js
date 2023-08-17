@@ -1,0 +1,1 @@
+import{r as s,u as a,a as t}from"./index-fc1ab4af.js";import{P as c}from"./Post-07334c33.js";import"./index-71e76787.js";const i={},l=()=>{const[o,e]=s.useState(""),r=a();return s.useEffect(()=>{document.body.scrollTo(0,0),e(r.pathname.split("/")[2])},[]),o?t("div",{className:i.wrapper,children:t(c,{id:o})}):t("div",{children:"Loading..."})};export{l as PostPage};

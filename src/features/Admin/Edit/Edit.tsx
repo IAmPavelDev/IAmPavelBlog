@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { Box, Button } from "@mui/material";
 import { Create } from "../Create";
 import { store } from "shared/store";
-import PostPreview from "features/PostList/PostPreview/PostPreview";
+import { PostPreview } from "features/PostList/PostPreview";
 import { deletePost } from "shared/api/posts/delete-post";
 import { ITag } from "shared/types";
 import { fetchTags } from "shared/api/tags/fetchTags";
@@ -87,7 +87,7 @@ export const Edit = () => {
         {tags.status === "ok" &&
           tags.data.map((tag: ITag) => (
             <Box key={tag.id}>
-              <TagCard type="dark" text={tag.content} />
+              <TagCard type="dark" text={tag.content} id={tag.id} />
               <Button
                 variant="contained"
                 onClick={() => {
