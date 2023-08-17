@@ -12,7 +12,6 @@ export default async function postImage(imageFile: File): Promise<string> {
       return responseObj;
     })
     .then((imageId: string) => {
-      console.log(imageId);
       return `${process.env.REACT_APP_SERVER_CONNECTION}/images/${imageId}`;
     })
     .catch(() => {

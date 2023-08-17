@@ -1,0 +1,23 @@
+.wrapper {
+  margin-top: 80px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  .wrapper__input {
+    width: 500px;
+    padding: 10px 20px;
+    outline: none;
+    border: 1px solid rgba(33, 33, 33, 1);
+    font-size: 1.2rem;
+    border-radius: 20px;
+  }
+  .wrapper__tags {
+    display: flex;
+    gap: 8px;
+    padding-top: 25px;
+    .tags__used {
+      color: white;
+      background: #000;
+    }
+  }
+}

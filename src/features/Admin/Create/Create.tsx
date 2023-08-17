@@ -62,7 +62,7 @@ const CreateForm: FC<{ defaultPostData?: IPost }> = ({ defaultPostData }) => {
   }
 
   function pushActualData(actualPost: PostCreateForm) {
-    store.postStore.adminNewPostSet(actualPost);
+    store.postStore.cachePost = actualPost;
   }
 
   if (createdPostURL === undefined) {
@@ -128,7 +128,7 @@ const CreateForm: FC<{ defaultPostData?: IPost }> = ({ defaultPostData }) => {
         minRows={2}
         inputProps={{
           className: styles.wrapper__innerField,
-          maxLength: 50,
+          maxLength: 70,
         }}
       />
       preview:
@@ -171,12 +171,11 @@ export const Create: FC<{ defaultPostId?: string }> = ({ defaultPostId }) => {
   useEffect(() => {
     if (defaultPostData === "loading") {
       const recentData = store.postStore.adminCreatedPost;
-      console.log(recentData);
       if (!!recentData) {
         setDefaultPostData(recentData);
       } else if (defaultPostId) {
         (async () => {
-          const defaultPost = await store.postStore.loadPostById(defaultPostId);
+          const defaultPost = await store.postStore.getPostById(defaultPostId);
           setDefaultPostData(defaultPost);
         })();
       } else {

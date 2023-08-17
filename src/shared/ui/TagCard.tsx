@@ -1,4 +1,5 @@
-import React, { FC } from "react";
+import React, { FC, Fragment } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 
 const BadgeDark = styled.div`
@@ -27,20 +28,39 @@ const BadgeLight = styled.div`
   }
 `;
 
-const TagCard: FC<{ type: "dark" | "light"; text: string }> = ({
-  type,
-  text,
-}) => {
+const TagCard: FC<{
+  type: "dark" | "light";
+  text: string;
+  id: string;
+  className?: string;
+  onClick?: (e?: React.MouseEvent) => void;
+  doForward?: boolean;
+}> = ({ type, text, id, className, onClick, doForward = false }) => {
+  const ThemeWrap = type === "dark" ? BadgeDark : BadgeLight;
+  const navigate = useNavigate();
+
   return (
-    <>
-      {type === "dark" ? (
-        <BadgeDark>{text.toUpperCase()}</BadgeDark>
-      ) : type === "light" ? (
-        <BadgeLight>{text.toUpperCase()}</BadgeLight>
+    <div
+      onClick={(e: React.MouseEvent) => {
+        e.stopPropagation();
+        onClick && onClick(e);
+      }}
+    >
+      {doForward ? (
+        <Fragment>
+          <Link
+            style={{ textDecoration: "none" }}
+            to={id ? "/search?tag=" + id : "/search"}
+          >
+            <ThemeWrap {...{ className }}>
+              {text?.toUpperCase() ?? ""}
+            </ThemeWrap>
+          </Link>
+        </Fragment>
       ) : (
-        <>{text.toUpperCase()}</>
+        <ThemeWrap {...{ className }}>{text?.toUpperCase() ?? ""}</ThemeWrap>
       )}
-    </>
+    </div>
   );
 };
 

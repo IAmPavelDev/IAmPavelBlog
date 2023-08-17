@@ -13,7 +13,6 @@ export async function createTag(content: string) {
 
     const raw = JSON.stringify({
       content,
-      postIds: [],
     });
 
     const requestOptions: RequestInit = {

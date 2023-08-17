@@ -3,7 +3,7 @@
 .wrapper {
   position: relative;
   user-select: none;
-  .wrapper__content {
+  &__content {
     width: 80vw;
     height: 100dvh;
     padding: 0 10vw;
@@ -23,7 +23,7 @@
       font-weight: 700;
     }
   }
-  .wrapper__bg {
+  &__bg {
     width: 100vw;
     height: 100dvh;
     video {

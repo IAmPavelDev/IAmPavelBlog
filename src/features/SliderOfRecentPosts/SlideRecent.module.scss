@@ -4,6 +4,8 @@ $whiteColor: rgba(229, 229, 229, 1);
   .wrapper__slider {
     height: calc(100vh - 50px);
     .wrapper__slider__slide {
+      margin: auto;
+
       position: relative;
       max-width: 100vw;
       overflow: hidden;

@@ -1,6 +1,6 @@
 import sessionAuthorize from "../users/session-authorize";
 
-export async function deletePost(postId: string) {
+export async function deleteTag(tagId: string) {
   if (await sessionAuthorize()) {
     const myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");
@@ -17,11 +17,10 @@ export async function deletePost(postId: string) {
       credentials: "include",
     };
     return fetch(
-      process.env.REACT_APP_SERVER_CONNECTION + "/posts/" + postId,
+      process.env.REACT_APP_SERVER_CONNECTION + "/tags/" + tagId,
       requestOptions
     )
       .then((response) => response.json())
-      .then((data) => data.postId)
       .catch((error) => console.log("error", error));
   } else {
     throw new Error("user unauthorized");

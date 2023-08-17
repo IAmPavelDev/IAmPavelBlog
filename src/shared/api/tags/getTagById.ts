@@ -1,8 +1,9 @@
-import sessionAuthorize from "../users/session-authorize";
+import { ITag } from "shared/types";
+import sessionAuthorize from "shared/api/users/session-authorize";
 
-export async function getPostById(postId: string, isOnlyContent: boolean) {
+export async function getTagById(id: string) {
   if (await sessionAuthorize()) {
-    var myHeaders = new Headers();
+    const myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");
     myHeaders.append("Access-Control-Allow-Origin", "*");
     myHeaders.append(
@@ -14,13 +15,10 @@ export async function getPostById(postId: string, isOnlyContent: boolean) {
       method: "GET",
       headers: myHeaders,
       redirect: "follow",
+      credentials: "include",
     };
-
     return await fetch(
-      process.env.REACT_APP_SERVER_CONNECTION +
-        "/posts/" +
-        postId +
-        (isOnlyContent ? "?mode=onlyContent" : ""),
+      process.env.REACT_APP_SERVER_CONNECTION + `/tags/${id}`,
       requestOptions
     )
       .then((response) => response.json())

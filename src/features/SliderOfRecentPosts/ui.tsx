@@ -1,4 +1,4 @@
-import React, { FC, useState } from "react";
+import React, { FC, useEffect, useState } from "react";
 import style from "./SlideRecent.module.scss";
 
 import Slider from "react-slick";
@@ -15,60 +15,60 @@ import DateCard from "shared/ui/DateCard";
 import { ITag } from "shared/types/ITag";
 import { LazyLoadImage } from "react-lazy-load-image-component";
 import "react-lazy-load-image-component/src/effects/blur.css";
+import { Skeleton } from "@mui/material";
 
 const Slide: FC<{
   postId?: string;
 }> = ({ postId }) => {
-  const [postDataState, setPostDataState] = useState<
-    IPost | "Error" | "Loading"
-  >("Loading");
+  const [postDataState, setPostDataState] = useState<IPost | "Error">();
 
-  postId &&
-    store.postStore.getPostPreviewDataById(postId).then((postData: IPost) => {
-      if (!postData || postData.postId != postId) {
-        setPostDataState("Error");
-        return;
-      }
-      setPostDataState(postData);
-    });
+  useEffect(() => {
+    postId &&
+      store.postStore.getPostPreviewDataById(postId).then((postData: IPost) => {
+        if (!postData || postData.postId != postId) {
+          setPostDataState("Error");
+          return;
+        }
+        setPostDataState(postData);
+      });
+  }, []);
 
   if (postDataState === "Error") {
     return <>Error</>;
-  }
-  if (postDataState === "Loading") {
-    return <>Loading...</>;
   }
 
   return (
     <div className={style.wrapper__slider__slide}>
       <div className={style.slide__image__back}>
         <div className={style.mask} />
-        <LazyLoadImage
-          src={postDataState.previewImage}
+        <img
+          src={postDataState?.previewImage}
           alt="background"
           className={style.img}
-          placeholderSrc={postDataState.previewImagePlaceholder}
-          effect="opacity"
         />
       </div>
       <div className={style.slide__content}>
         <div className={style.slide__content__tags}>
-          {postDataState.tags?.slice(0, 3).map((tag: ITag) => (
+          {postDataState?.tags?.slice(0, 3).map((tag: ITag) => (
             <div key={tag.id}>
-              <TagCard type="light" text={tag.content} />
+              <TagCard type="light" text={tag.content} id={tag.id} doForward />
             </div>
           ))}
         </div>
-        <div className={style.slide__content__title}>{postDataState.title}</div>
+        <div className={style.slide__content__title}>
+          {postDataState?.title ?? "Failed to find title"}
+        </div>
         <div className={style.slide__content__preview}>
           <div className={style.preview__date}>
             <DateCard
               fontColorType="light"
-              dateToDisplay={postDataState.creationDate}
+              dateToDisplay={postDataState?.creationDate}
             />
           </div>
           <span />
-          <div className={style.preview__content}>{postDataState.preview}</div>
+          <div className={style.preview__content}>
+            {postDataState?.preview ?? "Failed to find preview"}
+          </div>
         </div>
       </div>
     </div>
@@ -85,6 +85,7 @@ export const SliderOfRecentPosts = observer(() => {
     autoplay: true,
     autoplaySpeed: 5000,
   };
+
   return (
     <div className={style.wrapper}>
       <div>

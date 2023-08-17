@@ -9,4 +9,6 @@ export interface IPost {
   postId?: string;
   previewImage: string;
   previewImagePlaceholder: string;
+  views?: Array<string>;
+  likes?: Array<string>;
 }

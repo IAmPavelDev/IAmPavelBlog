@@ -1,7 +1,10 @@
+let isSessionAuth: boolean = false;
+
 export default async function sessionAuthorize() {
   if (
-    !localStorage.getItem("sessionAuth") ||
-    localStorage.getItem("sessionAuth") !== "success"
+    !isSessionAuth &&
+    (!localStorage.getItem("sessionAuth") ||
+      localStorage.getItem("sessionAuth") !== "success")
   ) {
     const myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");
@@ -15,21 +18,22 @@ export default async function sessionAuthorize() {
       method: "GET",
       headers: myHeaders,
       redirect: "follow",
-      credentials: "include"
+      credentials: "include",
     };
 
     return await fetch(
-      process.env.REACT_APP_SERVER_CONNECTION + `/sessionEntrance`,
+      process.env.REACT_APP_SERVER_CONNECTION + "/user/sessionEntrance",
       requestOptions
     )
       .then((response) => response.json())
       .then((res) => {
         if (res.status === "success") {
           localStorage.setItem("sessionAuth", res.status);
+          isSessionAuth = true;
           return true;
         } else {
           localStorage.setItem("sessionAuth", "error");
-          return false;
+          throw new Error("user unauthorized");
         }
       })
       .catch((error) => {

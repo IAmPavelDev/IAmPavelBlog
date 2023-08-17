@@ -1,18 +1,20 @@
-type loginData = {
-  login: string;
+export type loginData = {
+  username: string;
   password: string;
 };
 
-export async function login(loginData?: loginData) {
+export async function login({ username, password }: loginData) {
   const myHeaders = new Headers();
   myHeaders.append("Content-Type", "application/json");
   myHeaders.append("Access-Control-Allow-Origin", "*");
   myHeaders.append("Access-Control-Allow-Methods", "GET,POST,PUT,PATCH,DELETE");
 
-  const raw = loginData ? JSON.stringify({
-    username: loginData.login,
-    password: loginData.password,
-  }) : null;
+  const raw = JSON.stringify({
+    username,
+    password,
+  });
+
+  console.log(raw);
 
   const requestOptions: RequestInit = {
     method: "POST",
@@ -21,10 +23,11 @@ export async function login(loginData?: loginData) {
     redirect: "follow",
     credentials: "include",
   };
+
   return fetch(
-    process.env.REACT_APP_SERVER_CONNECTION + "/login",
+    process.env.REACT_APP_SERVER_CONNECTION + "/user/login",
     requestOptions
   )
-    .then((response) => response)
+    .then((data) => data.json())
     .catch((error) => console.log("error", error));
 }

@@ -9,7 +9,7 @@ import { ReactComponent as FaSearch } from "shared/icons/FaSearch.svg";
 
 import MenuLink from "./MenuLink";
 import StandWithUkr from "./StandWithUkraineBadge";
-import LoadingLinkToHome from "./LoadingAnimationToLogo";
+import { LoadingLinkToHome } from "./LoadingLinkToHome";
 
 const PanelShifter = (panel: HTMLDivElement) => {
   if (window.scrollY > 60 && panel) {
@@ -142,9 +142,9 @@ export const Head: FC<{}> = () => {
               <FaTelegramPlane className={style.panel__link} />
             </a>
             <p className={style.panel__spacer}>|</p>
-            <div className={style.panel__link}>
+            <Link to={"/search"} className={style.panel__link}>
               <FaSearch />
-            </div>
+            </Link>
           </div>
         ) : (
           <div ref={mobilePanel} className={style.panel__right__mobile}>

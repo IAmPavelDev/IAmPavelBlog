@@ -1,13 +1,12 @@
-import React, { FC, useEffect, useRef, useState } from "react";
+import { motion } from "framer-motion";
+import React, { FC, useCallback, useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { createContext } from "vm";
 import style from "./LoadingAnimationLogo.module.scss";
 
-
 // const LogoStartAnimation = createContext(null);
 
-
-const LoadingLinkToHome: FC<{
+export const LoadingLinkToHome: FC<{
   className?: string;
   durationMS?: number;
   delay?: number;
@@ -21,6 +20,17 @@ const LoadingLinkToHome: FC<{
 
   const isOpened = useRef<boolean>(false);
   const [, reload] = useState(false);
+
+  const logoScrollCorrector = useCallback(() => {
+    if (logoTextInner.current && window.scrollY > 60) {
+      logoTextInner.current.style.transform = "translateY(61px)";
+    }
+    if (logoTextInner.current && window.scrollY <= 60) {
+      logoTextInner.current.style.transform = `translateY(${
+        window.scrollY + 1
+      }px)`;
+    }
+  }, [logoTextInner]);
 
   useEffect(() => {
     start(() => {
@@ -50,16 +60,10 @@ const LoadingLinkToHome: FC<{
     translateY(calc(50vh - (50% + ${logoPosition.top}px)))`;
     }
 
-    window.addEventListener("scroll", () => {
-      if (logoTextInner.current && window.scrollY > 60) {
-        logoTextInner.current.style.transform = "translateY(61px)";
-      }
-      if (logoTextInner.current && window.scrollY <= 60) {
-        logoTextInner.current.style.transform = `translateY(${
-          window.scrollY + 1
-        }px)`;
-      }
-    });
+    window.addEventListener("scroll", logoScrollCorrector);
+    return () => {
+      window.removeEventListener("scroll", logoScrollCorrector);
+    };
   });
 
   return (
@@ -84,13 +88,17 @@ const LoadingLinkToHome: FC<{
       ) : (
         <div className={[className, style.wrapper].join(" ")}>
           <div ref={logoBg} className={style.panel__logo__bg}></div>
-          <div ref={logoText} className={style.panel__logo__text}>
-            <div ref={logoTextInner}>{text}</div>
+          <div ref={logoText} className={[style.panel__logo__text].join(" ")}>
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              ref={logoTextInner}
+            >
+              {text}
+            </motion.div>
           </div>
         </div>
       )}
     </>
   );
 };
-
-export default LoadingLinkToHome;

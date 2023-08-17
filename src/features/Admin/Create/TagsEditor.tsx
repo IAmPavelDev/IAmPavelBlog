@@ -20,9 +20,12 @@ export const TagsEditor: FC<{
   }, [tags]);
 
   function tagsSuggest(query: string) {
-    fetchTags(query).then((tags: ITag[]) => {
-      console.log(tags);
-      setSuggests(tags);
+    fetchTags(query).then((serverTags: ITag[]) => {
+      setSuggests(
+        serverTags.filter((t: ITag) =>
+          tags.every((tag: ITag) => t.id !== tag.id)
+        )
+      );
     });
   }
 
@@ -35,10 +38,11 @@ export const TagsEditor: FC<{
   }
 
   function createNewTag() {
-    createTag(tag.current.value).then((tag: ITag) => {
-      console.log(tag);
-      setTags((prev) => [...prev, tag]);
-    });
+    tag.current.value &&
+      createTag(tag.current.value).then((newTag: ITag) => {
+        tag.current.value = "";
+        setTags((prev) => [...prev, newTag]);
+      });
   }
 
   return (
@@ -75,6 +79,7 @@ export const TagsEditor: FC<{
             suggests.map((suggestedTag: ITag) => {
               return (
                 <div
+                  key={suggestedTag.id}
                   onClick={() => {
                     setTags((prev) => [...prev, suggestedTag]);
                     setSuggests([]);

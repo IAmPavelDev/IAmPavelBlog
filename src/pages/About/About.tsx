@@ -1,7 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import style from "./About.module.scss";
 import { VideoSlide, Carousel } from "features/AboutSlides";
-import { motion } from "framer-motion";
 
 export const About = () => {
   const place = useRef<HTMLDivElement>(null);
@@ -10,7 +9,6 @@ export const About = () => {
   const [activeSlides, setActiveSlides] = useState<boolean[]>([true, false]);
   useEffect(() => {
     const viewportHeight = window.innerHeight;
-    console.log(viewportHeight * 1.2);
     window.scrollTo({
       top: 0,
       left: 0,
@@ -74,12 +72,7 @@ export const About = () => {
   }, [window]);
 
   return (
-    <motion.div
-      className={style.wrapper}
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
-    >
+    <div className={style.wrapper}>
       <div className={style.wrapper__slides}>
         <div ref={place} className={style.slides__place}>
           <VideoSlide
@@ -102,6 +95,6 @@ export const About = () => {
           <Carousel />
         </div>
       </div>
-    </motion.div>
+    </div>
   );
 };

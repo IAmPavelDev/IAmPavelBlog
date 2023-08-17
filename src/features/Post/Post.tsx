@@ -15,13 +15,16 @@ export const Post: FC<{ id: string }> = ({ id }) => {
         const createdPost = store.postStore.adminCreatedPost;
         createdPost && setData(createdPost);
       } else {
-        store.postStore.loadPostById(id).then((data) => setData(data));
+        store.postStore.getPostById(id).then((data) => setData(data));
       }
     }
   }, []);
   if (!data) {
     return <>Loading...</>;
   }
+
+  console.log(data);
+
   return (
     <motion.div
       className={style.wrapper}
@@ -56,7 +59,9 @@ export const Post: FC<{ id: string }> = ({ id }) => {
             <AiOutlineLike
               className={[style.rate__icon__like, style.rate__icon].join(" ")}
             />
-            <div className={style.rate__current}>+15</div>
+            <div className={style.rate__current}>
+              {data?.likes?.length ?? 0}
+            </div>
             <AiOutlineDislike
               className={[style.rate__icon__dislike, style.rate__icon].join(
                 " "
@@ -65,7 +70,7 @@ export const Post: FC<{ id: string }> = ({ id }) => {
           </div>
           <div className={style.wrapper__ctl__views}>
             <AiOutlineEye />
-            200
+            {data?.views?.length ?? 0}
           </div>
         </div>
       </div>
