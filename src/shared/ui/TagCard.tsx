@@ -11,6 +11,7 @@ const BadgeDark = styled.div`
   font-weight: 700;
   cursor: pointer;
   user-select: none;
+  white-space: nowrap;
 `;
 
 const BadgeLight = styled.div`
@@ -23,6 +24,7 @@ const BadgeLight = styled.div`
   cursor: pointer;
   user-select: none;
   transition: all 0.3s;
+  white-space: nowrap;
   &:hover {
     background-color: rgba(100, 100, 100, 0.7);
   }

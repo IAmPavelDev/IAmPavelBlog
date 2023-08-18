@@ -150,7 +150,12 @@ export const Head: FC<{}> = () => {
           <div ref={mobilePanel} className={style.panel__right__mobile}>
             {isMobileMenuOpen ? (
               <>
-                <div className={style.mobile__blurBg} />
+                <div
+                  onClick={() =>
+                    HideMobilePanelActuator(mobilePanel.current, "hide")
+                  }
+                  className={style.mobile__blurBg}
+                />
                 <div className={style.mobile__menu}>
                   <div
                     className={style.mobile__menu__btn}
@@ -162,18 +167,36 @@ export const Head: FC<{}> = () => {
                     <MdArrowForwardIos />
                   </div>
                   <div className={style.mobile__menu__routes}>
-                    <Link className={style.route} to={"/"}>
+                    <Link
+                      className={style.route}
+                      to={"/"}
+                      onClick={() =>
+                        HideMobilePanelActuator(mobilePanel.current, "hide")
+                      }
+                    >
                       <MenuLink isSelected={locate.pathname === "/"}>
                         Home
                       </MenuLink>
                     </Link>
-                    <Link className={style.route} to={"/about"}>
+                    <Link
+                      className={style.route}
+                      to={"/about"}
+                      onClick={() =>
+                        HideMobilePanelActuator(mobilePanel.current, "hide")
+                      }
+                    >
                       <MenuLink isSelected={locate.pathname === "/about"}>
                         About
                       </MenuLink>
                     </Link>
                     <hr />
-                    <Link className={style.route} to={"/about"}>
+                    <Link
+                      className={style.route}
+                      to={"/search"}
+                      onClick={() =>
+                        HideMobilePanelActuator(mobilePanel.current, "hide")
+                      }
+                    >
                       <MenuLink isSelected={locate.pathname === "/search"}>
                         Search
                       </MenuLink>

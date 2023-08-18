@@ -3,7 +3,9 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  max-width: 100vw;
   .wrapper__input {
+    max-width: 80%;
     width: 500px;
     padding: 10px 20px;
     outline: none;
@@ -15,6 +17,9 @@
     display: flex;
     gap: 8px;
     padding-top: 25px;
+    overflow: scroll;
+    width: 80%;
+    padding-bottom: 15px;
     .tags__used {
       color: white;
       background: #000;

@@ -15,7 +15,7 @@
   transform-style: preserve-3d;
   box-sizing: border-box;
   transform: rotateY(-360deg) translateZ(-412px);
-  animation: swirl 40s steps(10000, end) infinite;
+  animation: swirl 40s steps(960, end) infinite; //24fps, for 60fps 960 => 2400
   user-select: none;
   @keyframes swirl {
     from {
