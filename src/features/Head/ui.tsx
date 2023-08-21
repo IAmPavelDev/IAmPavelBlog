@@ -10,15 +10,12 @@ import { ReactComponent as FaSearch } from "shared/icons/FaSearch.svg";
 import MenuLink from "./MenuLink";
 import StandWithUkr from "./StandWithUkraineBadge";
 import { LoadingLinkToHome } from "./LoadingLinkToHome";
-
-const PanelShifter = (panel: HTMLDivElement) => {
-  if (window.scrollY > 60 && panel) {
-    panel.style.top = 0 + "px";
-  }
-  if (window.scrollY <= 60 && panel) {
-    panel.style.top = 60 - window.scrollY + "px";
-  }
-};
+import {
+  motion,
+  useMotionValueEvent,
+  useScroll,
+  useSpring,
+} from "framer-motion";
 
 function useHideMobilePanelActuator(
   hideSetState: (isDisplayed: boolean) => void,
@@ -65,13 +62,21 @@ export const Head: FC<{}> = () => {
 
   let logoAnimationStart: (() => void) | null = null;
 
-  const panel = useRef<HTMLDivElement>(null);
-
   const mobilePanel = useRef<HTMLDivElement>(null);
 
   const [isDesktop, setIsDesktop] = useState<boolean>(window.innerWidth > 440);
 
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState<boolean>(false);
+
+  const standWithUkrPanelPosition = useSpring(0, {
+    stiffness: 10000,
+    damping: 500,
+  });
+  const { scrollY } = useScroll();
+
+  useMotionValueEvent(scrollY, "change", () => {
+    standWithUkrPanelPosition.set(scrollY.get() > 60 ? -60 : -scrollY.get());
+  });
 
   const HideMobilePanelActuator = useHideMobilePanelActuator(
     setIsMobileMenuOpen,
@@ -82,21 +87,21 @@ export const Head: FC<{}> = () => {
     style.displayMobilePanelStatic
   );
 
+  const isDesktopToggle = () => {
+    if (!isDesktop && window.innerWidth > 530) {
+      setIsDesktop(true);
+    }
+    if (isDesktop && window.innerWidth <= 530) {
+      setIsDesktop(false);
+    }
+  };
+
   useEffect(() => {
     logoAnimationStart && logoAnimationStart();
-
-    window.addEventListener("scroll", (e: Event) => {
-      panel.current && PanelShifter(panel.current);
-    });
-
-    window.addEventListener("resize", (e: UIEvent) => {
-      if (!isDesktop && window.innerWidth > 530) {
-        setIsDesktop(true);
-      }
-      if (isDesktop && window.innerWidth <= 530) {
-        setIsDesktop(false);
-      }
-    });
+    window.addEventListener("resize", isDesktopToggle);
+    return () => {
+      window.removeEventListener("resize", isDesktopToggle);
+    };
   });
 
   return (
@@ -104,7 +109,10 @@ export const Head: FC<{}> = () => {
       <div className={style.wrapper__standImg}>
         <StandWithUkr />
       </div>
-      <div className={style.wrapper__panel} ref={panel}>
+      <motion.div
+        style={{ y: standWithUkrPanelPosition }}
+        className={style.wrapper__panel}
+      >
         <LoadingLinkToHome
           text="IAmPaul"
           start={(startCallBack) => {
@@ -235,7 +243,7 @@ export const Head: FC<{}> = () => {
             </div>
           </div>
         )}
-      </div>
+      </motion.div>
     </div>
   );
 };

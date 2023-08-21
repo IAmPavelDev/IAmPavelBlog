@@ -6,6 +6,7 @@ export const withPostsLoader = (component: () => ReactNode) => () => {
     store.postStore.load(
       store.postStore.getCurrentFetchingState.lastFetchedPage + 1
     );
+    store.userStore.sessionEntrance();
   });
 
   return <>{component()}</>;

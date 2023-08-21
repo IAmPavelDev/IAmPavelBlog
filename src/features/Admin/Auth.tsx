@@ -50,8 +50,8 @@ const Auth: FC<{ loggedIn: () => void }> = ({ loggedIn }) => {
   const [pwdShow, setPwdShow] = useState<Boolean>(false);
 
   const loginInvoker = ({ username, password }: loginData) => {
-    store.userStore.login(username, password).then((result) => {
-      if (!!result && typeof result === "object") {
+    store.userStore.login(username, password).then((user) => {
+      if (!!user && typeof user === "object") {
         loggedIn();
       }
     });

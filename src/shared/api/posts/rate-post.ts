@@ -1,26 +1,30 @@
-import { IFetchData, ITag } from "shared/types";
+import { IPost } from "shared/types";
 import sessionAuthorize from "../users/session-authorize";
 
-export async function fetchPosts(
-  page: number,
-  search: string = "",
-  tagIds: string[]
-): Promise<IFetchData> {
+export async function ratePost(
+  postId: string,
+  type: "like" | "dislike"
+): Promise<IPost> {
   const myHeaders = new Headers();
   myHeaders.append("Content-Type", "application/json");
   myHeaders.append("Access-Control-Allow-Origin", "*");
   myHeaders.append("Access-Control-Allow-Methods", "GET,POST,PUT,PATCH,DELETE");
 
+  const raw = JSON.stringify({
+    postId,
+    type,
+  });
+
   const requestOptions: RequestInit = {
-    method: "GET",
+    method: "POST",
     headers: myHeaders,
     redirect: "follow",
+    body: raw,
     credentials: "include",
   };
 
-  return await fetch(
-    process.env.REACT_APP_SERVER_CONNECTION +
-      `/posts?p=${page}&s=${search}&t=${tagIds}`,
+  return fetch(
+    process.env.REACT_APP_SERVER_CONNECTION + "/posts/rate",
     requestOptions
   )
     .then((response) => response.json())

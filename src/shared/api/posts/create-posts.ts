@@ -2,8 +2,6 @@ import { IPost } from "shared/types";
 import sessionAuthorize from "../users/session-authorize";
 
 export async function createPost(postData: IPost): Promise<IPost> {
-  await sessionAuthorize();
-
   const myHeaders = new Headers();
   myHeaders.append("Content-Type", "application/json");
   myHeaders.append("Access-Control-Allow-Origin", "*");

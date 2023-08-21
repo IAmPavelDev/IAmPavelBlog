@@ -9,6 +9,8 @@ import { updatePost } from "shared/api/posts/update-posts";
 import { deletePost } from "shared/api/posts/delete-post";
 import { action, makeObservable, observable, runInAction, toJS } from "mobx";
 import { useNavigate } from "react-router-dom";
+import { store } from "../../../shared/store";
+import { ratePost } from "../../../shared/api/posts/rate-post";
 
 export class PostsStore {
   cachedPost: IPost | null = null;
@@ -80,8 +82,6 @@ export class PostsStore {
 
         this.posts[localPostId].content = c;
 
-        console.log(c);
-
         return toJS(this.posts[localPostId]);
       }
     }
@@ -105,6 +105,44 @@ export class PostsStore {
         return data;
       })
       .catch(() => console.error("Failed to fetch"));
+  }
+
+  async like(postId: string) {
+    const { userId } = await store.userStore.getUserData();
+    if (!userId) {
+      return;
+    }
+
+    runInAction(() => {
+      this.posts.map((post) => {
+        if (post.postId === postId && post?.likes) {
+          post.likes = Array.from(new Set([...post.likes, userId]));
+        }
+        return post;
+      });
+    });
+
+    store.userStore.pushToLikes(postId);
+    ratePost(postId, "like");
+  }
+
+  async dislike(postId: string) {
+    const { userId } = await store.userStore.getUserData();
+    if (!userId) {
+      return;
+    }
+
+    runInAction(() => {
+      this.posts.map((post) => {
+        if (post.postId === postId && post?.likes) {
+          post.likes = post.likes.filter((like: string) => like !== userId);
+        }
+        return post;
+      });
+    });
+
+    store.userStore.removeFromLikes(postId);
+    ratePost(postId, "dislike");
   }
 
   async load(page: number) {

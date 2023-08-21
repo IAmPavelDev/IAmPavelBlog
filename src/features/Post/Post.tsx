@@ -2,14 +2,50 @@ import style from "./Post.module.scss";
 import { dateToValidString } from "shared/tools/dateToValidString";
 import { store } from "shared/store";
 import { motion } from "framer-motion";
-import { AiOutlineDislike, AiOutlineEye, AiOutlineLike } from "react-icons/ai";
-import { FC, useEffect, useState } from "react";
-import { IPost } from "shared/types";
+import { AiOutlineEye, AiOutlineLike, AiFillLike } from "react-icons/ai";
+import { FC, useEffect, useRef, useState } from "react";
+import { IPost, IUser } from "shared/types";
+import { observer } from "mobx-react-lite";
 
-export const Post: FC<{ id: string }> = ({ id }) => {
+export const Post: FC<{ id: string }> = observer(({ id }) => {
   const [data, setData] = useState<IPost>();
+  const [isLiked, setIsLiked] = useState<boolean>(false);
+
+  const userId = useRef<string>();
+
+  async function like() {
+    setIsLiked(true);
+    store.postStore.like(id);
+    setData((prev) =>
+      prev
+        ? {
+            ...prev,
+            likes:
+              prev.likes && userId.current
+                ? [...prev.likes, userId.current]
+                : prev.likes,
+          }
+        : prev
+    );
+  }
+
+  async function dislike() {
+    setIsLiked(false);
+    store.postStore.dislike(id);
+    setData((prev) =>
+      prev
+        ? {
+            ...prev,
+            likes:
+              prev.likes && userId.current
+                ? prev.likes.filter((like: string) => like !== userId.current)
+                : prev.likes,
+          }
+        : prev
+    );
+  }
+
   useEffect(() => {
-    console.log(id);
     if (!data && !!id) {
       if (id === "catch-new-post") {
         const createdPost = store.postStore.adminCreatedPost;
@@ -17,13 +53,15 @@ export const Post: FC<{ id: string }> = ({ id }) => {
       } else {
         store.postStore.getPostById(id).then((data) => setData(data));
       }
+      store.userStore.getUserData().then((user: IUser) => {
+        setIsLiked(user.likes.indexOf(id) !== -1);
+        userId.current = user.userId;
+      });
     }
   }, []);
   if (!data) {
     return <>Loading...</>;
   }
-
-  console.log(data);
 
   return (
     <motion.div
@@ -56,17 +94,27 @@ export const Post: FC<{ id: string }> = ({ id }) => {
       <div className={style.wrapper__ctl}>
         <div className={style.wrapper__ctl__container}>
           <div className={style.wrapper__ctl__rate}>
-            <AiOutlineLike
-              className={[style.rate__icon__like, style.rate__icon].join(" ")}
-            />
+            {!!isLiked ? (
+              <AiFillLike
+                onClick={dislike}
+                className={[style.rate__icon__like, style.rate__icon].join(" ")}
+              />
+            ) : (
+              <AiOutlineLike
+                onClick={like}
+                className={[style.rate__icon__like, style.rate__icon].join(" ")}
+              />
+            )}
+
             <div className={style.rate__current}>
               {data?.likes?.length ?? 0}
             </div>
-            <AiOutlineDislike
-              className={[style.rate__icon__dislike, style.rate__icon].join(
-                " "
-              )}
-            />
+            {/*<AiOutlineDislike*/}
+            {/*  */}
+            {/*  className={[style.rate__icon__dislike, style.rate__icon].join(*/}
+            {/*    " "*/}
+            {/*  )}*/}
+            {/*/>*/}
           </div>
           <div className={style.wrapper__ctl__views}>
             <AiOutlineEye />
@@ -76,4 +124,4 @@ export const Post: FC<{ id: string }> = ({ id }) => {
       </div>
     </motion.div>
   );
-};
+});

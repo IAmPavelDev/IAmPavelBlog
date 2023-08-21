@@ -14,8 +14,6 @@ export async function login({ username, password }: loginData) {
     password,
   });
 
-  console.log(raw);
-
   const requestOptions: RequestInit = {
     method: "POST",
     headers: myHeaders,
