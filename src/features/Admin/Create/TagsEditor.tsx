@@ -52,7 +52,7 @@ export const TagsEditor: FC<{
         return (
           <div
             key={tag.id}
-            onClick={() => {
+            onMouseDown={() => {
               setTags((prev: ITag[]) =>
                 prev.filter((prevTag: ITag) => prevTag.id !== tag.id)
               );
@@ -80,8 +80,12 @@ export const TagsEditor: FC<{
               return (
                 <div
                   key={suggestedTag.id}
-                  onClick={() => {
-                    setTags((prev) => [...prev, suggestedTag]);
+                  onMouseDown={() => {
+                    setTags((prev) => {
+                      console.log(prev, suggestedTag);
+                      return [...prev, suggestedTag];
+                    });
+
                     setSuggests([]);
                     tag.current.value = null;
                   }}
